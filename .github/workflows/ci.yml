@@ -1,0 +1,37 @@
+name: Continuous integration
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches: [ main ]
+
+jobs:
+  generate-basemap:
+    name: Generate basemap
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Install GDAL
+        run: |
+          sudo add-apt-repository ppa:ubuntugis/ppa
+          sudo apt-get update
+          sudo apt-get install gdal-bin
+          ogrinfo --version
+
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version-file: .java-version
+          cache: gradle
+
+      - name: Download GRPK
+        run: make download-grpk
+
+      - name: Prepare layers
+        run: make prepare-layers
+
+      - name: Prepare basemap
+        run: ./gradlew run
