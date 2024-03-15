@@ -6,11 +6,11 @@ download-grpk:
 prepare-layers:
 	mkdir -p data/sources/layers
 
-	#ogr2ogr -t_srs EPSG:4326 -f GPKG data/sources/layers/ribos.gpkg "data/sources/GRPK_Open_GDB/GRPK.gdb" RIBOS
-	#ogr2ogr -t_srs EPSG:4326 -f GPKG data/sources/layers/pastat.gpkg "data/sources/GRPK_Open_GDB/GRPK.gdb" PASTAT
-	#ogr2ogr -t_srs EPSG:4326 -f GPKG data/sources/layers/keliai.gpkg "data/sources/GRPK_Open_GDB/GRPK.gdb" KELIAI
+	ogr2ogr -t_srs EPSG:4326 -f GPKG data/sources/layers/ribos.gpkg "data/sources/GRPK_Open_GDB/GRPK.gdb" RIBOS
+	ogr2ogr -t_srs EPSG:4326 -f GPKG data/sources/layers/pastat.gpkg "data/sources/GRPK_Open_GDB/GRPK.gdb" PASTAT
+	ogr2ogr -t_srs EPSG:4326 -f GPKG data/sources/layers/keliai.gpkg "data/sources/GRPK_Open_GDB/GRPK.gdb" KELIAI
 	ogr2ogr -t_srs EPSG:4326 -f GPKG data/sources/layers/hidro-l.gpkg "data/sources/GRPK.gdb" -nlt "MULTILINESTRING" HIDRO_L
-	# ogr2ogr -t_srs EPSG:4326 -f GPKG data/sources/layers/hidro-hd.gpkg "data/sources/GRPK.gdb" -nlt "MULTIPOLYGON" -where "GKODAS LIKE '%hd%'" PLOTAI
+	ogr2ogr -t_srs EPSG:4326 -f GPKG data/sources/layers/hidro-hd.gpkg "data/sources/GRPK.gdb" -nlt "MULTIPOLYGON" -where "GKODAS LIKE '%hd%'" PLOTAI
 
 tileserver:
 	tileserver-gl-light data/biip-maps.mbtiles
