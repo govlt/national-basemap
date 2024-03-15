@@ -3,9 +3,7 @@ package lt.biip.basemap;
 import com.onthegomap.planetiler.ForwardingProfile;
 import com.onthegomap.planetiler.Planetiler;
 import com.onthegomap.planetiler.config.Arguments;
-import lt.biip.basemap.layers.Boundaries;
-import lt.biip.basemap.layers.Buildings;
-import lt.biip.basemap.layers.Roads;
+import lt.biip.basemap.layers.*;
 
 import java.nio.file.Path;
 
@@ -30,6 +28,16 @@ public class Basemap extends ForwardingProfile {
                         Path.of("data", "sources", "layers", "ribos.gpkg"),
                         "https://google.lt"
                 )
+                .addGeoPackageSource(
+                        "hidro-l",
+                        Path.of("data", "sources", "layers", "hidro-l.gpkg"),
+                        "https://google.lt"
+                )
+                .addGeoPackageSource(
+                        "hidro-hd",
+                        Path.of("data", "sources", "layers", "hidro-hd.gpkg"),
+                        "https://google.lt"
+                )
                 .overwriteOutput(Path.of("data", "biip-maps.mbtiles"))
                 .run();
 
@@ -45,6 +53,12 @@ public class Basemap extends ForwardingProfile {
         var boundaries = new Boundaries();
         registerHandler(boundaries);
         registerSourceHandler("ribos", boundaries);
+        var waterLines = new WaterLines();
+        registerHandler(waterLines);
+        registerSourceHandler("hidro-l", waterLines);
+        var waterAreas = new WaterAreas();
+        registerHandler(waterAreas);
+        registerSourceHandler("hidro-hd", waterAreas);
     }
 
     @Override
