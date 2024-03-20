@@ -2,7 +2,11 @@ name: Deploy OSM based on Proton Maps
 
 on:
   push:
-    branches: [ main, osm-proton ]
+    branches: [ main ]
+    paths:
+      - osm-proton/**
+      - .github/workflows/osm-proton.yml
+
   schedule:
     # At 12:00 every day
     - cron: '0 12 * * *'
@@ -21,7 +25,7 @@ jobs:
     permissions:
       contents: read
     steps:
-      - name:  Install go-pmtiles
+      - name: Install go-pmtiles
         run: |
           wget https://github.com/protomaps/go-pmtiles/releases/download/v${{ env.GO_PMTILES_VERSION }}/go-pmtiles_${{ env.GO_PMTILES_VERSION }}_Linux_x86_64.tar.gz && \
               tar -xvzf go-pmtiles_${{ env.GO_PMTILES_VERSION }}_Linux_x86_64.tar.gz && mv pmtiles /usr/local/bin/
