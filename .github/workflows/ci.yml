@@ -14,7 +14,8 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Check workflow files
         run: |
@@ -22,3 +23,21 @@ jobs:
           bash <(curl https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash)
           ./actionlint -color
         shell: bash
+
+  mapbox-gl-style-validate:
+    name: Validate Mapbox GL styles
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install mapbox-gl-style-spec
+        run: npm install @mapbox/mapbox-gl-style-spec --global
+
+      - name: Validate Mapbox GL styles
+        working-directory: osm/proton/styles
+        run: |
+          for file in *.json; do [[ -f "$file" ]] && echo "Validating file: $file" && gl-style-validate "$file"; done
