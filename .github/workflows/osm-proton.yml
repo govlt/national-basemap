@@ -1,0 +1,62 @@
+name: Deploy OSM based on Proton Maps
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - osm-proton/**
+      - .github/workflows/osm-proton.yml
+
+  schedule:
+    # At 12:00 every day
+    - cron: '0 12 * * *'
+
+permissions: { }
+
+env:
+  GO_PMTILES_VERSION: 1.19.1
+
+jobs:
+  deploy-orm-proton:
+    name: Deploy OSM based on Proton maps to S3
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: osm-proton
+    permissions:
+      contents: read
+    steps:
+      - name: Install go-pmtiles
+        run: |
+          wget https://github.com/protomaps/go-pmtiles/releases/download/v${{ env.GO_PMTILES_VERSION }}/go-pmtiles_${{ env.GO_PMTILES_VERSION }}_Linux_x86_64.tar.gz && \
+              tar -xvzf go-pmtiles_${{ env.GO_PMTILES_VERSION }}_Linux_x86_64.tar.gz && mv pmtiles /usr/local/bin/
+
+      - name: Generate today date
+        id: today
+        run: echo "today=$(date -u +%Y%m%d)" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Checkout proton basemap assets repository
+        uses: actions/checkout@v4
+        with:
+          repository: protomaps/basemaps-assets
+          ref: 9fa7b36e3db2ed6b68aba1ffe848728b7cb2b4a2
+          path: proton-basemaps-assets-repo
+
+      - name: Copy proton basemap assets
+        run: cp -r proton-basemaps-assets-repo/fonts proton-basemaps-assets-repo/sprites osm-proton/
+
+      - name: Extract Lithuania's proton map
+        run: pmtiles extract https://build.protomaps.com/${{ steps.today.outputs.today }}.pmtiles osm-proton/lithuania.pmtiles --bbox=21.0558004086,53.9057022162,26.5882792498,56.3725283881
+
+      - name: Sync to S3
+        uses: docker://docker.io/rclone/rclone:1.66
+        with:
+          args: "sync osm-proton s3:/tiles/osm/proton --s3-acl=public-read --fast-list --checksum --update --use-server-modtime --metadata --inplace --delete-during"
+        env:
+          RCLONE_CONFIG_S3_TYPE: s3
+          RCLONE_CONFIG_S3_PROVIDER: Other
+          RCLONE_CONFIG_S3_ENDPOINT: ${{ secrets.S3_ENDPOINT }}
+          RCLONE_CONFIG_S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
+          RCLONE_CONFIG_S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
