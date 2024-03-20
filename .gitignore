@@ -40,3 +40,8 @@ bin/
 
 # Data
 data
+
+# Ignore pmtiles
+*.pmtiles
+osm-proton/fonts
+osm-proton/sprites
