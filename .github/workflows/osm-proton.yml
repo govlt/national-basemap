@@ -24,6 +24,10 @@ jobs:
           wget https://github.com/protomaps/go-pmtiles/releases/download/v${{ env.GO_PMTILES_VERSION }}/go-pmtiles_${{ env.GO_PMTILES_VERSION }}_Linux_x86_64.tar.gz && \
               tar -xvzf go-pmtiles_${{ env.GO_PMTILES_VERSION }}_Linux_x86_64.tar.gz && mv pmtiles /usr/local/bin/
 
+      - name: Generate today date
+        id: today
+        run: echo "today=$(date -u +%Y%m%d)" >> "$GITHUB_OUTPUT"
+
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -38,7 +42,7 @@ jobs:
         run: cp -r proton-basemaps-assets-repo/fonts proton-basemaps-assets-repo/sprites osm-proton/
 
       - name: Extract Lithuania's proton map
-        run: pmtiles extract https://build.protomaps.com/20240320.pmtiles osm-proton/lithuania.pmtiles --bbox=21.0558004086,53.9057022162,26.5882792498,56.3725283881
+        run: pmtiles extract https://build.protomaps.com/${{ steps.today.outputs.today }}.pmtiles osm-proton/lithuania.pmtiles --bbox=21.0558004086,53.9057022162,26.5882792498,56.3725283881
 
       - name: Sync to S3
         uses: docker://docker.io/rclone/rclone:1.66
