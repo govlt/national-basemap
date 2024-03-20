@@ -7,16 +7,23 @@ on:
 
 permissions: { }
 
+env:
+  GO_PMTILES_VERSION: 1.19.1
+
 jobs:
   deploy-orm-proton:
     name: Deploy OSM based on Proton maps to S3
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    container: ghcr.io/protomaps/go-pmtiles:v1.19.1
     environment: osm-proton
     permissions:
       contents: read
     steps:
+      - name:  Install go-pmtiles
+        run: |
+          wget https://github.com/protomaps/go-pmtiles/releases/download/v${{ env.GO_PMTILES_VERSION }}/go-pmtiles_${{ env.GO_PMTILES_VERSION }}_Linux_x86_64.tar.gz && \
+              tar -xvzf go-pmtiles_${{ env.GO_PMTILES_VERSION }}_Linux_x86_64.tar.gz && mv pmtiles /usr/local/bin/
+
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -24,7 +31,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: protomaps/basemaps-assets
-          reference: 9fa7b36e3db2ed6b68aba1ffe848728b7cb2b4a2
+          ref: 9fa7b36e3db2ed6b68aba1ffe848728b7cb2b4a2
           path: proton-basemaps-assets-repo
 
       - name: Copy proton basemap assets
