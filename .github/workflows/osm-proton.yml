@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main ]
     paths:
-      - osm-proton/**
+      - osm/proton/**
       - .github/workflows/osm-proton.yml
 
   schedule:
@@ -45,15 +45,15 @@ jobs:
           path: proton-basemaps-assets-repo
 
       - name: Copy proton basemap assets
-        run: cp -r proton-basemaps-assets-repo/fonts proton-basemaps-assets-repo/sprites osm-proton/
+        run: cp -r proton-basemaps-assets-repo/fonts proton-basemaps-assets-repo/sprites osm/proton/
 
       - name: Extract Lithuania's proton map
-        run: pmtiles extract https://build.protomaps.com/${{ steps.today.outputs.today }}.pmtiles osm-proton/lithuania.pmtiles --bbox=21.0558004086,53.9057022162,26.5882792498,56.3725283881
+        run: pmtiles extract https://build.protomaps.com/${{ steps.today.outputs.today }}.pmtiles osm/proton/lithuania.pmtiles --bbox=21.0558004086,53.9057022162,26.5882792498,56.3725283881
 
       - name: Sync to S3
         uses: docker://docker.io/rclone/rclone:1.66
         with:
-          args: "sync osm-proton s3:/tiles/osm/proton --s3-acl=public-read --fast-list --checksum --update --use-server-modtime --metadata --inplace --delete-during"
+          args: "sync osm/proton s3:/tiles/osm/proton --s3-acl=public-read --fast-list --checksum --update --use-server-modtime --metadata --inplace --delete-during"
         env:
           RCLONE_CONFIG_S3_TYPE: s3
           RCLONE_CONFIG_S3_PROVIDER: Other

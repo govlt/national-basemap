@@ -43,5 +43,5 @@ data
 
 # Ignore pmtiles
 *.pmtiles
-osm-proton/fonts
-osm-proton/sprites
+osm/proton/fonts
+osm/proton/sprites
