@@ -50,6 +50,7 @@ jobs:
           args: "sync osm-proton s3:/tiles/osm/proton --s3-acl=public-read --fast-list --checksum --update --use-server-modtime --metadata --inplace --delete-during"
         env:
           RCLONE_CONFIG_S3_TYPE: s3
+          RCLONE_CONFIG_S3_PROVIDER: s3
           RCLONE_CONFIG_S3_ENDPOINT: ${{ secrets.S3_ENDPOINT }}
           RCLONE_CONFIG_S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
           RCLONE_CONFIG_S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
