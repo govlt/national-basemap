@@ -4,10 +4,10 @@
   "sources": {
     "protomaps": {
       "type": "vector",
-      "url": "https://dev-gis.biip.lt/tiles/static/proton"
+      "url": "https://dev-gis.biip.lt/tiles/static/osm-proton"
     }
   },
-  "glyphs": "https://cdn.biip.lt/tiles/proton/fonts/{fontstack}/{range}.pbf",
+  "glyphs": "https://cdn.biip.lt/tiles/osm/proton/fonts/{fontstack}/{range}.pbf",
   "layers": [
     {
       "id": "background",

@@ -7,7 +7,7 @@
       "url": "https://dev-gis.biip.lt/tiles/static/proton"
     }
   },
-  "glyphs": "https://cdn.biip.lt/tiles/proton/fonts/{fontstack}/{range}.pbf",
+  "glyphs": "https://cdn.biip.lt/tiles/osm/proton/fonts/{fontstack}/{range}.pbf",
   "layers": [
     {
       "id": "background",
