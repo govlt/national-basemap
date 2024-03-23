@@ -19,6 +19,11 @@ public class Basemap extends ForwardingProfile {
                         "https://google.lt"
                 )
                 .addGeoPackageSource(
+                        "gelezink",
+                        Path.of("data", "sources", "layers", "gelezink.gpkg"),
+                        "https://google.lt"
+                )
+                .addGeoPackageSource(
                         "pastat",
                         Path.of("data", "sources", "layers", "pastat.gpkg"),
                         "https://google.lt"
@@ -34,11 +39,21 @@ public class Basemap extends ForwardingProfile {
                         "https://google.lt"
                 )
                 .addGeoPackageSource(
-                        "hidro-hd",
-                        Path.of("data", "sources", "layers", "hidro-hd.gpkg"),
+                        "plotai",
+                        Path.of("data", "sources", "layers", "plotai.gpkg"),
                         "https://google.lt"
                 )
-                .overwriteOutput(Path.of("data", "biip-maps.mbtiles"))
+                .addGeoPackageSource(
+                        "vietov_t",
+                        Path.of("data", "sources", "layers", "vietov_t.gpkg"),
+                        "https://google.lt"
+                )
+                .addGeoPackageSource(
+                        "miskas_l",
+                        Path.of("data", "sources", "layers", "miskas_l.gpkg"),
+                        "https://google.lt"
+                )
+                .overwriteOutput(Path.of("data", "output", "grpk", "grpk.pmtiles"))
                 .run();
 
     }
@@ -56,9 +71,19 @@ public class Basemap extends ForwardingProfile {
         var waterLines = new WaterLines();
         registerHandler(waterLines);
         registerSourceHandler("hidro-l", waterLines);
-        var waterAreas = new WaterAreas();
-        registerHandler(waterAreas);
-        registerSourceHandler("hidro-hd", waterAreas);
+        var areas = new Areas();
+        registerHandler(areas);
+        registerSourceHandler("plotai", areas);
+        var railways = new Railway();
+        registerHandler(railways);
+        registerSourceHandler("gelezink", railways);
+        var placeTitles = new PlaceTitles();
+        registerHandler(placeTitles);
+        registerSourceHandler("vietov_t", placeTitles);
+        var forestLines = new ForestLines();
+        registerHandler(forestLines);
+        registerSourceHandler("miskas_l", forestLines);
+
     }
 
     @Override

@@ -1,0 +1,40 @@
+name: biip-basemap-local
+
+services:
+  maputnik:
+    build:
+      dockerfile_inline: |
+        FROM ghcr.io/maplibre/maputnik:main
+    platform: linux/amd64
+    restart: unless-stopped
+    networks:
+      - internal
+    ports:
+      - 8888:80
+
+  martin:
+    platform: linux/amd64
+    build:
+      dockerfile_inline: |
+        FROM ghcr.io/maplibre/martin:v0.13.0
+        ADD ./fonts /fonts
+        ADD ./data/output/grpk /pmtiles/grpk
+    restart: unless-stopped
+    networks:
+      - internal
+    healthcheck:
+      test: [ "CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/health || exit 1" ]
+      interval: 5s
+      timeout: 3s
+      start_period: 5s
+      retries: 5
+    command: /pmtiles/grpk --font /fonts
+    ports:
+      - 3000:3000
+    develop:
+      watch:
+        - action: rebuild
+          path: ./data/output/grpk
+
+networks:
+  internal:

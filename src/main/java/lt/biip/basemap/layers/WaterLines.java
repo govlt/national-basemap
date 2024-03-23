@@ -16,20 +16,14 @@ public class WaterLines implements ForwardingProfile.FeaturePostProcessor, Forwa
             return;
         }
 
-
-        var minZoom = 6;
-
         var length = (Integer) sf.getTag("PLOTIS", 0);
 
         features.line(this.name())
-                .inheritAttrFromSource("TIPAS")
-                .inheritAttrFromSource("VARDAS")
-                .inheritAttrFromSource("PLOTIS")
-                .inheritAttrFromSource("PLOTIS_ZP")
-                .inheritAttrFromSource("LAIVYB")
-                .setMinPixelSize(2.0)
+                .setAttr("gkodas", sf.getTag("GKODAS"))
+                .setAttr("vardas", sf.getTag("VARDAS"))
+                .setMinPixelSize(0)
                 .setPixelTolerance(0.0)
-                .setMinZoom(minZoom)
+                .setMinZoom(9)
                 .setSortKeyDescending(length);
 
     }
@@ -46,6 +40,6 @@ public class WaterLines implements ForwardingProfile.FeaturePostProcessor, Forwa
 
     @Override
     public String name() {
-        return "water-lines";
+        return "hidro_l";
     }
 }

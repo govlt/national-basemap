@@ -4,34 +4,33 @@ import com.onthegomap.planetiler.FeatureCollector;
 import com.onthegomap.planetiler.FeatureMerge;
 import com.onthegomap.planetiler.ForwardingProfile;
 import com.onthegomap.planetiler.VectorTile;
-import com.onthegomap.planetiler.geo.GeometryException;
 import com.onthegomap.planetiler.reader.SourceFeature;
 
+import java.util.Arrays;
 import java.util.List;
 
-public class Boundaries implements ForwardingProfile.FeaturePostProcessor, ForwardingProfile.FeatureProcessor {
+public class PlaceTitles implements ForwardingProfile.FeaturePostProcessor, ForwardingProfile.FeatureProcessor {
 
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
-        if (sf.canBeLine()) {
-            features.line(this.name())
-                    .setAttr("gkodas", sf.getTag("GKODAS"))
-                    .setAttr("vardas", sf.getTag("VARDAS"));
+        if (!sf.isPoint()) {
+            return;
         }
+
+        features.point(this.name())
+                .setAttr("gkodas", sf.getTag("GKODAS"))
+                .setAttr("adm_tip", sf.getTag("ADM_TIP"))
+                .setAttr("vardas", sf.getTag("VARDAS"))
+                .setMinZoom(10);
     }
 
     @Override
     public List<VectorTile.Feature> postProcess(int zoom, List<VectorTile.Feature> items) {
-        return FeatureMerge.mergeLineStrings(
-                items,
-                0,
-                0,
-                4
-        );
+        return items;
     }
 
     @Override
     public String name() {
-        return "ribos";
+        return "vietov_t";
     }
 }
