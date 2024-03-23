@@ -11,14 +11,11 @@ public class ForestLines implements ForwardingProfile.FeaturePostProcessor, Forw
 
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
-        if (!sf.canBeLine()) {
-            return;
+        if (sf.getSource().equals("grpk") && sf.getSourceLayer().equals("MISKAS_L") && sf.canBeLine()) {
+            features.line(this.name())
+                    .setAttr("gkodas", sf.getTag("GKODAS"))
+                    .setMinZoom(10);
         }
-
-        features.line(this.name())
-                .setAttr("gkodas", sf.getTag("GKODAS"))
-                .setMinZoom(10);
-
     }
 
     @Override

@@ -25,3 +25,6 @@ generate-pmtiles:
 upload:
 	rclone copy data/grpk.pmtiles  biip-tiles:tiles/poc/grpk
 
+change_srs:
+	#ogr2ogr -f "ESRI Shapefile" -lco ENCODING=UTF-8 -s_srs data/sources/GRPK_Open_SHP/AUKSTIS.prj -t_srs EPSG:4326 shp-outputs data/sources/GRPK_Open_SHP/AUKSTIS.shp
+	ogr2ogr -f "ESRI Shapefile" -lco ENCODING=UTF-8 -s_srs data/sources/GRPK_Open_SHP/AUKSTIS.prj -t_srs EPSG:4326 shp-outputs data/sources/GRPK_Open_SHP/AUKSTIS.shp
