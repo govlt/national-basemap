@@ -21,7 +21,9 @@ jobs:
     name: Deploy OSM based on Proton maps to S3
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    environment: osm-proton
+    environment:
+      name: osm-proton
+      url: https://cdn.biip.lt/tiles/osm/proton/lithuania.pmtiles
     permissions:
       contents: read
     steps:

@@ -13,6 +13,9 @@ jobs:
     timeout-minutes: 90
     permissions: { }
     container: ghcr.io/osgeo/gdal:ubuntu-full-3.8.4
+    environment:
+      name: grpk-transform
+      url: https://cdn.biip.lt/tiles/sources/grpk/grpk-espg-4326-shp.zip
     steps:
       - name: Download GRPK from GeoPortal
         run: wget -nv https://www.geoportal.lt/download/opendata/GRPK/GRPK_Open_SHP.zip
@@ -26,6 +29,15 @@ jobs:
       - name: Zip to new data source with transformed SRS
         run: zip -d grpk-espg-4326-shp.zip grpk-espg-4326-shp
 
-      - run: ls -lh
+      - name: Sync to S3
+        uses: docker://docker.io/rclone/rclone:1.66
+        with:
+          args: "sync . s3:/tiles/sources/grpk --include grpk-espg-4326-shp.zip --s3-acl=public-read --fast-list --checksum --update --use-server-modtime --metadata --inplace --delete-during"
+        env:
+          RCLONE_CONFIG_S3_TYPE: s3
+          RCLONE_CONFIG_S3_PROVIDER: Other
+          RCLONE_CONFIG_S3_ENDPOINT: ${{ secrets.S3_ENDPOINT }}
+          RCLONE_CONFIG_S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
+          RCLONE_CONFIG_S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
 
 
