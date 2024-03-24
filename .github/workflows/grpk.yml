@@ -31,3 +31,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           path: grpk/data/output/grpk/grpk.pmtiles
+          compression-level: 0
