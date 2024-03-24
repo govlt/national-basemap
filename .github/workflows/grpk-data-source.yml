@@ -10,7 +10,7 @@ jobs:
   grpk-sync-transform:
     name: Sync and transform GRPK
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 360
     permissions: { }
     container: ghcr.io/osgeo/gdal:ubuntu-full-3.8.4
     environment:
@@ -18,7 +18,7 @@ jobs:
       url: https://cdn.biip.lt/tiles/sources/grpk/grpk-espg-4326-shp.zip
     steps:
       - name: Download GRPK from GeoPortal
-        run: wget -nv https://www.geoportal.lt/download/opendata/GRPK/GRPK_Open_SHP.zip
+        run: wget https://www.geoportal.lt/download/opendata/GRPK/GRPK_Open_SHP.zip
 
       - name: Unzip GRPK data source
         run: unzip GRPK_Open_SHP.zip -x "GRPK_Open_SHP/INFO_/*" && rm GRPK_Open_SHP.zip
