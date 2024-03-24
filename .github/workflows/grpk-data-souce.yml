@@ -1,0 +1,37 @@
+name: "GRPK: sync and transform"
+
+on:
+  workflow_dispatch:
+  pull_request:
+
+permissions: { }
+
+jobs:
+  grpk-sync-transform:
+    name: Sync and transform GRPK
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions: { }
+    steps:
+      - name: Install GDAL
+        run: |
+          sudo add-apt-repository ppa:ubuntugis/ppa
+          sudo apt-get update
+          sudo apt-get install gdal-bin
+          ogrinfo --version
+
+      - name: Download GRPK from GeoPortal
+        run: wget https://www.geoportal.lt/download/opendata/GRPK/GRPK_Open_SHP.zip
+
+      - name: Unzip GRPK data source
+        run: unzip GRPK_Open_SHP.zip && rm GRPK_Open_SHP.zip
+
+      - name: Transform to EPSG:4326
+        run: ogr2ogr -f "ESRI Shapefile" -lco ENCODING=UTF-8 -t_srs EPSG:4326 grpk-espg-4326-shp GRPK_Open_SHP
+
+      - name: Zip to new data source with transformed SRS
+        run: zip -d grpk-espg-4326-shp.zip grpk-espg-4326-shp
+
+      - run: ls -lh
+
+
