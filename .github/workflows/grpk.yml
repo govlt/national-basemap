@@ -30,5 +30,7 @@ jobs:
       - name: Upload GRPK pmtiles
         uses: actions/upload-artifact@v4
         with:
+          name: grpk.pmtiles
           path: grpk/data/output/grpk/grpk.pmtiles
+          if-no-files-found: error
           compression-level: 0
