@@ -20,7 +20,7 @@ public class Basemap extends ForwardingProfile {
                         "https://cdn.biip.lt/tiles/sources/grpk/grpk-espg-4326-shp.zip"
 
                 )
-                .overwriteOutput(Path.of("data", "output", "grpk", "grpk.pmtiles"))
+                .overwriteOutput(Path.of("data", "output", "grpk.pmtiles"))
                 .run();
 
     }
