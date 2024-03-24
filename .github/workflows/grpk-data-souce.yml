@@ -12,14 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 90
     permissions: { }
+    container: ghcr.io/osgeo/gdal:ubuntu-full-3.8.4
     steps:
-      - name: Install GDAL
-        run: |
-          sudo add-apt-repository ppa:ubuntugis/ppa
-          sudo apt-get update
-          sudo apt-get install gdal-bin
-          ogrinfo --version
-
       - name: Download GRPK from GeoPortal
         run: wget -nv https://www.geoportal.lt/download/opendata/GRPK/GRPK_Open_SHP.zip
 
