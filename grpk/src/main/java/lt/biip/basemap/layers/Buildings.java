@@ -13,8 +13,9 @@ public class Buildings implements ForwardingProfile.FeaturePostProcessor, Forwar
 
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
-        if (sf.canBePolygon()) {
+        if (sf.getSource().equals("grpk") && sf.getSourceLayer().equals("PASTAT") && sf.canBePolygon()) {
             features.polygon(this.name())
+                    .setAttr("gkodas", sf.getTag("GKODAS"))
                     .setMinZoom(11);
         }
     }
@@ -30,6 +31,6 @@ public class Buildings implements ForwardingProfile.FeaturePostProcessor, Forwar
 
     @Override
     public String name() {
-        return "buildings";
+        return "pastat";
     }
 }

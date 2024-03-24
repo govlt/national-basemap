@@ -1,0 +1,5 @@
+[versions]
+planetiler = "0.7.0"
+
+[libraries]
+planetiler = { module = "com.onthegomap.planetiler:planetiler-core", version.ref = "planetiler" }

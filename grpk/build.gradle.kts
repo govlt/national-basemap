@@ -2,9 +2,6 @@ plugins {
     application
 }
 
-group = "lt.biip.basemap"
-version = "1.0-SNAPSHOT"
-
 repositories {
     maven {
         url = uri("https://repo.osgeo.org/repository/release/")
@@ -19,15 +16,10 @@ repositories {
     }
 }
 
+dependencies {
+    implementation(libs.planetiler)
+}
+
 application {
     mainClass = "lt.biip.basemap.Basemap"
-}
-
-dependencies {
-    implementation("com.onthegomap.planetiler:planetiler-core:0.7.0")
-}
-
-
-tasks.test {
-    useJUnitPlatform()
 }

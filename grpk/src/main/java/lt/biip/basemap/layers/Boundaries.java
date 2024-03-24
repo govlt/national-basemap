@@ -4,7 +4,6 @@ import com.onthegomap.planetiler.FeatureCollector;
 import com.onthegomap.planetiler.FeatureMerge;
 import com.onthegomap.planetiler.ForwardingProfile;
 import com.onthegomap.planetiler.VectorTile;
-import com.onthegomap.planetiler.geo.GeometryException;
 import com.onthegomap.planetiler.reader.SourceFeature;
 
 import java.util.List;
@@ -13,10 +12,11 @@ public class Boundaries implements ForwardingProfile.FeaturePostProcessor, Forwa
 
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
-        if (sf.canBeLine()) {
+        if (sf.getSource().equals("grpk") && sf.getSourceLayer().equals("RIBOS") && sf.canBeLine()) {
             features.line(this.name())
-                    .inheritAttrFromSource("VARDAS")
-                    .setMinZoom(0);
+                    .setAttr("gkodas", sf.getTag("GKODAS"))
+                    .setAttr("vardas", sf.getTag("VARDAS"));
+
         }
     }
 
@@ -32,6 +32,6 @@ public class Boundaries implements ForwardingProfile.FeaturePostProcessor, Forwa
 
     @Override
     public String name() {
-        return "boundaries";
+        return "ribos";
     }
 }

@@ -11,20 +11,17 @@ This project offers an early-stage experiment in creating a free and open source
 
 To embark on your mapping journey, follow these simple steps:
 
-- **Install Java:** Ensure Java is installed on your system to power up the mapping engine.
-- **Install GDAL:** Download and install GDAL, the Geospatial Data Abstraction Library,
-  from [here](https://gdal.org/download.html) to unlock powerful geospatial data processing capabilities.
-- **Install Tileserver-GL-Light:** Optionally, enhance your mapping experience by installing Tileserver-GL-Light. Simply
-  run `npm install -g tileserver-gl-light`.
+- **Install Java 21+:** Ensure Java is installed on your system to power up the mapping engine.
 
 ## Instructions 📝
 
-1. **Download GRPK:** Acquire Lithuania's Georeferenced Basic Cadastre (GRPK)
-   from [here](https://www.geoportal.lt/geoportal/web/georeferencinio-pagrindo-kadastras-grpk).
-   Execute: `make download-grpk` to automate the download process.
-2. **Convert to GeoPackages (GPKG):** Transform the downloaded data into GeoPackages using `make prepare-layers`.
-3. **Generate Basemap:** Fire up the map-making magic with `./gradlew run` to generate the basemap in mbtiles format.
-4. **Test it!** Ensure everything is running smoothly by executing `make tileserver`.
+### Generating GRPK Basemap
+
+Fire up the map-making magic by executing `./gradlew run` to generate the basemap in pmtiles format. The generated
+pmtiles will appear in `grpk/data/output/grpk.pmtiles`.
+
+Please note that this process may take some time as the GRPK data source will
+be downloaded if it doesn't exist already.
 
 ## Contributing 🤝
 
