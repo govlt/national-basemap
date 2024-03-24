@@ -9,7 +9,6 @@ import com.onthegomap.planetiler.reader.SourceFeature;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 public class Roads implements ForwardingProfile.FeaturePostProcessor, ForwardingProfile.FeatureProcessor {
 
