@@ -21,6 +21,5 @@ dependencies {
 }
 
 application {
-    // Define the main class for the application.
     mainClass = "lt.biip.basemap.Basemap"
 }

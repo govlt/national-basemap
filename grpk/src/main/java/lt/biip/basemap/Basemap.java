@@ -16,7 +16,7 @@ public class Basemap extends ForwardingProfile {
                 .setProfile(new Basemap())
                 .addShapefileSource(
                         "grpk",
-                        Path.of("data", "sources", "grpk", "grpk-espg-4326-shp.zip"),
+                        Path.of("data", "sources", "grpk-espg-4326-shp.zip"),
                         "https://cdn.biip.lt/tiles/sources/grpk/grpk-espg-4326-shp.zip"
 
                 )
