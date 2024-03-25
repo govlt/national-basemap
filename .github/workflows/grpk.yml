@@ -2,7 +2,7 @@ name: "GRPK: pmtiles generate and deploy"
 
 on:
   push:
-    branches: [ main, grpk-deploy ]
+    branches: [ main ]
   workflow_dispatch:
     inputs:
       deploy:
