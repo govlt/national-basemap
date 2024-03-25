@@ -17,8 +17,14 @@ jobs:
       name: grpk-transform
       url: https://cdn.biip.lt/tiles/sources/grpk/grpk-espg-4326-shp.zip
     steps:
+      - name: Install zip
+        run: |
+          sudo apt-get update
+          sudo apt-get install zip
+
       - name: Download GRPK from GeoPortal
-        run: wget https://www.geoportal.lt/download/opendata/GRPK/GRPK_Open_SHP.zip
+        run: wget -nv https://cdn.biip.lt/tiles/sources/temp/GRPK_Open_SHP.zip
+#        run: wget -nv https://www.geoportal.lt/download/opendata/GRPK/GRPK_Open_SHP.zip
 
       - name: Unzip GRPK data source
         run: unzip GRPK_Open_SHP.zip -x "GRPK_Open_SHP/INFO_/*" && rm GRPK_Open_SHP.zip
