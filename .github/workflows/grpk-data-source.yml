@@ -10,6 +10,7 @@ jobs:
   grpk-sync-transform:
     name: Sync and transform GRPK
     runs-on: ubuntu-latest
+    # GeoPortal download is really slow. Downloading less than 3 GB takes more than 3 hours :(
     timeout-minutes: 360
     container: ghcr.io/osgeo/gdal:ubuntu-full-3.8.4
     permissions: { }
@@ -34,8 +35,8 @@ jobs:
         env:
           RCLONE_CONFIG_S3_TYPE: s3
           RCLONE_CONFIG_S3_PROVIDER: Other
-          RCLONE_CONFIG_S3_ENDPOINT: ${{ secrets.S3_ENDPOINT }}
-          RCLONE_CONFIG_S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
-          RCLONE_CONFIG_S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
+          RCLONE_CONFIG_S3_ENDPOINT: ${{ secrets.S3_BIIP_ENDPOINT }}
+          RCLONE_CONFIG_S3_ACCESS_KEY_ID: ${{ secrets.S3_BIIP_ACCESS_KEY_ID }}
+          RCLONE_CONFIG_S3_SECRET_ACCESS_KEY: ${{ secrets.S3_BIIP_SECRET_ACCESS_KEY }}
 
 
