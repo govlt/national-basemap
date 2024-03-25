@@ -25,17 +25,12 @@ jobs:
         run: unzip GRPK_Open_SHP.zip -x "GRPK_Open_SHP/INFO_/*" && rm GRPK_Open_SHP.zip
 
       - name: Transform to EPSG:4326
-        run: ogr2ogr -f "ESRI Shapefile" -lco ENCODING=UTF-8 -t_srs EPSG:4326 grpk-espg-4326-shp GRPK_Open_SHP
-
-      - run: ls -lh
-
-      - name: Zip to new data source with transformed SRS
-        run: jar -cfM grpk-espg-4326-shp.zip grpk-espg-4326-shp
+        run: ogr2ogr -f "ESRI Shapefile" -lco ENCODING=UTF-8 -t_srs EPSG:4326 grpk-espg-4326.shp.zip GRPK_Open_SHP
 
       - name: Sync to S3
         uses: docker://docker.io/rclone/rclone:1.66
         with:
-          args: "sync . s3:/tiles/sources/grpk --include grpk-espg-4326-shp.zip --s3-acl=public-read --fast-list --checksum --update --use-server-modtime --metadata --inplace --delete-during"
+          args: "sync . s3:/tiles/sources/grpk --include grpk-espg-4326.shp.zip --s3-acl=public-read --fast-list --checksum --update --use-server-modtime --metadata --inplace --delete-during"
         env:
           RCLONE_CONFIG_S3_TYPE: s3
           RCLONE_CONFIG_S3_PROVIDER: Other
