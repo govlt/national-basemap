@@ -17,8 +17,7 @@ public class Areas implements ForwardingProfile.FeaturePostProcessor, Forwarding
             var code = sf.getString("GKODAS");
 
             switch (code) {
-                case "hd1", "hd2", "hd3", "hd4", "hd9" -> addPolygon("water", 10, sf, features);
-                case "hd5" -> addPolygon("water", 0, sf, features);
+                case "hd1", "hd2", "hd3", "hd5", "hd4", "hd9" -> addPolygon("water", 2, sf, features);
                 case "hd6" -> addPolygon("wetland", 10, sf, features);
                 case "sd4" -> addPolygon("meadow", 10, sf, features);
                 case "vp1" -> addPolygon("cemetery", 10, sf, features);
@@ -43,7 +42,7 @@ public class Areas implements ForwardingProfile.FeaturePostProcessor, Forwarding
 
     @Override
     public List<VectorTile.Feature> postProcess(int zoom, List<VectorTile.Feature> items) throws GeometryException {
-        if (zoom >= 15)
+        if (zoom >= 14)
             return items;
 
         return FeatureMerge.mergeNearbyPolygons(items, 3.125, 3.125, 0.5, 0.5);
