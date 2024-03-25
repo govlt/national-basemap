@@ -37,7 +37,12 @@ jobs:
       - name: Install mapbox-gl-style-spec
         run: npm install @mapbox/mapbox-gl-style-spec --global
 
-      - name: Validate Mapbox GL styles
+      - name: Validate proton Mapbox GL styles
         working-directory: osm/proton/styles
+        run: |
+          for file in *.json; do [[ -f "$file" ]] && echo "Validating file: $file" && gl-style-validate "$file"; done
+
+      - name: Validate GRPK Mapbox GL styles
+        working-directory: grpk/styles
         run: |
           for file in *.json; do [[ -f "$file" ]] && echo "Validating file: $file" && gl-style-validate "$file"; done

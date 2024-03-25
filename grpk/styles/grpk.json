@@ -1,0 +1,3811 @@
+{
+  "version": 8,
+  "name": "GRPK vector basemap",
+  "metadata": {
+    "maputnik:renderer": "mbgljs"
+  },
+  "sources": {
+    "grpk": {
+      "type": "vector",
+      "url": "https://dev-gis.biip.lt/tiles/static/grpk"
+    }
+  },
+  "center": [
+    55.169438,
+    23.881275
+  ],
+  "zoom": 6,
+  "glyphs": "https://dev-gis.biip.lt/tiles/static/font/{fontstack}/{range}",
+  "layers": [
+    {
+      "id": "background",
+      "type": "background",
+      "paint": {
+        "background-color": "#fffff5"
+      }
+    },
+    {
+      "id": "zemenauda-pieva",
+      "type": "fill",
+      "source": "grpk",
+      "source-layer": "plotai",
+      "filter": [
+        "all",
+        [
+          "==",
+          "kind",
+          "meadow"
+        ]
+      ],
+      "paint": {
+        "fill-pattern": "meadow"
+      }
+    },
+    {
+      "id": "zemenauda-kapines",
+      "type": "fill",
+      "source": "grpk",
+      "source-layer": "plotai",
+      "filter": [
+        "all",
+        [
+          "==",
+          "kind",
+          "cemetery"
+        ]
+      ],
+      "paint": {
+        "fill-pattern": "cemetery"
+      }
+    },
+    {
+      "id": "zemenauda-sodai",
+      "type": "fill",
+      "source": "grpk",
+      "source-layer": "plotai",
+      "filter": [
+        "all",
+        [
+          "==",
+          "kind",
+          "allotments"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "fill-color": "#d9d9d9",
+        "fill-pattern": "orchard"
+      }
+    },
+    {
+      "id": "zemenauda-miskai",
+      "type": "fill",
+      "source": "grpk",
+      "source-layer": "plotai",
+      "minzoom": 8,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "==",
+          "kind",
+          "forest"
+        ]
+      ],
+      "paint": {
+        "fill-color": "rgba(182, 235, 136, 1)"
+      }
+    },
+    {
+      "id": "zemenauda-pelkes",
+      "type": "fill",
+      "source": "grpk",
+      "source-layer": "plotai",
+      "filter": [
+        "all",
+        [
+          "==",
+          "kind",
+          "wetland"
+        ]
+      ],
+      "paint": {
+        "fill-pattern": "marsh"
+      }
+    },
+    {
+      "id": "zemenauda-kvartalines",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "miskas_l",
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "lp3"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(133, 184, 88, 1)",
+        "line-opacity": 1,
+        "line-width": 1,
+        "line-dasharray": [
+          2,
+          4,
+          2
+        ]
+      }
+    },
+    {
+      "id": "zemenauda-uzstatyta-airport",
+      "type": "fill",
+      "source": "grpk",
+      "source-layer": "plotai",
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "va1"
+        ]
+      ],
+      "paint": {
+        "fill-color": "rgba(220, 220, 230, 1)",
+        "fill-outline-color": "rgba(217, 222, 222, 1)"
+      }
+    },
+    {
+      "id": "zemenauda-uzstatyta-airport-runway",
+      "type": "fill",
+      "source": "grpk",
+      "source-layer": "plotai",
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "va11"
+        ]
+      ],
+      "paint": {
+        "fill-color": "rgba(235, 235, 245, 1)",
+        "fill-outline-color": "rgba(217, 222, 222, 1)"
+      }
+    },
+    {
+      "id": "zemenauda-uzstatyta-gamybines",
+      "type": "fill",
+      "source": "grpk",
+      "source-layer": "plotai",
+      "filter": [
+        "all",
+        [
+          "==",
+          "kind",
+          "industrial"
+        ]
+      ],
+      "paint": {
+        "fill-color": "rgba(219, 213, 242, 1)"
+      }
+    },
+    {
+      "id": "zemenauda-uzstatyta-gyvenamoji",
+      "type": "fill",
+      "source": "grpk",
+      "source-layer": "plotai",
+      "filter": [
+        "all",
+        [
+          "==",
+          "kind",
+          "residential"
+        ]
+      ],
+      "paint": {
+        "fill-color": "#d9d9d9"
+      }
+    },
+    {
+      "id": "pastatai-pa651pa652",
+      "type": "fill",
+      "source": "grpk",
+      "source-layer": "pastat",
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "pa651",
+          "pa652"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "fill-color": "rgba(180, 186, 209, 1)",
+        "fill-outline-color": "rgba(171, 174, 194, 1)",
+        "fill-antialias": {
+          "stops": [
+            [
+              6,
+              true
+            ],
+            [
+              10,
+              true
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "pastatai-pa6",
+      "type": "fill",
+      "source": "grpk",
+      "source-layer": "pastat",
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "pa6"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "fill-color": "rgba(179, 171, 199, 1)",
+        "fill-outline-color": "rgba(161, 158, 184, 1)",
+        "fill-antialias": {
+          "stops": [
+            [
+              6,
+              true
+            ],
+            [
+              10,
+              true
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "pastatai-pa58",
+      "type": "fill",
+      "source": "grpk",
+      "source-layer": "pastat",
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "pa58"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "fill-color": "rgba(168, 188, 191, 1)",
+        "fill-outline-color": "rgba(159, 176, 179, 1)",
+        "fill-antialias": {
+          "stops": [
+            [
+              6,
+              true
+            ],
+            [
+              10,
+              true
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "pastatai-pa23",
+      "type": "fill",
+      "source": "grpk",
+      "source-layer": "pastat",
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "pa23"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "fill-color": "rgba(179, 179, 179, 1)",
+        "fill-outline-color": "rgba(166, 166, 166, 1)",
+        "fill-antialias": {
+          "stops": [
+            [
+              6,
+              true
+            ],
+            [
+              10,
+              true
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "pastatai-pa0",
+      "type": "fill",
+      "source": "grpk",
+      "source-layer": "pastat",
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "pa0"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "fill-color": "#999999",
+        "fill-outline-color": "rgba(140, 140, 140, 1)",
+        "fill-antialias": {
+          "stops": [
+            [
+              6,
+              true
+            ],
+            [
+              10,
+              true
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "vanduo-hc31-casing",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "hidro_l",
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "hc31"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(108, 186, 224, 1)",
+        "line-width": 1.8
+      }
+    },
+    {
+      "id": "vanduo-hc31",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "hidro_l",
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "hc31"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(166, 207, 224, 1)",
+        "line-width": 0.5
+      }
+    },
+    {
+      "id": "vanduo-hc32hc33-casing",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "hidro_l",
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "hc32",
+          "hc33"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(108, 186, 224, 1)",
+        "line-width": 2
+      }
+    },
+    {
+      "id": "vanduo-hc32hc33",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "hidro_l",
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "hc32",
+          "hc33"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(166, 207, 224, 1)"
+      }
+    },
+    {
+      "id": "vanduo-hc1hc3",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "hidro_l",
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "hc1",
+          "hc3"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "#55B2E0"
+      }
+    },
+    {
+      "id": "vanduo-plotai",
+      "type": "fill",
+      "source": "grpk",
+      "source-layer": "plotai",
+      "filter": [
+        "all",
+        [
+          "==",
+          "kind",
+          "water"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "fill-color": "#a6cfe0",
+        "fill-outline-color": "#55B2E0",
+        "fill-antialias": true
+      }
+    },
+    {
+      "id": "tuneliai-gz1gz2-1-casing",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "gelezink",
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "gz1",
+          "gz2",
+          "gz1gz2"
+        ],
+        [
+          "in",
+          "tipas",
+          1
+        ],
+        [
+          "<",
+          "lygmuo",
+          0
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-width": 2.8,
+        "line-color": "rgba(128, 128, 128, 1)",
+        "line-dasharray": [
+          2,
+          4,
+          2
+        ]
+      }
+    },
+    {
+      "id": "tuneliai-gc2gc12gc14-casing-1",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 0,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "gc2",
+          "gc12",
+          "gc14"
+        ],
+        [
+          "<",
+          "lygmuo",
+          0
+        ],
+        [
+          "!in",
+          "paskirtis",
+          "PAGR"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-opacity": 1,
+        "line-color": "rgba(140, 140, 140, 1)",
+        "line-width": 3,
+        "line-dasharray": [
+          0.5,
+          1,
+          0.5
+        ]
+      }
+    },
+    {
+      "id": "tuneliai-pagr-casing-1",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 0,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "paskirtis",
+          "PAGR"
+        ],
+        [
+          "<",
+          "lygmuo",
+          0
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-opacity": 1,
+        "line-color": "rgba(140, 140, 140, 1)",
+        "line-width": 4,
+        "line-dasharray": [
+          0.5,
+          1,
+          0.5
+        ]
+      }
+    },
+    {
+      "id": "tuneliai-45gc12-casing-1",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 0,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "kategor",
+          "4",
+          "5"
+        ],
+        [
+          "in",
+          "gkodas",
+          "gc12"
+        ],
+        [
+          "<",
+          "lygmuo",
+          0
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-opacity": 1,
+        "line-color": "rgba(115, 82, 63, 1)",
+        "line-width": 4,
+        "line-dasharray": [
+          0.5,
+          1,
+          0.5
+        ]
+      }
+    },
+    {
+      "id": "tuneliai-23-casing-1",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 0,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "kategor",
+          "2",
+          "3"
+        ],
+        [
+          "<",
+          "lygmuo",
+          0
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-opacity": 1,
+        "line-color": "rgba(115, 82, 63, 1)",
+        "line-width": 4,
+        "line-dasharray": [
+          0.5,
+          1,
+          0.5
+        ]
+      }
+    },
+    {
+      "id": "tuneliai-am1-casing-2",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "filter": [
+        "all",
+        [
+          "in",
+          "kategor",
+          "AM",
+          "1"
+        ],
+        [
+          "<",
+          "lygmuo",
+          0
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-width": 4.2,
+        "line-color": "rgba(115, 82, 63, 1)",
+        "line-dasharray": [
+          0.5,
+          1,
+          0.5
+        ]
+      }
+    },
+    {
+      "id": "gelezinkeliai-gz4-casing",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "gelezink",
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "gz4"
+        ]
+      ],
+      "paint": {
+        "line-width": 0.8,
+        "line-color": "rgba(128, 128, 128, 1)"
+      }
+    },
+    {
+      "id": "gelezinkeliai-gz1gz2-3-casing",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "gelezink",
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "gz1",
+          "gz2",
+          "gz1gz2"
+        ],
+        [
+          "in",
+          "tipas",
+          0
+        ]
+      ],
+      "paint": {
+        "line-width": 1.1,
+        "line-color": "rgba(128, 128, 128, 1)"
+      }
+    },
+    {
+      "id": "gelezinkeliai-gz1gz2-2-casing",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "gelezink",
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "gz1",
+          "gz2",
+          "gz1gz2"
+        ],
+        [
+          "!in",
+          "tipas",
+          1,
+          0
+        ]
+      ],
+      "paint": {
+        "line-width": 2,
+        "line-color": "rgba(128, 128, 128, 1)"
+      }
+    },
+    {
+      "id": "gelezinkeliai-gz1gz2-2",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "gelezink",
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "gz1",
+          "gz2",
+          "gz1gz2"
+        ],
+        [
+          "!in",
+          "tipas",
+          1,
+          0
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-width": 1.1,
+        "line-color": "rgba(252, 252, 252, 1)",
+        "line-dasharray": [
+          2,
+          4,
+          2
+        ]
+      }
+    },
+    {
+      "id": "gelezinkeliai-gz1gz2-1-casing",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "gelezink",
+      "minzoom": 0,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "gz1",
+          "gz2",
+          "gz1gz2"
+        ],
+        [
+          "in",
+          "tipas",
+          1
+        ],
+        [
+          ">=",
+          "lygmuo",
+          0
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-width": {
+          "stops": [
+            [
+              9,
+              2
+            ],
+            [
+              9,
+              2.8
+            ]
+          ]
+        },
+        "line-color": "rgba(128, 128, 128, 1)"
+      }
+    },
+    {
+      "id": "gelezinkeliai-gz1gz2-1",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "gelezink",
+      "minzoom": 0,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "gz1",
+          "gz2",
+          "gz1gz2"
+        ],
+        [
+          "in",
+          "tipas",
+          1
+        ],
+        [
+          ">=",
+          "lygmuo",
+          0
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-width": {
+          "stops": [
+            [
+              9,
+              1
+            ],
+            [
+              9,
+              1.8
+            ]
+          ]
+        },
+        "line-color": "rgba(252, 252, 252, 1)",
+        "line-dasharray": [
+          2,
+          4,
+          2
+        ]
+      }
+    },
+    {
+      "id": "keliai-kiti",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 10,
+      "maxzoom": 11,
+      "filter": [
+        "all",
+        [
+          "!in",
+          "gkodas",
+          "AM",
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        [
+          "!in",
+          "paskirtis",
+          "PAGR",
+          "P/Z"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible",
+        "line-cap": "round",
+        "line-join": "round"
+      },
+      "paint": {
+        "line-color": "rgba(178, 178, 178, 1)",
+        "line-width": 1
+      }
+    },
+    {
+      "id": "keliai-perkelos",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "zs22"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(61, 156, 204, 1)",
+        "line-width": 0.9,
+        "line-dasharray": [
+          1,
+          2,
+          1
+        ]
+      }
+    },
+    {
+      "id": "keliai-gc15gc16",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "gc15",
+          "gc16"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(122, 122, 122, 1)",
+        "line-width": 1,
+        "line-dasharray": [
+          3,
+          4,
+          3
+        ]
+      }
+    },
+    {
+      "id": "keliai-gc3-casing-1",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "gc3"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-opacity": 1,
+        "line-color": "rgba(153, 146, 166, 1)",
+        "line-width": {
+          "stops": [
+            [
+              11,
+              1.8
+            ],
+            [
+              12,
+              2.4
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "keliai-gc3",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "gc3"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(237, 227, 255, 1)",
+        "line-width": {
+          "stops": [
+            [
+              11,
+              1
+            ],
+            [
+              12,
+              1.6
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "keliai-dc2-casing-1",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "dc2"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-opacity": 1,
+        "line-color": "rgba(161, 161, 161, 1)",
+        "line-width": 1.6
+      }
+    },
+    {
+      "id": "keliai-dc2",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "dc2"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(217, 217, 217, 1)",
+        "line-width": 1
+      }
+    },
+    {
+      "id": "keliai-gc2Pesc-casing-1",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "gc2"
+        ],
+        [
+          "in",
+          "paskirtis",
+          "PESC"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-opacity": 1,
+        "line-color": "rgba(140, 140, 140, 1)",
+        "line-width": {
+          "stops": [
+            [
+              11,
+              2.2
+            ],
+            [
+              12,
+              4
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "keliai-gc2Pesc",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "gc2"
+        ],
+        [
+          "in",
+          "paskirtis",
+          "PESC"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(217, 217, 217, 1)",
+        "line-width": {
+          "stops": [
+            [
+              11,
+              1.1
+            ],
+            [
+              12,
+              2.4
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "keliai-gc2-casing-1",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "gc2"
+        ],
+        [
+          ">=",
+          "lygmuo",
+          0
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-opacity": 1,
+        "line-color": "rgba(140, 140, 140, 1)",
+        "line-width": {
+          "stops": [
+            [
+              11,
+              2.2
+            ],
+            [
+              12,
+              3
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "keliai-pagr-casing-1",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 10,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "paskirtis",
+          "PAGR",
+          "P/Z"
+        ],
+        [
+          ">=",
+          "lygmuo",
+          0
+        ]
+      ],
+      "layout": {
+        "visibility": "visible",
+        "line-cap": "round",
+        "line-join": "round"
+      },
+      "paint": {
+        "line-opacity": 1,
+        "line-color": "rgba(140, 140, 140, 1)",
+        "line-width": {
+          "stops": [
+            [
+              10,
+              2
+            ],
+            [
+              11,
+              3
+            ],
+            [
+              12,
+              4
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "keliai-gc2",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "gc2"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(254, 254, 254, 1)",
+        "line-width": {
+          "stops": [
+            [
+              11,
+              1.2
+            ],
+            [
+              12,
+              1.8
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "keliai-gc14-casing-1",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "gc14"
+        ],
+        [
+          ">=",
+          "lygmuo",
+          0
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-opacity": 1,
+        "line-color": "rgba(153, 149, 130, 1)",
+        "line-width": {
+          "stops": [
+            [
+              11,
+              2.2
+            ],
+            [
+              12,
+              3
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "keliai-gc14",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "gc14"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(255, 255, 204, 1)",
+        "line-width": {
+          "stops": [
+            [
+              11,
+              1.1
+            ],
+            [
+              12,
+              1.8
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "keliai-gc12-casing-1",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "gc12"
+        ],
+        [
+          ">=",
+          "lygmuo",
+          0
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-opacity": 1,
+        "line-color": "rgba(153, 138, 130, 1)",
+        "line-width": {
+          "stops": [
+            [
+              11,
+              2.2
+            ],
+            [
+              12,
+              3
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "keliai-gc12",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "gc12"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(255, 230, 217, 1)",
+        "line-width": {
+          "stops": [
+            [
+              11,
+              1.1
+            ],
+            [
+              12,
+              1.8
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "keliai-pagr",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 0,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "paskirtis",
+          "PAGR",
+          "P/Z"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible",
+        "line-cap": "round",
+        "line-join": "round"
+      },
+      "paint": {
+        "line-color": {
+          "stops": [
+            [
+              10,
+              "rgba(214, 131, 84, 1)"
+            ],
+            [
+              10,
+              "rgba(254, 254, 254, 1)"
+            ]
+          ]
+        },
+        "line-width": {
+          "stops": [
+            [
+              9,
+              0.6
+            ],
+            [
+              9,
+              1
+            ],
+            [
+              11,
+              1.8
+            ],
+            [
+              12,
+              2.4
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "keliai-dc2Pagr-casing-1",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "dc2"
+        ],
+        [
+          "in",
+          "paskirtis",
+          "PAGR"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-opacity": 1,
+        "line-color": "rgba(140, 140, 140, 1)",
+        "line-width": {
+          "stops": [
+            [
+              11,
+              3.5
+            ],
+            [
+              12,
+              4
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "keliai-dc2Pagr",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "dc2"
+        ],
+        [
+          "in",
+          "paskirtis",
+          "PAGR"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(217, 217, 217, 1)",
+        "line-width": {
+          "stops": [
+            [
+              11,
+              2
+            ],
+            [
+              12,
+              2.4
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "keliai-45gc14-casing-1",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 10,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "kategor",
+          "4",
+          "5"
+        ],
+        [
+          "in",
+          "gkodas",
+          "gc12"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible",
+        "line-cap": "round",
+        "line-join": "round"
+      },
+      "paint": {
+        "line-opacity": 1,
+        "line-color": "rgba(166, 152, 83, 1)",
+        "line-width": {
+          "stops": [
+            [
+              10,
+              2
+            ],
+            [
+              11,
+              3
+            ],
+            [
+              12,
+              4
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "keliai-45gc14",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 10,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "kategor",
+          "4",
+          "5"
+        ],
+        [
+          "in",
+          "gkodas",
+          "gc12"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible",
+        "line-cap": "round",
+        "line-join": "round"
+      },
+      "paint": {
+        "line-color": "rgba(255, 255, 102, 1)",
+        "line-width": {
+          "stops": [
+            [
+              10,
+              1.1
+            ],
+            [
+              11,
+              2
+            ],
+            [
+              12,
+              2.4
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "keliai-45gc12-casing-1",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 10,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "kategor",
+          "4",
+          "5"
+        ],
+        [
+          "in",
+          "gkodas",
+          "gc12"
+        ],
+        [
+          ">=",
+          "lygmuo",
+          0
+        ]
+      ],
+      "layout": {
+        "visibility": "visible",
+        "line-join": "round",
+        "line-cap": "round"
+      },
+      "paint": {
+        "line-opacity": 1,
+        "line-color": "rgba(115, 82, 63, 1)",
+        "line-width": {
+          "stops": [
+            [
+              10,
+              2
+            ],
+            [
+              11,
+              3.5
+            ],
+            [
+              12,
+              4
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "keliai-23-casing-1",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 10,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "kategor",
+          "2",
+          "3"
+        ],
+        [
+          ">=",
+          "lygmuo",
+          0
+        ]
+      ],
+      "layout": {
+        "visibility": "visible",
+        "line-cap": "round",
+        "line-join": "round"
+      },
+      "paint": {
+        "line-opacity": 1,
+        "line-color": "rgba(115, 82, 63, 1)",
+        "line-width": {
+          "stops": [
+            [
+              10,
+              2.7
+            ],
+            [
+              11,
+              3.5
+            ],
+            [
+              12,
+              4
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "keliai-45gc12",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 10,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "kategor",
+          "4",
+          "5"
+        ],
+        [
+          "in",
+          "gkodas",
+          "gc12"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible",
+        "line-cap": "round",
+        "line-join": "round"
+      },
+      "paint": {
+        "line-color": "rgba(189, 99, 47, 1)",
+        "line-width": {
+          "stops": [
+            [
+              9,
+              0.8
+            ],
+            [
+              9,
+              1
+            ],
+            [
+              10,
+              1.1
+            ],
+            [
+              11,
+              2
+            ],
+            [
+              12,
+              2.4
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "keliai-23",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "filter": [
+        "all",
+        [
+          "in",
+          "kategor",
+          "2",
+          "3"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible",
+        "line-cap": "round",
+        "line-join": "round"
+      },
+      "paint": {
+        "line-color": "rgba(189, 99, 47, 1)",
+        "line-width": {
+          "stops": [
+            [
+              9,
+              2.2
+            ],
+            [
+              9,
+              2.6
+            ],
+            [
+              10,
+              1.5
+            ],
+            [
+              11,
+              2
+            ],
+            [
+              12,
+              2.4
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "keliai-am1-casing-2",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "filter": [
+        "all",
+        [
+          "in",
+          "kategor",
+          "AM",
+          "1"
+        ],
+        [
+          ">=",
+          "lygmuo",
+          0
+        ]
+      ],
+      "layout": {
+        "visibility": "visible",
+        "line-cap": "round",
+        "line-join": "round"
+      },
+      "paint": {
+        "line-width": {
+          "stops": [
+            [
+              9,
+              2.8
+            ],
+            [
+              9,
+              3
+            ],
+            [
+              10,
+              3.5
+            ],
+            [
+              12,
+              4.2
+            ]
+          ]
+        },
+        "line-color": "rgba(115, 82, 63, 1)"
+      }
+    },
+    {
+      "id": "keliai-am1-casing",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 10,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "kategor",
+          "AM",
+          "1"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible",
+        "line-cap": "round",
+        "line-join": "round"
+      },
+      "paint": {
+        "line-color": "rgba(171, 90, 43, 1)",
+        "line-opacity": 1,
+        "line-width": {
+          "stops": [
+            [
+              10,
+              2.6
+            ],
+            [
+              12,
+              3
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "id": "keliai-am1",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 0,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "kategor",
+          "AM",
+          "1"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible",
+        "line-cap": "round",
+        "line-join": "round"
+      },
+      "paint": {
+        "line-color": "rgba(240, 174, 34, 1)",
+        "line-opacity": 1,
+        "line-width": 1
+      }
+    },
+    {
+      "id": "tiltai1-gz1gz2-1-casing",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "gelezink",
+      "minzoom": 11,
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "gz1",
+          "gz2",
+          "gz1gz2"
+        ],
+        [
+          "in",
+          "tipas",
+          1
+        ],
+        [
+          ">",
+          "lygmuo",
+          0
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-width": 2.8,
+        "line-color": "rgba(128, 128, 128, 1)"
+      }
+    },
+    {
+      "id": "tiltai1-gz1gz2-1",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "gelezink",
+      "minzoom": 11,
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "gz1",
+          "gz2",
+          "gz1gz2"
+        ],
+        [
+          "in",
+          "tipas",
+          1
+        ],
+        [
+          ">",
+          "lygmuo",
+          0
+        ]
+      ],
+      "paint": {
+        "line-width": 1.8,
+        "line-color": "rgba(252, 252, 252, 1)",
+        "line-dasharray": [
+          2,
+          4,
+          2
+        ]
+      }
+    },
+    {
+      "id": "tiltai1-gc15gc16-case-1",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "gc15",
+          "gc16"
+        ],
+        [
+          "==",
+          "lygmuo",
+          1
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(161, 161, 161, 1)",
+        "line-width": 2.4,
+        "line-dasharray": []
+      }
+    },
+    {
+      "id": "tiltai1-gc15gc1",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "gc15",
+          "gc16"
+        ],
+        [
+          "==",
+          "lygmuo",
+          1
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(255, 255, 255, 1)",
+        "line-width": 1.1,
+        "line-dasharray": []
+      }
+    },
+    {
+      "id": "tiltai1-gc3-casing-1",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "dc2"
+        ],
+        [
+          "==",
+          "lygmuo",
+          1
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-opacity": 1,
+        "line-color": "rgba(153, 146, 166, 1)",
+        "line-width": 3
+      }
+    },
+    {
+      "id": "tiltai1-gc3",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "dc2"
+        ],
+        [
+          "==",
+          "lygmuo",
+          1
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(237, 227, 255, 1)",
+        "line-width": 1.8
+      }
+    },
+    {
+      "id": "tiltai1-dc2-casing-1",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "dc2"
+        ],
+        [
+          "==",
+          "lygmuo",
+          1
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-opacity": 1,
+        "line-color": "rgba(161, 161, 161, 1)",
+        "line-width": 1.6
+      }
+    },
+    {
+      "id": "tiltai1-dc2",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "dc2"
+        ],
+        [
+          "==",
+          "lygmuo",
+          1
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(217, 217, 217, 1)",
+        "line-width": 1
+      }
+    },
+    {
+      "id": "tiltai1-gc2Pesc-casing-1",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "gc2"
+        ],
+        [
+          "in",
+          "paskirtis",
+          "PESC"
+        ],
+        [
+          "==",
+          "lygmuo",
+          1
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-opacity": 1,
+        "line-color": "rgba(140, 140, 140, 1)",
+        "line-width": 4
+      }
+    },
+    {
+      "id": "tiltai1-gc2Pesc",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "gc2"
+        ],
+        [
+          "in",
+          "paskirtis",
+          "PESC"
+        ],
+        [
+          "==",
+          "lygmuo",
+          1
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(217, 217, 217, 1)",
+        "line-width": 2.4
+      }
+    },
+    {
+      "id": "tiltai1-gc2-casing-1",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "gc2"
+        ],
+        [
+          "==",
+          "lygmuo",
+          1
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-opacity": 1,
+        "line-color": "rgba(140, 140, 140, 1)",
+        "line-width": 3
+      }
+    },
+    {
+      "id": "tiltai1-gc2",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "gc2"
+        ],
+        [
+          "==",
+          "lygmuo",
+          1
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(254, 254, 254, 1)",
+        "line-width": 1.8
+      }
+    },
+    {
+      "id": "tiltai1-gc12-casing-1",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "gc12"
+        ],
+        [
+          "==",
+          "lygmuo",
+          1
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-opacity": 1,
+        "line-color": "rgba(153, 138, 130, 1)",
+        "line-width": 3
+      }
+    },
+    {
+      "id": "tiltai1-gc12",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "gc12"
+        ],
+        [
+          "==",
+          "lygmuo",
+          1
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(255, 230, 217, 1)",
+        "line-width": 1.8
+      }
+    },
+    {
+      "id": "tiltai1-pagr-casing-1",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "paskirtis",
+          "PAGR",
+          "P/Z"
+        ],
+        [
+          "==",
+          "lygmuo",
+          1
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-opacity": 1,
+        "line-color": "rgba(140, 140, 140, 1)",
+        "line-width": 4
+      }
+    },
+    {
+      "id": "tiltai1-pagr",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "filter": [
+        "all",
+        [
+          "in",
+          "paskirtis",
+          "PAGR",
+          "P/Z"
+        ],
+        [
+          "==",
+          "lygmuo",
+          1
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(254, 254, 254, 1)",
+        "line-width": 2.4
+      }
+    },
+    {
+      "id": "tiltai1-dc2Pagr-casing-1",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "dc2"
+        ],
+        [
+          "in",
+          "paskirtis",
+          "PAGR"
+        ],
+        [
+          "==",
+          "lygmuo",
+          1
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-opacity": 1,
+        "line-color": "rgba(140, 140, 140, 1)",
+        "line-width": 4
+      }
+    },
+    {
+      "id": "tiltai1-dc2Pagr",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "dc2"
+        ],
+        [
+          "in",
+          "paskirtis",
+          "PAGR"
+        ],
+        [
+          "==",
+          "lygmuo",
+          1
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(217, 217, 217, 1)",
+        "line-width": 2.4
+      }
+    },
+    {
+      "id": "tiltai1-45gc14-casing-1",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "kategor",
+          "4",
+          "5"
+        ],
+        [
+          "in",
+          "gkodas",
+          "gc12"
+        ],
+        [
+          "==",
+          "lygmuo",
+          1
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-opacity": 1,
+        "line-color": "rgba(166, 152, 83, 1)",
+        "line-width": 4
+      }
+    },
+    {
+      "id": "tiltai1-45gc14",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "filter": [
+        "all",
+        [
+          "in",
+          "kategor",
+          "4",
+          "5"
+        ],
+        [
+          "in",
+          "gkodas",
+          "gc12"
+        ],
+        [
+          "==",
+          "lygmuo",
+          1
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(255, 255, 102, 1)",
+        "line-width": 2.4
+      }
+    },
+    {
+      "id": "tiltai1-23-casing-1",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "kategor",
+          "2",
+          "3"
+        ],
+        [
+          "==",
+          "lygmuo",
+          1
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-opacity": 1,
+        "line-color": "rgba(115, 82, 63, 1)",
+        "line-width": 4
+      }
+    },
+    {
+      "id": "tiltai1-23",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "filter": [
+        "all",
+        [
+          "in",
+          "kategor",
+          "2",
+          "3"
+        ],
+        [
+          "==",
+          "lygmuo",
+          1
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(189, 99, 47, 1)",
+        "line-width": 2.4
+      }
+    },
+    {
+      "id": "tiltai1-am1-casing-2",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "filter": [
+        "all",
+        [
+          "in",
+          "kategor",
+          "AM",
+          "1"
+        ],
+        [
+          "==",
+          "lygmuo",
+          1
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-width": 4.2,
+        "line-color": "rgba(115, 82, 63, 1)"
+      }
+    },
+    {
+      "id": "tiltai1-am1-casing",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "filter": [
+        "all",
+        [
+          "in",
+          "kategor",
+          "AM",
+          "1"
+        ],
+        [
+          "==",
+          "lygmuo",
+          1
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(171, 90, 43, 1)",
+        "line-opacity": 1,
+        "line-width": 3
+      }
+    },
+    {
+      "id": "tiltai1-am1",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "filter": [
+        "all",
+        [
+          "in",
+          "kategor",
+          "AM",
+          "1"
+        ],
+        [
+          "==",
+          "lygmuo",
+          1
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(240, 174, 34, 1)",
+        "line-opacity": 1,
+        "line-width": 1
+      }
+    },
+    {
+      "id": "tiltai2-gc2-casing-1",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "gc2"
+        ],
+        [
+          ">",
+          "lygmuo",
+          1
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-opacity": 1,
+        "line-color": "rgba(140, 140, 140, 1)",
+        "line-width": 3
+      }
+    },
+    {
+      "id": "tiltai2-gc2",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "gc2"
+        ],
+        [
+          ">",
+          "lygmuo",
+          1
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(254, 254, 254, 1)",
+        "line-width": 1.8
+      }
+    },
+    {
+      "id": "tiltai2-gc12-casing-1",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "gc12"
+        ],
+        [
+          ">",
+          "lygmuo",
+          1
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-opacity": 1,
+        "line-color": "rgba(153, 138, 130, 1)",
+        "line-width": 3
+      }
+    },
+    {
+      "id": "tiltai2-gc12",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "gc12"
+        ],
+        [
+          ">",
+          "lygmuo",
+          1
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(255, 230, 217, 1)",
+        "line-width": 1.8
+      }
+    },
+    {
+      "id": "tiltai2-pagr-casing-1",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "paskirtis",
+          "PAGR",
+          "P/Z"
+        ],
+        [
+          ">",
+          "lygmuo",
+          1
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-opacity": 1,
+        "line-color": "rgba(140, 140, 140, 1)",
+        "line-width": 4
+      }
+    },
+    {
+      "id": "tiltai2-pagr",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "filter": [
+        "all",
+        [
+          "in",
+          "paskirtis",
+          "PAGR",
+          "P/Z"
+        ],
+        [
+          "==",
+          "lygmuo",
+          2
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(254, 254, 254, 1)",
+        "line-width": 2.4
+      }
+    },
+    {
+      "id": "tiltai2-23-casing-1",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "kategor",
+          "2",
+          "3"
+        ],
+        [
+          ">",
+          "lygmuo",
+          1
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-opacity": 1,
+        "line-color": "rgba(115, 82, 63, 1)",
+        "line-width": 4
+      }
+    },
+    {
+      "id": "tiltai2-23",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "filter": [
+        "all",
+        [
+          "in",
+          "kategor",
+          "2",
+          "3"
+        ],
+        [
+          ">",
+          "lygmuo",
+          1
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(189, 99, 47, 1)",
+        "line-width": 2.4
+      }
+    },
+    {
+      "id": "tiltai2-am1-casing-2",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "filter": [
+        "all",
+        [
+          "in",
+          "kategor",
+          "AM",
+          "1"
+        ],
+        [
+          ">",
+          "lygmuo",
+          1
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-width": 4.2,
+        "line-color": "rgba(115, 82, 63, 1)",
+        "line-dasharray": []
+      }
+    },
+    {
+      "id": "tiltai2-am1-casing",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "filter": [
+        "all",
+        [
+          "in",
+          "kategor",
+          "AM",
+          "1"
+        ],
+        [
+          ">",
+          "lygmuo",
+          1
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(171, 90, 43, 1)",
+        "line-opacity": 1,
+        "line-width": 3
+      }
+    },
+    {
+      "id": "tiltai2-am1",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "minzoom": 11,
+      "maxzoom": 24,
+      "filter": [
+        "all",
+        [
+          "in",
+          "kategor",
+          "AM",
+          "1"
+        ],
+        [
+          ">",
+          "lygmuo",
+          1
+        ]
+      ],
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-color": "rgba(240, 174, 34, 1)",
+        "line-opacity": 1,
+        "line-width": 1
+      }
+    },
+    {
+      "id": "elektr_l",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "elektr_l",
+      "layout": {
+        "visibility": "visible"
+      },
+      "paint": {
+        "line-width": 0.4,
+        "line-color": "rgba(46, 46, 46, 1)"
+      }
+    },
+    {
+      "id": "elektr_l-label",
+      "type": "symbol",
+      "source": "grpk",
+      "source-layer": "elektr_l",
+      "layout": {
+        "visibility": "visible",
+        "text-field": "{itampa} kV",
+        "text-font": [
+          "Roboto Regular"
+        ],
+        "symbol-placement": "line",
+        "text-size": 8,
+        "text-offset": [
+          0,
+          -0.5
+        ]
+      },
+      "paint": {
+        "text-halo-width": 1.5,
+        "text-halo-color": "rgba(255, 255, 255, 0.8)"
+      }
+    },
+    {
+      "id": "elektr_t",
+      "type": "circle",
+      "source": "grpk",
+      "source-layer": "elektr_t",
+      "layout": {},
+      "paint": {
+        "circle-radius": 2,
+        "circle-color": "rgba(52, 52, 52, 1)",
+        "circle-stroke-color": "rgba(52, 52, 52, 1)"
+      }
+    },
+    {
+      "id": "bokstai",
+      "type": "symbol",
+      "source": "grpk",
+      "source-layer": "bokstai",
+      "layout": {
+        "icon-image": "tower"
+      },
+      "paint": {
+        "icon-halo-width": 0
+      }
+    },
+    {
+      "id": "geodez-fp2",
+      "type": "symbol",
+      "source": "grpk",
+      "source-layer": "geodez",
+      "filter": [
+        "all",
+        [
+          "==",
+          "gkodas",
+          "fp2"
+        ]
+      ],
+      "layout": {
+        "icon-image": "circle"
+      },
+      "paint": {
+        "icon-halo-width": 0
+      }
+    },
+    {
+      "id": "geodez-fp1",
+      "type": "symbol",
+      "source": "grpk",
+      "source-layer": "geodez",
+      "filter": [
+        "all",
+        [
+          "==",
+          "gkodas",
+          "fp1"
+        ]
+      ],
+      "layout": {
+        "icon-image": "triangle"
+      },
+      "paint": {
+        "icon-halo-width": 0
+      }
+    },
+    {
+      "id": "aukstis",
+      "type": "circle",
+      "source": "grpk",
+      "source-layer": "aukstis",
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "rt0"
+        ]
+      ],
+      "paint": {
+        "circle-color": "#734d00",
+        "circle-radius": 3
+      }
+    },
+    {
+      "id": "aukstis-label",
+      "type": "symbol",
+      "source": "grpk",
+      "source-layer": "aukstis",
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "rt0"
+        ]
+      ],
+      "layout": {
+        "text-font": [
+          "Roboto Regular"
+        ],
+        "text-field": "{aukstis}",
+        "text-size": 10,
+        "text-justify": "center",
+        "text-anchor": "left",
+        "text-offset": [
+          0.4,
+          0
+        ]
+      },
+      "paint": {
+        "text-color": "rgba(89, 51, 0, 1)",
+        "text-halo-width": 1.5,
+        "text-halo-color": "rgba(255, 255, 255, 0.8)"
+      }
+    },
+    {
+      "id": "ribos-valstybes-casing",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "ribos",
+      "filter": [
+        "all",
+        [
+          "==",
+          "gkodas",
+          "as1"
+        ]
+      ],
+      "paint": {
+        "line-width": {
+          "stops": [
+            [
+              8,
+              3
+            ],
+            [
+              8,
+              4
+            ]
+          ]
+        },
+        "line-color": "rgba(255, 140, 228, 1)"
+      }
+    },
+    {
+      "id": "ribos-savivaldybiu",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "ribos",
+      "filter": [
+        "all",
+        [
+          "==",
+          "gkodas",
+          "as3"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible",
+        "line-join": "round",
+        "line-cap": "butt"
+      },
+      "paint": {
+        "line-color": "rgba(242, 110, 212, 1)",
+        "line-width": {
+          "stops": [
+            [
+              8,
+              0.8
+            ],
+            [
+              8,
+              2
+            ]
+          ]
+        },
+        "line-opacity": 0.7,
+        "line-dasharray": [
+          2,
+          2,
+          1,
+          2,
+          1,
+          2,
+          2
+        ]
+      }
+    },
+    {
+      "id": "ribos-apskriciu",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "ribos",
+      "filter": [
+        "all",
+        [
+          "==",
+          "gkodas",
+          "as2"
+        ]
+      ],
+      "layout": {
+        "line-join": "round",
+        "line-cap": "butt"
+      },
+      "paint": {
+        "line-color": "rgba(242, 109, 211, 1)",
+        "line-width": {
+          "stops": [
+            [
+              8,
+              1.6
+            ],
+            [
+              8,
+              2.5
+            ]
+          ]
+        },
+        "line-opacity": 0.7,
+        "line-dasharray": [
+          2,
+          3,
+          1,
+          3,
+          2
+        ]
+      }
+    },
+    {
+      "id": "ribos-valstybes",
+      "type": "line",
+      "source": "grpk",
+      "source-layer": "ribos",
+      "filter": [
+        "all",
+        [
+          "==",
+          "gkodas",
+          "as1"
+        ]
+      ],
+      "layout": {
+        "visibility": "visible",
+        "line-join": "round",
+        "line-cap": "butt",
+        "line-miter-limit": 0
+      },
+      "paint": {
+        "line-color": "rgba(191, 57, 160, 1)",
+        "line-width": {
+          "stops": [
+            [
+              8,
+              2
+            ],
+            [
+              8,
+              3
+            ]
+          ]
+        },
+        "line-opacity": 0.7,
+        "line-dasharray": [
+          3,
+          6,
+          3
+        ]
+      }
+    },
+    {
+      "id": "anno-keliai-pavadinimai",
+      "type": "symbol",
+      "source": "grpk",
+      "source-layer": "keliai",
+      "layout": {
+        "text-font": [
+          "Roboto Regular"
+        ],
+        "text-field": "{vardas}",
+        "text-size": 11,
+        "symbol-placement": "line",
+        "visibility": "visible",
+        "text-allow-overlap": false,
+        "text-max-width": 10,
+        "icon-allow-overlap": false,
+        "symbol-spacing": 250,
+        "text-ignore-placement": false,
+        "symbol-avoid-edges": false
+      },
+      "paint": {
+        "text-halo-width": 2,
+        "text-halo-color": "rgba(255, 255, 255, 0.9)",
+        "text-color": "rgba(34, 34, 34, 1)"
+      }
+    },
+    {
+      "id": "anno-hidro_p",
+      "type": "symbol",
+      "source": "grpk",
+      "source-layer": "plotai",
+      "minzoom": 10,
+      "layout": {
+        "text-field": "{vardas}",
+        "text-font": [
+          "Roboto Condensed Italic"
+        ],
+        "text-size": {
+          "stops": [
+            [
+              11,
+              10
+            ],
+            [
+              11,
+              11
+            ]
+          ]
+        },
+        "visibility": "visible"
+      },
+      "paint": {
+        "text-color": "rgba(78, 162, 204, 1)",
+        "text-halo-color": "rgba(255, 255, 255, 0.8)",
+        "text-halo-width": 1.5
+      }
+    },
+    {
+      "id": "anno-hidro_l",
+      "type": "symbol",
+      "source": "grpk",
+      "source-layer": "hidro_l",
+      "layout": {
+        "symbol-placement": "line",
+        "text-field": "{vardas}",
+        "text-font": [
+          "Roboto Condensed Italic"
+        ],
+        "text-size": 11,
+        "text-letter-spacing": 0,
+        "text-ignore-placement": false,
+        "visibility": "visible"
+      },
+      "paint": {
+        "text-color": "rgba(78, 162, 204, 1)",
+        "text-halo-color": "rgba(255, 255, 255, 0.8)",
+        "text-halo-width": 1
+      }
+    },
+    {
+      "id": "anno-vietov_t-krastovaizdzio",
+      "type": "symbol",
+      "source": "grpk",
+      "source-layer": "vietov_t",
+      "filter": [
+        "all",
+        [
+          "==",
+          "gkodas",
+          "unk0"
+        ]
+      ],
+      "layout": {
+        "text-field": "{vardas}",
+        "text-font": [
+          "Roboto Condensed Italic"
+        ],
+        "text-size": 9,
+        "visibility": "visible",
+        "text-transform": "none",
+        "text-letter-spacing": 0.1,
+        "text-padding": 2
+      },
+      "paint": {
+        "text-halo-width": 2,
+        "text-halo-color": "rgba(255, 255, 255, 0.8)",
+        "text-color": "rgba(115, 40, 40, 1)"
+      }
+    },
+    {
+      "id": "anno-vietov_t-kapines",
+      "type": "symbol",
+      "source": "grpk",
+      "source-layer": "vietov_t",
+      "filter": [
+        "all",
+        [
+          "==",
+          "gkodas",
+          "uvp1"
+        ]
+      ],
+      "layout": {
+        "text-field": "{vardas}",
+        "text-font": [
+          "Roboto Regular"
+        ],
+        "text-size": 9,
+        "visibility": "visible",
+        "text-transform": "none",
+        "text-letter-spacing": 0
+      },
+      "paint": {
+        "text-halo-width": 2,
+        "text-halo-color": "rgba(255, 255, 255, 0.8)",
+        "text-color": "rgba(39, 166, 41, 1)"
+      }
+    },
+    {
+      "id": "anno-vietov_t-viensedziai",
+      "type": "symbol",
+      "source": "grpk",
+      "source-layer": "vietov_t",
+      "filter": [
+        "all",
+        [
+          "in",
+          "gkodas",
+          "uas54",
+          "uas55"
+        ]
+      ],
+      "layout": {
+        "text-field": "{vardas}",
+        "text-font": [
+          "Roboto Condensed Italic"
+        ],
+        "text-size": 10,
+        "visibility": "visible",
+        "text-transform": "none",
+        "text-letter-spacing": 0.1
+      },
+      "paint": {
+        "text-halo-width": 2,
+        "text-halo-color": "rgba(255, 255, 255, 0.8)"
+      }
+    },
+    {
+      "id": "anno-vietov_t",
+      "type": "symbol",
+      "source": "grpk",
+      "source-layer": "vietov_t",
+      "filter": [
+        "all",
+        [
+          "!in",
+          "adm_tip",
+          "SOST",
+          "APSK",
+          "SAV",
+          "SEN"
+        ],
+        [
+          "!in",
+          "gkodas",
+          "uas54",
+          "uas55",
+          "unk0",
+          "uvp1",
+          "uur14"
+        ]
+      ],
+      "layout": {
+        "text-field": "{vardas}",
+        "text-font": [
+          "Roboto Regular"
+        ],
+        "text-size": 10,
+        "visibility": "visible",
+        "text-transform": "none"
+      },
+      "paint": {
+        "text-halo-width": 2,
+        "text-halo-color": "rgba(255, 255, 255, 0.8)"
+      }
+    },
+    {
+      "id": "anno-vietov_p-10",
+      "type": "symbol",
+      "source": "grpk",
+      "source-layer": "vietov_p",
+      "minzoom": 9,
+      "maxzoom": 10,
+      "filter": [
+        "any",
+        [
+          ">",
+          "plotas",
+          20000000
+        ]
+      ],
+      "layout": {
+        "text-field": "{vardas}",
+        "text-font": [
+          "Roboto Regular"
+        ],
+        "text-size": 10,
+        "visibility": "visible",
+        "text-transform": "none"
+      },
+      "paint": {
+        "text-halo-width": 2,
+        "text-halo-color": "rgba(255, 255, 255, 0.8)",
+        "text-color": "rgba(103, 166, 58, 1)"
+      }
+    },
+    {
+      "id": "anno-vietov_p-11",
+      "type": "symbol",
+      "source": "grpk",
+      "source-layer": "vietov_p",
+      "minzoom": 10,
+      "maxzoom": 11,
+      "filter": [
+        "any",
+        [
+          ">",
+          "plotas",
+          10000000
+        ]
+      ],
+      "layout": {
+        "text-field": "{vardas}",
+        "text-font": [
+          "Roboto Regular"
+        ],
+        "text-size": 10,
+        "visibility": "visible",
+        "text-transform": "none"
+      },
+      "paint": {
+        "text-halo-width": 2,
+        "text-halo-color": "rgba(255, 255, 255, 0.8)",
+        "text-color": "rgba(103, 166, 58, 1)"
+      }
+    },
+    {
+      "id": "anno-vietov_p-13",
+      "type": "symbol",
+      "source": "grpk",
+      "source-layer": "vietov_p",
+      "minzoom": 11,
+      "maxzoom": 13,
+      "filter": [
+        "any",
+        [
+          ">",
+          "plotas",
+          4000000
+        ]
+      ],
+      "layout": {
+        "text-field": "{vardas}",
+        "text-font": [
+          "Roboto Regular"
+        ],
+        "text-size": 10,
+        "visibility": "visible",
+        "text-transform": "none"
+      },
+      "paint": {
+        "text-halo-width": 2,
+        "text-halo-color": "rgba(255, 255, 255, 0.8)",
+        "text-color": "rgba(103, 166, 58, 1)"
+      }
+    },
+    {
+      "id": "anno-vietov_p",
+      "type": "symbol",
+      "source": "grpk",
+      "source-layer": "vietov_p",
+      "minzoom": 13,
+      "maxzoom": 24,
+      "filter": [
+        "all"
+      ],
+      "layout": {
+        "text-field": "{vardas}",
+        "text-font": [
+          "Roboto Regular"
+        ],
+        "text-size": 10,
+        "visibility": "visible",
+        "text-transform": "none"
+      },
+      "paint": {
+        "text-halo-width": 2,
+        "text-halo-color": "rgba(255, 255, 255, 0.8)",
+        "text-color": "rgba(103, 166, 58, 1)"
+      }
+    },
+    {
+      "id": "anno-vietov_t-sav-sen",
+      "type": "symbol",
+      "source": "grpk",
+      "source-layer": "vietov_t",
+      "filter": [
+        "all",
+        [
+          "in",
+          "adm_tip",
+          "SAV",
+          "SEN"
+        ]
+      ],
+      "layout": {
+        "text-field": "{vardas}",
+        "text-font": [
+          "Roboto Regular"
+        ],
+        "text-size": 11,
+        "visibility": "visible",
+        "text-transform": "none",
+        "text-letter-spacing": 0
+      },
+      "paint": {
+        "text-halo-width": 2,
+        "text-halo-color": "rgba(255, 255, 255, 0.8)"
+      }
+    },
+    {
+      "id": "anno-vietov_t-apsk",
+      "type": "symbol",
+      "source": "grpk",
+      "source-layer": "vietov_t",
+      "filter": [
+        "all",
+        [
+          "==",
+          "adm_tip",
+          "APSK"
+        ]
+      ],
+      "layout": {
+        "text-field": "{vardas}",
+        "text-font": [
+          "Roboto Medium"
+        ],
+        "text-size": 12,
+        "visibility": "visible",
+        "text-transform": "none",
+        "text-letter-spacing": 0
+      },
+      "paint": {
+        "text-halo-width": 2,
+        "text-halo-color": "rgba(255, 255, 255, 0.8)"
+      }
+    },
+    {
+      "id": "anno-vietov_t-sostine",
+      "type": "symbol",
+      "source": "grpk",
+      "source-layer": "vietov_t",
+      "filter": [
+        "all",
+        [
+          "==",
+          "adm_tip",
+          "SOST"
+        ]
+      ],
+      "layout": {
+        "text-field": "{vardas}",
+        "text-font": [
+          "Roboto Medium"
+        ],
+        "text-size": 14,
+        "visibility": "visible",
+        "text-transform": "none",
+        "text-letter-spacing": 0.1
+      },
+      "paint": {
+        "text-halo-width": 2,
+        "text-halo-color": "rgba(255, 255, 255, 0.8)"
+      }
+    }
+  ],
+  "id": "grpk"
+}
