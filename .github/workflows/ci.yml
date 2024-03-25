@@ -24,8 +24,8 @@ jobs:
           ./actionlint -color
         shell: bash
 
-  mapbox-gl-style-validate:
-    name: Validate Mapbox GL styles
+  maplibre-style-validate:
+    name: Validate MapLibre style specifications
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
@@ -34,8 +34,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install mapbox-gl-style-spec
-        run: npm install @mapbox/mapbox-gl-style-spec --global
+      - name: Install maplibre-gl-style-spec
+        run: npm install @maplibre/maplibre-gl-style-spec --global
 
       - name: Validate proton Mapbox GL styles
         working-directory: osm/proton/styles
