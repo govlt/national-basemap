@@ -19,8 +19,8 @@ jobs:
     steps:
       - name: Install zip
         run: |
-          sudo apt-get update
-          sudo apt-get install zip
+          apt-get update
+          apt-get install zip
 
       - name: Download GRPK from GeoPortal
         run: wget -nv https://cdn.biip.lt/tiles/sources/temp/GRPK_Open_SHP.zip
