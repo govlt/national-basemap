@@ -11,18 +11,12 @@ jobs:
     name: Sync and transform GRPK
     runs-on: ubuntu-latest
     timeout-minutes: 360
+    container: ghcr.io/osgeo/gdal:ubuntu-full-3.8.4
     permissions: { }
     environment:
       name: grpk-transform
       url: https://cdn.biip.lt/tiles/sources/grpk/grpk-espg-4326-shp.zip
     steps:
-      - name: Install GDAL
-        run: |
-          sudo add-apt-repository ppa:ubuntugis/ppa
-          sudo apt-get update
-          sudo apt-get install gdal-bin
-          ogrinfo --version
-
       - name: Download GRPK from GeoPortal
         run: wget -nv https://cdn.biip.lt/tiles/sources/temp/GRPK_Open_SHP.zip
 #        run: wget -nv https://www.geoportal.lt/download/opendata/GRPK/GRPK_Open_SHP.zip
@@ -36,7 +30,7 @@ jobs:
       - run: ls -lh
 
       - name: Zip to new data source with transformed SRS
-        run: zip -d grpk-espg-4326-shp.zip grpk-espg-4326-shp
+        run: jar -cfM grpk-espg-4326-shp.zip grpk-espg-4326-shp
 
       - name: Sync to S3
         uses: docker://docker.io/rclone/rclone:1.66
