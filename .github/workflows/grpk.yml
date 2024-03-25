@@ -1,9 +1,15 @@
-name: Generate GRPK pmtiles
+name: "GRPK: pmtiles generate and deploy"
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, grpk-deploy ]
   workflow_dispatch:
+    inputs:
+      deploy:
+        description: Deploy to S3
+        type: boolean
+        default: false
+        required: true
 
 permissions: { }
 
@@ -29,10 +35,26 @@ jobs:
       - name: Generate GRPK pmtiles
         run: ./gradlew -q run
 
-      - name: Upload GRPK pmtiles
+      - name: Upload GRPK pmtiles artifact
         uses: actions/upload-artifact@v4
         with:
           name: grpk.pmtiles
           path: grpk/data/output/grpk.pmtiles
           if-no-files-found: error
           compression-level: 0
+
+      - name: Copy style
+        if: ${{ inputs.deploy }}
+        run: cp -r grpk/styles grpk/data/output
+
+      - name: Sync to S3
+        uses: docker://docker.io/rclone/rclone:1.66
+        if: ${{ inputs.deploy }}
+        with:
+          args: "sync grpk/data/output s3:/tiles/grpk --s3-acl=public-read --fast-list --checksum --update --use-server-modtime --metadata --inplace --delete-during"
+        env:
+          RCLONE_CONFIG_S3_TYPE: s3
+          RCLONE_CONFIG_S3_PROVIDER: Other
+          RCLONE_CONFIG_S3_ENDPOINT: ${{ secrets.S3_BIIP_ENDPOINT }}
+          RCLONE_CONFIG_S3_ACCESS_KEY_ID: ${{ secrets.S3_BIIP_ACCESS_KEY_ID }}
+          RCLONE_CONFIG_S3_SECRET_ACCESS_KEY: ${{ secrets.S3_BIIP_SECRET_ACCESS_KEY }}
