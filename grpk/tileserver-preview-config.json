@@ -1,0 +1,19 @@
+{
+  "options": {
+    "root": "grpk",
+    "fonts": "fonts"
+  },
+  "data": {
+    "grpk-preview": {
+      "pmtiles": "data/output/grpk.pmtiles"
+    },
+    "grpk-production": {
+      "pmtiles": "https://cdn.biip.lt/tiles/grpk/grpk.pmtiles"
+    }
+  },
+  "styles": {
+    "grpk-production": {
+      "style": "styles/grpk.json"
+    }
+  }
+}

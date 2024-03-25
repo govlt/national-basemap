@@ -17,11 +17,27 @@ To embark on your mapping journey, follow these simple steps:
 
 ### Generating GRPK Basemap
 
-Fire up the map-making magic by executing `./gradlew run` to generate the basemap in pmtiles format. The generated
-pmtiles will appear in `grpk/data/output/grpk.pmtiles`.
+To generate the basemap in pmtiles format, execute the following command:
 
-Please note that this process may take some time as the GRPK data source will
-be downloaded if it doesn't exist already.
+```shell
+make grpk-basemap
+```
+
+The generated pmtiles will be saved in `grpk/data/output/grpk.pmtiles`.
+
+This process may take some time as the GRPK data source will be downloaded if it doesn't exist already.
+
+#### Previewing
+
+To preview the generated GRPK basemap locally, make sure you have
+installed [Tileserver-GL-Light](https://www.npmjs.com/package/tileserver-gl-light) by
+running `npm install -g tileserver-gl-light`.
+
+Then execute the following command:
+
+```shell
+make tileserver
+```
 
 ## Contributing 🤝
 
