@@ -12,15 +12,16 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 360
     permissions: { }
-    container: ghcr.io/osgeo/gdal:ubuntu-full-3.8.4
     environment:
       name: grpk-transform
       url: https://cdn.biip.lt/tiles/sources/grpk/grpk-espg-4326-shp.zip
     steps:
-      - name: Install zip
+      - name: Install GDAL
         run: |
-          apt-get update
-          apt-get install zip
+          sudo add-apt-repository ppa:ubuntugis/ppa
+          sudo apt-get update
+          sudo apt-get install gdal-bin
+          ogrinfo --version
 
       - name: Download GRPK from GeoPortal
         run: wget -nv https://cdn.biip.lt/tiles/sources/temp/GRPK_Open_SHP.zip
