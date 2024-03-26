@@ -14,13 +14,10 @@ public class Basemap extends ForwardingProfile {
     public static void main(String[] args) throws Exception {
         Planetiler.create(Arguments.fromConfigFile(Path.of("config.properties")))
                 .setProfile(new Basemap())
-                .addShapefileGlobSource(
-                        "EPSG:4326",
+                .addShapefileSource(
                         "grpk",
                         Path.of("data", "sources", "grpk-espg-4326.shp.zip"),
-                        "*",
                         "https://cdn.biip.lt/tiles/sources/grpk/grpk-espg-4326.shp.zip"
-
                 )
                 .overwriteOutput(Path.of("data", "output", "grpk.pmtiles"))
                 .run();
