@@ -38,7 +38,13 @@ jobs:
         run: ./gradlew -q run
 
       - name: Copy styles
-        run: cp -r grpk/styles grpk/data/output
+        run: cp -r grpk/styles grpk/data/output/styles
+
+      - name: Replace GeoPortal style with non debug urls
+        run: |
+          echo $(jq '.sources.grpk = "${{ env.GRPK_SOURCE_URL }}"' style.json) > style.json
+          echo $(jq -c '.glyphs = "${{ env.GRPK_GLYPHS_URL }}"' style.json) > style.json
+        working-directory: grpk/data/output/styles/geoportal
 
       - name: Upload GRPK pmtiles artifact
         uses: actions/upload-artifact@v4
