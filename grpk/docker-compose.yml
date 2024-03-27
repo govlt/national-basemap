@@ -4,7 +4,7 @@ services:
   biip-grpk-martin-tile-server:
     build:
       context: .
-      dockerfile: docker/Dockerfile
+      dockerfile: preview/martin.Dockerfile
     pull_policy: build
     networks:
       - internal
