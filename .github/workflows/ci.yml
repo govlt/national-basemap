@@ -21,7 +21,7 @@ jobs:
         run: |
           echo "::add-matcher::.github/actionlint-matcher.json"
           bash <(curl https://raw.githubusercontent.com/rhysd/actionlint/main/scripts/download-actionlint.bash)
-          ./actionlint -color -ignore "Useless echo? Instead of 'echo $(cmd)', just use 'cmd'"
+          ./actionlint -color
         shell: bash
 
   maplibre-style-validate:
