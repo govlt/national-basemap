@@ -1,0 +1,10 @@
+pmtiles:
+  sources:
+    grpk: /opt/grpk/pmtiles/grpk.pmtiles
+
+sprites:
+  sources:
+    geoportal: /opt/grpk/styles/geoportal/sprites
+
+fonts:
+  - /opt/grpk/styles/geoportal/fonts

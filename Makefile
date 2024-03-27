@@ -1,5 +1,5 @@
-grpk-basemap:
+grpk-generate-basemap:
 	./gradlew run
 
-tileserver:
-	tileserver-gl-light --no-cors --config grpk/tileserver-preview-config.json
+grpk-preview:
+	docker compose --project-directory grpk watch

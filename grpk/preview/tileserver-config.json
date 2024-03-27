@@ -1,0 +1,16 @@
+{
+  "options": {
+    "root": "grpk",
+    "fonts": "fonts"
+    },
+  "data": {
+    "grpk": {
+      "pmtiles": "/opt/grpk/grpk.pmtiles"
+    }
+  },
+  "styles": {
+    "grpk-geoportal": {
+      "style": "/opt/grpk/styles/geoportal/style.json"
+    }
+  }
+}

@@ -20,7 +20,7 @@ To embark on your mapping journey, follow these simple steps:
 To generate the basemap in pmtiles format, execute the following command:
 
 ```shell
-make grpk-basemap
+make grpk-generate-basemap
 ```
 
 The generated pmtiles will be saved in `grpk/data/output/grpk.pmtiles`.
@@ -29,15 +29,25 @@ This process may take some time as the GRPK data source will be downloaded if it
 
 #### Previewing
 
-To preview the generated GRPK basemap locally, make sure you have
-installed [Tileserver-GL-Light](https://www.npmjs.com/package/tileserver-gl-light) by
-running `npm install -g tileserver-gl-light`.
+Before previewing, make sure you have [Docker](https://www.docker.com/get-started/) installed, preferably with Docker
+Compose version 2.22 and later.
 
-Then execute the following command:
+After generating the GRPK basemap, execute the following command:
 
 ```shell
-make tileserver
+make grpk-preview
 ```
+
+This will start:
+
+- [Tileserver-GL](https://github.com/maptiler/tileserver-gl) at http://localhost:8080, which allows previewing pmtiles
+  and styles;
+- [Martin tile server](https://martin.maplibre.org/) at http://localhost:3000, serving pmtiles, fonts, and sprites.
+  Visit http://localhost:3000/catalog for more details;
+- [Maputnik](https://maplibre.org/maputnik/) at http://localhost:8000, used for style editing;
+
+Note: Docker will watch all required directories, so you don't need to rerun this command once pmtiles are regenerated
+or styles are changed.
 
 ## Contributing 🤝
 
