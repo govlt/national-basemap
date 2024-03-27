@@ -1,13 +1,13 @@
 {
   "version": 8,
-  "name": "GRPK vector basemap",
+  "name": "GRPK vector basemap based on GeoPortal style",
   "metadata": {
     "maputnik:renderer": "mbgljs"
   },
   "sources": {
     "grpk": {
       "type": "vector",
-      "url": "https://dev-gis.biip.lt/tiles/static/grpk"
+      "url": "http://localhost:3000/grpk"
     }
   },
   "center": [
@@ -15,7 +15,7 @@
     55.169438
   ],
   "zoom": 6,
-  "glyphs": "https://dev-gis.biip.lt/tiles/static/font/{fontstack}/{range}",
+  "glyphs": "http://localhost:3000/font/{fontstack}/{range}",
   "layers": [
     {
       "id": "background",

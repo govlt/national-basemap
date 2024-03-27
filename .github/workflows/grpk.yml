@@ -11,6 +11,10 @@ on:
 
 permissions: { }
 
+env:
+  GRPK_SOURCE_URL: https://dev-gis.biip.lt/tiles/static/grpk
+  GRPK_GLYPHS_URL: https://dev-gis.biip.lt/tiles/static/font/{fontstack}/{range}
+
 jobs:
   generate-grpk-pmtiles:
     name: Generate GRPK pmtiles
@@ -33,17 +37,22 @@ jobs:
       - name: Generate GRPK pmtiles
         run: ./gradlew -q run
 
+      - name: Copy styles
+        run: cp -r grpk/styles grpk/data/output/styles
+
+      - name: Replace GeoPortal style with non debug urls
+        run: |
+          jq '.sources.grpk = "${{ env.GRPK_SOURCE_URL }}"' style.json > tmp.json && mv tmp.json style.json
+          jq -c '.glyphs = "${{ env.GRPK_GLYPHS_URL }}"' style.json > tmp.json && mv tmp.json style.json
+        working-directory: grpk/data/output/styles/geoportal
+
       - name: Upload GRPK pmtiles artifact
         uses: actions/upload-artifact@v4
         with:
-          name: grpk.pmtiles
-          path: grpk/data/output/grpk.pmtiles
+          name: grpk
+          path: grpk/data/output
           if-no-files-found: error
           compression-level: 0
-
-      - name: Copy style
-        if: ${{ inputs.deploy }}
-        run: cp -r grpk/styles grpk/data/output
 
       - name: Sync to S3
         uses: docker://docker.io/rclone/rclone:1.66
