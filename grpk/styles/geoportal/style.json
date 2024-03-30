@@ -16,6 +16,7 @@
   ],
   "zoom": 6,
   "glyphs": "http://localhost:3000/font/{fontstack}/{range}",
+  "sprite": "http://localhost:3000/sprite/geoportal",
   "layers": [
     {
       "id": "background",
