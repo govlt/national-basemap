@@ -7,7 +7,6 @@ import com.onthegomap.planetiler.ForwardingProfile;
 import com.onthegomap.planetiler.VectorTile;
 import com.onthegomap.planetiler.reader.SourceFeature;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class Roads implements ForwardingProfile.FeaturePostProcessor, ForwardingProfile.FeatureProcessor {
@@ -15,70 +14,63 @@ public class Roads implements ForwardingProfile.FeaturePostProcessor, Forwarding
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
         if (sf.getSource().equals("grpk") && sf.getSourceLayer().equals("KELIAI") && sf.canBeLine()) {
-            var minZoom = getMinZoom(sf);
 
-            features.line(this.name())
-                    .setAttr("gkodas", sf.getTag("GKODAS"))
-                    .setAttr("kategor", sf.getTag("KATEGOR"))
-                    .setAttr("enumeris", sf.getTag("ENUMERIS"))
-                    .setAttr("numeris", sf.getTag("NUMERIS"))
-                    .setAttr("lygmuo", sf.getTag("LYGMUO"))
-                    .setAttr("paskirtis", sf.getTag("PASKIRTIS"))
-                    .setAttr("vardas", sf.getTag("VARDAS"))
-                    .setMinPixelSize(0.0)
-                    .setPixelTolerance(0.0)
-                    .setMinZoom(minZoom)
-                    .setSortKeyDescending(minZoom);
+            var paskirtis = sf.getString("PASKIRTIS");
+            var tipas = sf.getLong("TIPAS");
+            var danga = sf.getString("DANGA");
+    
+            if (tipas == 1) {
+                addRoad("motorway", 2, sf, features);
+            } else if (tipas == 5) {
+                addRoad("trunk", 4, sf, features);
+            } else if (tipas == 2) {
+                addRoad("primary", 4, sf, features);
+            } else if (tipas == 3) {
+                addRoad("secondary", 8, sf, features);
+            } else if (tipas == 4) {
+                addRoad("tertiary", 8, sf, features);
+            } else if (tipas == 6) {
+                addRoad("residential", 12, sf, features);
+            } else if (tipas == 7 && paskirtis.equals("JUNG")) {
+                addRoad("link", 13, sf, features);
+            } else if (tipas == 7 || tipas == 9) {
+                addRoad("service", 13, sf, features);
+            } else if (tipas == 8 && danga.equals("Ž")) {
+                addRoad("path", 14, sf, features);
+            } else if (tipas == 8) {
+                addRoad("service", 13, sf, features);
+            } else if (tipas == 10 || tipas == 11 || tipas == 13) {
+                addRoad("path", 14, sf, features);
+            } else if (tipas == 14) {
+                addRoad("ferry", 13, sf, features);
+            } else {
+                addRoad("unclassified", 15, sf, features);
+            }
+            
         }
     }
 
-    int getMinZoom(SourceFeature sf) {
-        var gkodas = sf.getString("GKODAS");
-        var paskirtis = sf.getString("PASKIRTIS");
-        var kategor = sf.getString("KATEGOR");
-        var numeris = sf.getString("NUMERIS");
-        var lygmuo = sf.getLong("LYGMUO");
-
-        if (Arrays.asList("A12", "A5", "A6", "A1", "A11", "E28", "E67", "E77", "E85", "E262", "E272").contains(numeris)) {
-            return 0;
-        }
-
-        if (Arrays.asList("AM", "1", "2").contains(kategor)) {
-            return 0;
-        }
-
-        if (Arrays.asList("PAGR", "P/Z").contains(paskirtis)) {
-            return 0;
-        }
-
-        if (gkodas.equals("dc2")) {
-            return 0;
-        }
-
-        if (Arrays.asList("gc2", "gc12", "gc14").contains(gkodas) && lygmuo < 0) {
-            return 0;
-        }
-
-        if (Arrays.asList("4", "5").contains(kategor) && gkodas.equals("gc12") && lygmuo < 0) {
-            return 0;
-        }
-
-        if (Arrays.asList("2", "3").contains(kategor) && lygmuo < 0) {
-            return 0;
-        }
-
-        return 10;
+    public void addRoad(String kind, int minZoom, SourceFeature sf, FeatureCollector features) {
+        features.line(this.name())
+                .setAttr("ref", sf.getTag("NUMERIS"))
+                .setAttr("name", sf.getTag("VARDAS"))
+                .setAttr("level", sf.getTag("LYGMUO"))
+                .setAttr("kind", kind)
+                .setAttr("kind_detail", sf.getTag("GKODAS"))
+                .setAttr("minZoom", minZoom)
+                .setMinZoom(minZoom)
+                .setMinPixelSize(0.0)
+                .setPixelTolerance(0.0);
     }
-
 
     @Override
     public List<VectorTile.Feature> postProcess(int zoom, List<VectorTile.Feature> items) {
-        return FeatureMerge.mergeLineStrings(
-                items,
-                0.5, // after merging, remove lines that are still less than 0.5px long
-                0.1, // simplify output linestrings using a 0.1px tolerance
-                4.0 // remove any detail more than 4px outside the tile boundary
-        );
+         return FeatureMerge.mergeLineStrings(
+                 items,
+                 0.5, // after merging, remove lines that are still less than 0.5px long
+                 0.1, // simplify output linestrings using a 0.1px tolerance
+                 4.0 // remove any detail more than 4px outside the tile boundary
+         );
     }
 
     @Override
