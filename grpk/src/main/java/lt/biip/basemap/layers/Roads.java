@@ -32,7 +32,7 @@ public class Roads implements ForwardingProfile.FeaturePostProcessor, Forwarding
             } else if (tipas == 6) {
                 addRoad("residential", 12, sf, features);
             } else if (tipas == 7 && paskirtis.equals("JUNG")) {
-                addRoad("motorway_link", 10, sf, features);
+                addRoad("link", 13, sf, features);
             } else if (tipas == 7 || tipas == 9) {
                 addRoad("service", 13, sf, features);
             } else if (tipas == 8 && danga.equals("Ž")) {
