@@ -7,7 +7,6 @@ import com.onthegomap.planetiler.ForwardingProfile;
 import com.onthegomap.planetiler.VectorTile;
 import com.onthegomap.planetiler.reader.SourceFeature;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class Roads implements ForwardingProfile.FeaturePostProcessor, ForwardingProfile.FeatureProcessor {
@@ -16,22 +15,36 @@ public class Roads implements ForwardingProfile.FeaturePostProcessor, Forwarding
     public void processFeature(SourceFeature sf, FeatureCollector features) {
         if (sf.getSource().equals("grpk") && sf.getSourceLayer().equals("KELIAI") && sf.canBeLine()) {
 
-            var gkodas = sf.getString("GKODAS");
             var paskirtis = sf.getString("PASKIRTIS");
-            var kategor = sf.getString("KATEGOR");
-            var numeris = sf.getString("NUMERIS");
-            var lygmuo = sf.getLong("LYGMUO");
+            var tipas = sf.getLong("TIPAS");
+            var danga = sf.getString("DANGA");
     
-            if (numeris.startsWith("A")) {
+            if (tipas == 1) {
                 addRoad("motorway", 2, sf, features);
-            } else if  (kategor.equals("3")) {
-                addRoad("primary", 2, sf, features);
-            } else if  (Arrays.asList("4", "5").contains(kategor)) {
+            } else if (tipas == 5) {
+                addRoad("trunk", 4, sf, features);
+            } else if (tipas == 2) {
+                addRoad("primary", 4, sf, features);
+            } else if (tipas == 3) {
                 addRoad("secondary", 8, sf, features);
-            } else if  (Arrays.asList("gc2", "gc12").contains(gkodas) && paskirtis.equals("PAGR")) {
-                addRoad("tertiary", 9, sf, features);
+            } else if (tipas == 4) {
+                addRoad("tertiary", 8, sf, features);
+            } else if (tipas == 6) {
+                addRoad("residential", 12, sf, features);
+            } else if (tipas == 7 && paskirtis.equals("JUNG")) {
+                addRoad("motorway_link", 10, sf, features);
+            } else if (tipas == 7 || tipas == 9) {
+                addRoad("service", 13, sf, features);
+            } else if (tipas == 8 && danga.equals("Ž")) {
+                addRoad("path", 14, sf, features);
+            } else if (tipas == 8) {
+                addRoad("service", 13, sf, features);
+            } else if (tipas == 10 || tipas == 11 || tipas == 13) {
+                addRoad("path", 14, sf, features);
+            } else if (tipas == 14) {
+                addRoad("ferry", 13, sf, features);
             } else {
-                addRoad("unclassified", 11, sf, features);
+                addRoad("unclassified", 15, sf, features);
             }
             
         }
@@ -39,27 +52,25 @@ public class Roads implements ForwardingProfile.FeaturePostProcessor, Forwarding
 
     public void addRoad(String kind, int minZoom, SourceFeature sf, FeatureCollector features) {
         features.line(this.name())
-                .setAttr("gkodas", sf.getTag("GKODAS"))
-                .setAttr("vardas", sf.getTag("VARDAS"))
-                .setAttr("paskirtis", sf.getTag("PASKIRTIS"))
-                .setAttr("kategor", sf.getTag("KATEGOR"))
-                .setAttr("numeris", sf.getTag("NUMERIS"))
-                .setAttr("lygmuo", sf.getTag("LYGMUO"))
+                .setAttr("ref", sf.getTag("NUMERIS"))
+                .setAttr("name", sf.getTag("VARDAS"))
+                .setAttr("level", sf.getTag("LYGMUO"))
                 .setAttr("kind", kind)
+                .setAttr("kind_detail", sf.getTag("GKODAS"))
                 .setAttr("minZoom", minZoom)
                 .setMinZoom(minZoom)
-                .setSortKey(minZoom);
+                .setMinPixelSize(0.0)
+                .setPixelTolerance(0.0);
     }
 
     @Override
     public List<VectorTile.Feature> postProcess(int zoom, List<VectorTile.Feature> items) {
-        return items;
-        // return FeatureMerge.mergeLineStrings(
-        //         items,
-        //         0.5, // after merging, remove lines that are still less than 0.5px long
-        //         0.1, // simplify output linestrings using a 0.1px tolerance
-        //         4.0 // remove any detail more than 4px outside the tile boundary
-        // );
+         return FeatureMerge.mergeLineStrings(
+                 items,
+                 0.5, // after merging, remove lines that are still less than 0.5px long
+                 0.1, // simplify output linestrings using a 0.1px tolerance
+                 4.0 // remove any detail more than 4px outside the tile boundary
+         );
     }
 
     @Override
