@@ -65,3 +65,23 @@ jobs:
           RCLONE_CONFIG_S3_ENDPOINT: ${{ secrets.S3_BIIP_ENDPOINT }}
           RCLONE_CONFIG_S3_ACCESS_KEY_ID: ${{ secrets.S3_BIIP_ACCESS_KEY_ID }}
           RCLONE_CONFIG_S3_SECRET_ACCESS_KEY: ${{ secrets.S3_BIIP_SECRET_ACCESS_KEY }}
+
+  generate-grpk-docker-image:
+    name: Generate and push GRPK docker image
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build & tag docker image
+        uses: AplinkosMinisterija/reusable-workflows/.github/actions/docker-build-tag-push@main
+        with:
+          docker-image: ghcr.io/biip-grpk-basemap
+          docker-context: .
+          file: grpk/docker/Dockerfile
+          environment: main
+          push: true

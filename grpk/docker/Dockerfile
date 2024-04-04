@@ -1,6 +1,16 @@
+FROM gradle:8.7-jdk21 as build
+
+WORKDIR /app
+
+COPY gradlew gradlew.bat settings.gradle.kts gradle.properties ./
+COPY gradle ./gradle
+COPY grpk ./grpk
+
+RUN ./gradlew run
+
 FROM ghcr.io/maplibre/martin:v0.13.0
 
-# Let's user non root user
+# Let's use non root user
 ARG USER=biip
 
 RUN apk add --update sudo
@@ -13,9 +23,9 @@ USER $USER
 
 WORKDIR /opt/grpk
 
-COPY --chown=$USER:$USER docker/martin/config.yaml config.yaml
-COPY --chown=$USER:$USER styles/geoportal/fonts styles/geoportal/fonts
-COPY --chown=$USER:$USER styles/geoportal/sprites styles/geoportal/sprites
-COPY --chown=$USER:$USER data/output/grpk.pmtiles pmtiles/grpk.pmtiles
+COPY --chown=$USER:$USER grpk/docker/martin/config.yaml config.yaml
+COPY --chown=$USER:$USER grpk/styles/geoportal/fonts styles/geoportal/fonts
+COPY --chown=$USER:$USER grpk/styles/geoportal/sprites styles/geoportal/sprites
+COPY --chown=$USER:$USER --from=build /app/grpk/data/output/grpk.pmtiles pmtiles/grpk.pmtiles
 
 CMD ["--config", "config.yaml"]
