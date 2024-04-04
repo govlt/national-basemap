@@ -7,17 +7,26 @@ import lt.biip.basemap.layers.*;
 
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.List;
 
 
 public class Basemap extends ForwardingProfile {
+
+    public static final String SOURCE_GRPK = "grpk";
+    public static final String SOURCE_AR = "ar";
 
     public static void main(String[] args) throws Exception {
         Planetiler.create(Arguments.fromConfigFile(Path.of("config.properties")))
                 .setProfile(new Basemap())
                 .addShapefileSource(
-                        "grpk",
+                        SOURCE_GRPK,
                         Path.of("data", "sources", "grpk-espg-4326.shp.zip"),
                         "https://cdn.biip.lt/tiles/sources/grpk/grpk-espg-4326.shp.zip"
+                )
+                .addShapefileSource(
+                        SOURCE_AR,
+                        Path.of("data", "sources", "ar-espg-4326.shp.zip"),
+                        "https://cdn.biip.lt/tiles/sources/registru-centras/ar-espg-4326.shp.zip"
                 )
                 .overwriteOutput(Path.of("data", "output", "grpk.pmtiles"))
                 .run();
@@ -25,22 +34,36 @@ public class Basemap extends ForwardingProfile {
     }
 
     public Basemap() {
-        var grpkHandlers =
-                Arrays.asList(
-                        new Areas(),
-                        new Boundaries(),
-                        new Buildings(),
-                        new ForestLines(),
-                        new PlaceTitles(),
-                        new Railway(),
-                        new Roads(),
-                        new Names(),
-                        new WaterLines()
-                );
+        var handlers = Arrays.asList(
+                new SourceProcessors(
+                        SOURCE_GRPK,
+                        Arrays.asList(
+                                new Areas(),
+                                new Boundaries(),
+                                new Buildings(),
+                                new ForestLines(),
+                                new PlaceTitles(),
+                                new Railway(),
+                                new Roads(),
+                                new Names(),
+                                new WaterLines()
+                        )
+                ),
+                new SourceProcessors(
+                        SOURCE_AR,
+                        List.of(
+                                new HouseNumbers()
+                        )
+                ));
 
-        for (var handler : grpkHandlers) {
-            registerHandler(handler);
-            registerSourceHandler("grpk", handler);
+        for (var sourceHandlers : handlers) {
+            for (var handler : sourceHandlers.processors) {
+                registerSourceHandler(sourceHandlers.source, handler);
+
+                if (handler instanceof Handler) {
+                    registerHandler((Handler) handler);
+                }
+            }
         }
     }
 
@@ -48,5 +71,13 @@ public class Basemap extends ForwardingProfile {
     public String name() {
         return "GRPK Vector Map of Lithuania";
     }
+
+    private record SourceProcessors(
+            String source,
+            List<? extends FeatureProcessor> processors
+    ) {
+
+    }
 }
+
 
