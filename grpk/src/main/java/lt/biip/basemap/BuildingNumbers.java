@@ -45,7 +45,7 @@ public class BuildingNumbers {
         ftBuilder.setName(schema.getName());
         ftBuilder.setSuperType((SimpleFeatureType) schema.getSuper());
         ftBuilder.addAll(schema.getAttributeDescriptors());
-        ftBuilder.add("PATALPOS_NR", String.class);
+        ftBuilder.add("NR", String.class);
 
         var nSchema = ftBuilder.buildFeatureType();
 
@@ -56,18 +56,12 @@ public class BuildingNumbers {
                 var feature = iterator.next();
 
                 var code = (long) feature.getAttribute("AOB_KODAS");
-                var houseNumber = lookup.get(code);
+                var number = lookup.get(code);
 
-//                var x = (double) feature.getAttribute("E_KOORD");
-//                var y = (double) feature.getAttribute("N_KOORD");
-//                var point = geometryFactory.createPoint(new Coordinate(x, y));
-
-
-                if (houseNumber != null) {
+                if (number != null) {
                     var builder = SimpleFeatureBuilder.build(nSchema, feature.getAttributes(), feature.getID());
 
-                    builder.setAttribute("PATALPOS_NR", houseNumber);
-//                    builder.setDefaultGeometry(point);
+                    builder.setAttribute("NR", number);
 
                     houseNumberFeatures.add(builder);
                 } else {
@@ -84,7 +78,7 @@ public class BuildingNumbers {
     }
 
     static Map<Long, String> getHouseNumberLookupByCode() throws IOException {
-        var uri = URI.create("https://www.registrucentras.lt/aduomenys/?byla=adr_pat_lr.csv").toURL();
+        var uri = URI.create("https://www.registrucentras.lt/aduomenys/?byla=adr_stat_lr.csv").toURL();
 
         try (var inputStream = uri.openStream();
              var inputStreamReader = new InputStreamReader(inputStream);
@@ -95,7 +89,7 @@ public class BuildingNumbers {
             var headers = Arrays.asList(br.readLine().split(Pattern.quote(CSV_SEPARATOR)));
 
             var indexCode = headers.indexOf("AOB_KODAS");
-            var indexNumber = headers.indexOf("PATALPOS_NR");
+            var indexNumber = headers.indexOf("NR");
 
             String line;
             while ((line = br.readLine()) != null) {
@@ -130,5 +124,4 @@ public class BuildingNumbers {
         }
         throw new RuntimeException("Unable to parse addresses geojson");
     }
-
 }
