@@ -27,12 +27,16 @@ public class WaterLines implements ForwardingProfile.FeaturePostProcessor, Forwa
 
     @Override
     public List<VectorTile.Feature> postProcess(int zoom, List<VectorTile.Feature> items) {
-        return FeatureMerge.mergeLineStrings(
-                items,
-                0.5, // after merging, remove lines that are still less than 0.5px long
-                0.1, // simplify output linestrings using a 0.1px tolerance
-                4.0 // remove any detail more than 4px outside the tile boundary
-        );
+        if (zoom < 14) {
+            return FeatureMerge.mergeLineStrings(
+                    items,
+                    0.5, // after merging, remove lines that are still less than 0.5px long
+                    0.1, // simplify output linestrings using a 0.1px tolerance
+                    4.0 // remove any detail more than 4px outside the tile boundary
+            );
+        } else {
+            return items;
+        }
     }
 
     @Override

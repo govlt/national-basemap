@@ -18,7 +18,7 @@ public class Roads implements ForwardingProfile.FeaturePostProcessor, Forwarding
             var paskirtis = sf.getString("PASKIRTIS");
             var tipas = sf.getLong("TIPAS");
             var danga = sf.getString("DANGA");
-    
+
             if (tipas == 1) {
                 addRoad("motorway", 2, sf, features);
             } else if (tipas == 5) {
@@ -44,9 +44,9 @@ public class Roads implements ForwardingProfile.FeaturePostProcessor, Forwarding
             } else if (tipas == 14) {
                 addRoad("ferry", 13, sf, features);
             } else {
-                addRoad("unclassified", 15, sf, features);
+                addRoad("unclassified", 14, sf, features);
             }
-            
+
         }
     }
 
@@ -65,12 +65,16 @@ public class Roads implements ForwardingProfile.FeaturePostProcessor, Forwarding
 
     @Override
     public List<VectorTile.Feature> postProcess(int zoom, List<VectorTile.Feature> items) {
-         return FeatureMerge.mergeLineStrings(
-                 items,
-                 0.5, // after merging, remove lines that are still less than 0.5px long
-                 0.1, // simplify output linestrings using a 0.1px tolerance
-                 4.0 // remove any detail more than 4px outside the tile boundary
-         );
+        if (zoom < 14) {
+            return FeatureMerge.mergeLineStrings(
+                    items,
+                    0.5, // after merging, remove lines that are still less than 0.5px long
+                    0.1, // simplify output linestrings using a 0.1px tolerance
+                    4.0 // remove any detail more than 4px outside the tile boundary
+            );
+        } else {
+            return items;
+        }
     }
 
     @Override
