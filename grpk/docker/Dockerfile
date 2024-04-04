@@ -2,7 +2,9 @@ FROM gradle:8.7.0-jdk21 as build
 
 WORKDIR /app
 
-COPY gradle gradlew gradlew.bat settings.gradle.kts gradle.properties grpk ./
+COPY gradlew gradlew.bat settings.gradle.kts gradle.properties ./
+COPY gradle ./gradle
+COPY grpk ./grpk
 
 RUN ./gradlew run
 

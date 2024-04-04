@@ -64,5 +64,5 @@ jobs:
           docker-image: ghcr.io/biip-grpk-martin-tile-server
           docker-context: .
           file: grpk/docker/Dockerfile
-          environment: stable
+          environment: main
           push: false
