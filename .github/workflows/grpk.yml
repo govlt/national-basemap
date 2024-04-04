@@ -80,7 +80,7 @@ jobs:
       - name: Build & tag docker image
         uses: AplinkosMinisterija/reusable-workflows/.github/actions/docker-build-tag-push@main
         with:
-          docker-image: ghcr.io/biip-grpk-basemap
+          docker-image: ghcr.io/aplinkosministerija/biip-grpk-basemap
           docker-context: .
           file: grpk/docker/Dockerfile
           environment: main
