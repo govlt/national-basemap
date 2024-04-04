@@ -46,23 +46,3 @@ jobs:
         working-directory: grpk/styles/geoportal
         run: |
           for file in *.json; do [[ -f "$file" ]] && echo "Validating file: $file" && gl-style-validate "$file"; done
-
-  validate-docker-build:
-    name: Validate if docker image builds
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    permissions:
-      contents: read
-      packages: read
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Build & tag docker image
-        uses: AplinkosMinisterija/reusable-workflows/.github/actions/docker-build-tag-push@main
-        with:
-          docker-image: ghcr.io/biip-grpk-martin-tile-server
-          docker-context: .
-          file: grpk/docker/Dockerfile
-          environment: main
-          push: false
