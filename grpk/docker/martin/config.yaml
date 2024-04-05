@@ -5,6 +5,8 @@ pmtiles:
 sprites:
   sources:
     geoportal: /opt/grpk/styles/geoportal/sprites
+    open-map-tiles: /opt/grpk/styles/open-map-tiles/sprites
 
 fonts:
   - /opt/grpk/styles/geoportal/fonts
+  - /opt/grpk/styles/open-map-tiles/fonts
