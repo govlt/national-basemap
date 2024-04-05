@@ -39,6 +39,7 @@ public class Basemap extends ForwardingProfile {
                         SOURCE_GRPK,
                         Arrays.asList(
                                 new Landcover(),
+                                new Park(),
                                 new Boundary(),
                                 new Building(),
                                 new Place(),
