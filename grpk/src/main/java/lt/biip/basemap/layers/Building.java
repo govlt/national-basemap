@@ -9,7 +9,7 @@ import com.onthegomap.planetiler.reader.SourceFeature;
 
 import java.util.List;
 
-public class Buildings implements ForwardingProfile.FeaturePostProcessor, ForwardingProfile.FeatureProcessor {
+public class Building implements ForwardingProfile.FeaturePostProcessor, ForwardingProfile.FeatureProcessor {
 
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
@@ -31,6 +31,6 @@ public class Buildings implements ForwardingProfile.FeaturePostProcessor, Forwar
 
     @Override
     public String name() {
-        return "pastat";
+        return "building";
     }
 }
