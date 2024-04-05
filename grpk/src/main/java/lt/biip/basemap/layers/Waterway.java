@@ -26,20 +26,22 @@ public class Waterway implements ForwardingProfile.FeaturePostProcessor, Forward
 
     void addWaterwayLine(String attrClass, SourceFeature sf, FeatureCollector features) {
         var length = (int) sf.getLong("PLOTIS");
+        var name = sf.getString("VARDAS", "");
+        var minZoom = name.isBlank() ? 12 : 9;
 
         features.line(this.name())
                 .setAttr("class", attrClass)
-                .setAttr("name", sf.getTag("VARDAS"))
-                .setAttr("gkodas", sf.getTag("GKODAS"))
+                .setAttr("intermittent", 0)
+                .setAttr("name", name)
                 .setMinPixelSize(0)
                 .setPixelTolerance(0.0)
-                .setMinZoom(9)
+                .setMinZoom(minZoom)
                 .setSortKeyDescending(length);
     }
 
     @Override
     public List<VectorTile.Feature> postProcess(int zoom, List<VectorTile.Feature> items) {
-        if (zoom >= 14) {
+        if (zoom >= 13) {
             return items;
         }
 
