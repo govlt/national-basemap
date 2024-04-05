@@ -9093,7 +9093,7 @@
             ]
           ]
         },
-        "text-field": "{name:latin}\n{name:nonlatin}",
+        "text-field": "{name}",
         "visibility": "visible",
         "symbol-spacing": 400,
         "text-max-width": 5,
@@ -9126,7 +9126,7 @@
           "Noto Sans Bold"
         ],
         "text-size": 12,
-        "text-field": "{name:latin}\n{name:nonlatin}",
+        "text-field": "{name}",
         "visibility": "visible",
         "text-max-width": 5,
         "symbol-placement": "line"
@@ -9158,7 +9158,7 @@
           "Noto Sans Regular"
         ],
         "text-size": 11,
-        "text-field": "{name:latin}\n{name:nonlatin}",
+        "text-field": "{name}",
         "visibility": "visible",
         "text-max-width": 5
       },
@@ -9270,7 +9270,7 @@
             "shop"
           ]
         ],
-        "text-field": "{name:latin}\n{name:nonlatin}",
+        "text-field": "{name}",
         "visibility": "visible",
         "text-anchor": "top",
         "text-offset": [
@@ -9351,7 +9351,7 @@
             "subclass"
           ]
         ],
-        "text-field": "{name:latin}\n{name:nonlatin}",
+        "text-field": "{name}",
         "visibility": "visible",
         "text-anchor": "top",
         "text-offset": [
@@ -9405,7 +9405,7 @@
           ]
         },
         "icon-image": "{subclass}",
-        "text-field": "{name:latin}\n{name:nonlatin}",
+        "text-field": "{name}",
         "visibility": "visible",
         "text-anchor": "top",
         "text-offset": [
@@ -9451,7 +9451,7 @@
           "Noto Sans Regular"
         ],
         "text-size": 11,
-        "text-field": "{name:latin}\n{name:nonlatin}",
+        "text-field": "{name}",
         "visibility": "visible",
         "icon-anchor": "bottom",
         "icon-offset": [
@@ -9508,7 +9508,7 @@
         ],
         "text-size": 11,
         "icon-image": "{subclass}",
-        "text-field": "{name:latin}\n{name:nonlatin}",
+        "text-field": "{name}",
         "visibility": "visible",
         "icon-anchor": "bottom",
         "icon-offset": [
@@ -9575,7 +9575,7 @@
           ]
         },
         "icon-image": "{subclass}",
-        "text-field": "{name:latin}\n{name:nonlatin}",
+        "text-field": "{name}",
         "visibility": "visible",
         "text-anchor": "top",
         "text-offset": [
@@ -9637,7 +9637,7 @@
             ],
             [
               16,
-              "{name:latin}\n{name:nonlatin}"
+              "{name}"
             ]
           ]
         },
@@ -9694,7 +9694,7 @@
           ]
         },
         "icon-image": "golf",
-        "text-field": "{name:latin}\n{name:nonlatin}",
+        "text-field": "{name}",
         "visibility": "visible",
         "text-anchor": "top",
         "text-offset": [
@@ -9748,7 +9748,7 @@
           ]
         },
         "icon-image": "{subclass}",
-        "text-field": "{name:latin}\n{name:nonlatin}",
+        "text-field": "{name}",
         "visibility": "visible",
         "text-anchor": "top",
         "text-offset": [
@@ -9803,7 +9803,7 @@
           ]
         },
         "icon-image": "ferry",
-        "text-field": "{name:latin}\n{name:nonlatin}",
+        "text-field": "{name}",
         "visibility": "visible",
         "text-anchor": "top",
         "text-offset": [
@@ -9862,7 +9862,7 @@
           ]
         },
         "icon-image": "{subclass}",
-        "text-field": "{name:latin}\n{name:nonlatin}",
+        "text-field": "{name}",
         "visibility": "visible",
         "text-anchor": "top",
         "text-offset": [
@@ -9921,7 +9921,7 @@
           ]
         },
         "icon-image": "{subclass}",
-        "text-field": "{name:latin}\n{name:nonlatin}",
+        "text-field": "{name}",
         "visibility": "visible",
         "text-anchor": "top",
         "text-offset": [
@@ -9995,7 +9995,7 @@
             ""
           ]
         ],
-        "text-field": "{name:latin}\n{name:nonlatin}",
+        "text-field": "{name}",
         "visibility": "visible",
         "text-anchor": "top",
         "text-offset": [
@@ -10062,7 +10062,7 @@
           ]
         },
         "icon-image": "{subclass}",
-        "text-field": "{name:latin}\n{name:nonlatin}",
+        "text-field": "{name}",
         "visibility": "visible",
         "text-anchor": "top",
         "text-offset": [
@@ -10127,7 +10127,7 @@
           ]
         },
         "icon-image": "{subclass}",
-        "text-field": "{name:latin}\n{name:nonlatin}",
+        "text-field": "{name}",
         "visibility": "visible",
         "text-anchor": "top",
         "text-offset": [
@@ -10189,7 +10189,7 @@
             ],
             [
               16,
-              "{name:latin}\n{name:nonlatin}"
+              "{name}"
             ]
           ]
         },
@@ -10251,7 +10251,7 @@
           ]
         },
         "icon-image": "{subclass}",
-        "text-field": "{name:latin}\n{name:nonlatin}",
+        "text-field": "{name}",
         "visibility": "visible",
         "text-anchor": "top",
         "text-offset": [
@@ -10315,7 +10315,7 @@
             ],
             [
               16,
-              "{name:latin}\n{name:nonlatin}"
+              "{name}"
             ]
           ]
         },
@@ -10372,7 +10372,7 @@
           ]
         },
         "icon-image": "camping",
-        "text-field": "{name:latin}\n{name:nonlatin}",
+        "text-field": "{name}",
         "visibility": "visible",
         "text-anchor": "top",
         "text-offset": [
@@ -10434,7 +10434,7 @@
             ],
             [
               18,
-              "{name:latin}\n{name:nonlatin}"
+              "{name}"
             ]
           ]
         },
@@ -10501,7 +10501,7 @@
             ],
             [
               16,
-              "{name:latin}\n{name:nonlatin}"
+              "{name}"
             ]
           ]
         },
@@ -10556,7 +10556,7 @@
           ]
         },
         "icon-image": "bus_stop.12",
-        "text-field": "{name:latin}\n{name:nonlatin}",
+        "text-field": "{name}",
         "visibility": "visible",
         "icon-anchor": "bottom",
         "text-anchor": "top",
@@ -10606,7 +10606,7 @@
         ],
         "text-size": 11,
         "icon-image": "{subclass}",
-        "text-field": "{name:latin}\n{name:nonlatin}",
+        "text-field": "{name}",
         "visibility": "visible",
         "icon-anchor": "bottom",
         "icon-offset": [
@@ -10673,7 +10673,7 @@
             ]
           ]
         },
-        "text-field": "{name:latin}\n{name:nonlatin}",
+        "text-field": "{name}",
         "visibility": "visible",
         "text-anchor": "top",
         "text-padding": 2,
@@ -10722,7 +10722,7 @@
             ]
           ]
         },
-        "text-field": "{name:latin}\n{name:nonlatin}",
+        "text-field": "{name}",
         "visibility": "visible",
         "text-anchor": "top",
         "text-offset": [
@@ -10772,7 +10772,7 @@
         ],
         "text-size": 11,
         "icon-image": "square_train",
-        "text-field": "{name:latin}\n{name:nonlatin}",
+        "text-field": "{name}",
         "visibility": "visible",
         "icon-anchor": "bottom",
         "icon-offset": [
@@ -11387,7 +11387,7 @@
             ],
             [
               11,
-              "{name:latin}\n{name:nonlatin}"
+              "{name}"
             ]
           ]
         },
@@ -11526,7 +11526,7 @@
             ]
           ]
         },
-        "text-field": "{name:latin}\n{name:nonlatin}",
+        "text-field": "{name}",
         "visibility": "visible",
         "symbol-spacing": 150,
         "text-max-width": 10,
@@ -11876,7 +11876,7 @@
             ]
           ]
         },
-        "text-field": "{name:latin}\n{name:nonlatin}",
+        "text-field": "{name}",
         "visibility": "visible",
         "text-max-width": 8
       },
@@ -11918,7 +11918,7 @@
             ]
           ]
         },
-        "text-field": "{name:latin}\n{name:nonlatin}",
+        "text-field": "{name}",
         "visibility": "visible",
         "text-anchor": "bottom",
         "text-offset": [
@@ -12028,7 +12028,7 @@
             ]
           ]
         },
-        "text-field": "{name:latin}\n{name:nonlatin}",
+        "text-field": "{name}",
         "visibility": "visible",
         "icon-offset": [
           0,
@@ -12111,7 +12111,7 @@
             ]
           ]
         },
-        "text-field": "{name:latin}\n{name:nonlatin}",
+        "text-field": "{name}",
         "visibility": "visible",
         "icon-offset": [
           0,
