@@ -27,7 +27,9 @@ public class Boundary implements ForwardingProfile.FeaturePostProcessor, Forward
     void addBoundaryFeature(int adminLevel, SourceFeature sf, FeatureCollector features) {
         features.line(this.name())
                 .setAttr("admin_level", adminLevel)
-                .setAttr("gkodas", sf.getTag("GKODAS"))
+                .setAttr("disputed", 0)
+                // TODO determine if border is maritime or not
+                .setAttr("maritime", 0)
                 .setAttr("name", sf.getTag("VARDAS"));
     }
 
