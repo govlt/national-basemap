@@ -47,7 +47,8 @@ public class Basemap extends ForwardingProfile {
                                 new Landuse(),
                                 new Waterway(),
                                 new Water(),
-                                new Aeroway()
+                                new Aeroway(),
+                                new POI()
                         )
                 ),
                 new SourceProcessors(
