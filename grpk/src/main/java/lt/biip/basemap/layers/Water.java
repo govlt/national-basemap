@@ -35,8 +35,9 @@ public class Water implements ForwardingProfile.FeaturePostProcessor, Forwarding
 
     @Override
     public List<VectorTile.Feature> postProcess(int zoom, List<VectorTile.Feature> items) throws GeometryException {
-        if (zoom >= 14)
+        if (zoom >= 14) {
             return items;
+        }
 
         return FeatureMerge.mergeNearbyPolygons(items, 3.125, 3.125, 0.5, 0.5);
     }
