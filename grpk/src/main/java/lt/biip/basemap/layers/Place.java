@@ -15,7 +15,7 @@ public class Place implements ForwardingProfile.FeatureProcessor {
             var code = sf.getString("GKODAS");
 
             // TODO: add ANTR at higher zoom levels
-            if (sf.getString("ANTR") == null) {
+            if (sf.getString("ANTR", "").isEmpty()) {
                 switch (code) {
                     case "uas1" -> addFeature("country", 0, sf, features);
                     case "uas2" -> addFeature("province", 4, sf, features);
@@ -30,9 +30,18 @@ public class Place implements ForwardingProfile.FeatureProcessor {
     }
 
     void addFeature(String attrClass, int minZoom, SourceFeature sf, FeatureCollector features) {
+        var capital = switch (sf.getString("ADM_TIP")) {
+            case "SOST" -> 2;
+            case "APSK" -> 4;
+            case "SAV" -> 5;
+            case "SEN" -> 6;
+            default -> null;
+        };
+
         features.point("place")
                 .setAttr("class", attrClass)
                 .setAttr("name", sf.getTag("VARDAS"))
+                .setAttr("capital", capital)
                 .setAttr("gkodas", sf.getTag("GKODAS"))
                 .setAttr("adm_tip", sf.getTag("ADM_TIP"))
                 .setMinZoom(minZoom);
