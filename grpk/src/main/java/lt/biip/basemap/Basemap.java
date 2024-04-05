@@ -52,7 +52,7 @@ public class Basemap extends ForwardingProfile {
                 new SourceProcessors(
                         SOURCE_AR,
                         List.of(
-                                new HouseNumbers()
+                                new HouseNumber()
                         )
                 ));
 
