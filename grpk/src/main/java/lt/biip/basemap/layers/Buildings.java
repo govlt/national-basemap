@@ -22,7 +22,7 @@ public class Buildings implements ForwardingProfile.FeaturePostProcessor, Forwar
 
     @Override
     public List<VectorTile.Feature> postProcess(int zoom, List<VectorTile.Feature> items) throws GeometryException {
-        if (zoom >= 15) {
+        if (zoom >= 14) {
             return items;
         }
 
