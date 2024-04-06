@@ -11,6 +11,7 @@ public class HouseNumber implements ForwardingProfile.FeatureProcessor {
     public void processFeature(SourceFeature sf, FeatureCollector features) {
         if (sf.getSource().equals("ar") && sf.isPoint()) {
             features.point("housenumber")
+                    .setBufferPixels(8)
                     .setAttr("housenumber", sf.getTag("NR"))
                     .setMinZoom(14);
         }
