@@ -18,6 +18,7 @@ repositories {
 
 dependencies {
     implementation(libs.planetiler)
+    implementation(libs.geotoolsProcessGeometry)
 }
 
 application {

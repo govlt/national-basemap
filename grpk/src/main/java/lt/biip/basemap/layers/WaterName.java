@@ -3,25 +3,39 @@ package lt.biip.basemap.layers;
 
 import com.onthegomap.planetiler.FeatureCollector;
 import com.onthegomap.planetiler.ForwardingProfile;
-import com.onthegomap.planetiler.VectorTile;
+import com.onthegomap.planetiler.geo.GeometryException;
 import com.onthegomap.planetiler.reader.SourceFeature;
+import org.geotools.process.geometry.CenterLine;
 
-import java.util.List;
-
-public class WaterName implements ForwardingProfile.FeaturePostProcessor, ForwardingProfile.FeatureProcessor {
+public class WaterName implements ForwardingProfile.FeatureProcessor {
 
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
-        // TODO: add water_name layer https://openmaptiles.org/schema/#water_name
+        if (sf.getSource().equals("grpk") &&
+                sf.getSourceLayer().startsWith("PLOTAI") &&
+                sf.canBePolygon() &&
+                !sf.getString("VARDAS", "").isBlank()) {
+            var code = sf.getString("GKODAS");
+
+            switch (code) {
+                case "hd3", "hd4", "hd9" -> addWaterCenterLine("lake", 12, sf, features);
+                case "hd5" -> addWaterCenterLine("ocean", 6, sf, features);
+            }
+        }
     }
 
-    @Override
-    public List<VectorTile.Feature> postProcess(int zoom, List<VectorTile.Feature> items) {
-        return items;
-    }
+    void addWaterCenterLine(String clazz, int minZoom, SourceFeature sf, FeatureCollector features) {
+        try {
+            var geom = CenterLine.getCenterLine(sf.polygon(), 1);
 
-    @Override
-    public String name() {
-        return "water_name";
+            features.geometry("water_name", geom)
+                    .setAttr("class", clazz)
+                    .setAttr("name", sf.getTag("VARDAS"))
+                    .setMinPixelSize(0.0)
+                    .setPixelTolerance(0.0)
+                    .setMinZoom(minZoom);
+        } catch (GeometryException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
