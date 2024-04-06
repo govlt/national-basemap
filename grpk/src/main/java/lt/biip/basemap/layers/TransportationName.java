@@ -2,6 +2,7 @@ package lt.biip.basemap.layers;
 
 
 import com.onthegomap.planetiler.FeatureCollector;
+import com.onthegomap.planetiler.FeatureMerge;
 import com.onthegomap.planetiler.ForwardingProfile;
 import com.onthegomap.planetiler.VectorTile;
 import com.onthegomap.planetiler.reader.SourceFeature;
@@ -12,12 +13,21 @@ public class TransportationName implements ForwardingProfile.FeaturePostProcesso
 
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
-        // TODO: add mountain_peak layer https://openmaptiles.org/schema/#transportation_name
+        // Currently TransportationName processFeature is handled inside Transportation
     }
 
     @Override
     public List<VectorTile.Feature> postProcess(int zoom, List<VectorTile.Feature> items) {
-        return items;
+        if (zoom >= 14) {
+            return items;
+        }
+
+        return FeatureMerge.mergeLineStrings(
+                items,
+                0.5, // after merging, remove lines that are still less than 0.5px long
+                0.1, // simplify output linestrings using a 0.1px tolerance
+                4.0 // remove any detail more than 4px outside the tile boundary
+        );
     }
 
     @Override

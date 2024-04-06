@@ -12,6 +12,26 @@ import java.util.List;
 
 public class Transportation implements ForwardingProfile.FeaturePostProcessor, ForwardingProfile.FeatureProcessor {
 
+    static final String FIELD_CLASS = "class";
+    static final String FIELD_EXPRESSWAY = "expressway";
+    static final String FIELD_REF = "ref";
+    static final String FIELD_REF_LENGTH = "ref_length";
+    static final String FIELD_NAME = "name";
+    static final String FIELD_LEVEL = "level";
+
+    public static final String CLASS_MOTORWAY = "motorway";
+    public static final String CLASS_TRUNK = "trunk";
+    public static final String CLASS_PRIMARY = "primary";
+    public static final String CLASS_SECONDARY = "secondary";
+    public static final String CLASS_TERTIARY = "tertiary";
+    public static final String CLASS_RESIDENTIAL = "residential";
+    public static final String CLASS_LINK = "link";
+    public static final String CLASS_SERVICE = "service";
+    public static final String CLASS_PATH = "path";
+    public static final String CLASS_FERRY = "ferry";
+    public static final String CLASS_UNCLASSIFIED = "unclassified";
+    public static final String CLASS_TRACK = "track";
+
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
         if (sf.getSource().equals("grpk") && sf.canBeLine()) {
@@ -21,56 +41,73 @@ public class Transportation implements ForwardingProfile.FeaturePostProcessor, F
                 var danga = sf.getString("DANGA");
 
                 if (tipas == 1) {
-                    addTransportationFeature("motorway", 2, sf, features);
+                    addTransportationFeature(CLASS_MOTORWAY, 2, sf, features);
                 } else if (tipas == 5) {
-                    addTransportationFeature("trunk", 4, sf, features);
+                    addTransportationFeature(CLASS_TRUNK, 4, sf, features);
                 } else if (tipas == 2) {
-                    addTransportationFeature("primary", 4, sf, features);
+                    addTransportationFeature(CLASS_PRIMARY, 4, sf, features);
                 } else if (tipas == 3) {
-                    addTransportationFeature("secondary", 8, sf, features);
+                    addTransportationFeature(CLASS_SECONDARY, 8, sf, features);
                 } else if (tipas == 4) {
-                    addTransportationFeature("tertiary", 8, sf, features);
+                    addTransportationFeature(CLASS_TERTIARY, 8, sf, features);
                 } else if (tipas == 6) {
-                    addTransportationFeature("residential", 12, sf, features);
+                    addTransportationFeature(CLASS_RESIDENTIAL, 12, sf, features);
                 } else if (tipas == 7 && paskirtis.equals("JUNG")) {
-                    addTransportationFeature("link", 13, sf, features);
+                    addTransportationFeature(CLASS_LINK, 13, sf, features);
                 } else if (tipas == 7 || tipas == 9) {
-                    addTransportationFeature("service", 13, sf, features);
+                    addTransportationFeature(CLASS_SERVICE, 13, sf, features);
                 } else if (tipas == 8 && danga.equals("Ž")) {
-                    addTransportationFeature("path", 14, sf, features);
+                    addTransportationFeature(CLASS_PATH, 14, sf, features);
                 } else if (tipas == 8) {
-                    addTransportationFeature("service", 13, sf, features);
+                    addTransportationFeature(CLASS_SERVICE, 13, sf, features);
                 } else if (tipas == 10 || tipas == 11 || tipas == 13) {
-                    addTransportationFeature("path", 14, sf, features);
+                    addTransportationFeature(CLASS_PATH, 14, sf, features);
                 } else if (tipas == 14) {
-                    addTransportationFeature("ferry", 13, sf, features);
+                    addTransportationFeature(CLASS_FERRY, 13, sf, features);
                 } else {
-                    addTransportationFeature("unclassified", 14, sf, features);
+                    addTransportationFeature(CLASS_UNCLASSIFIED, 14, sf, features);
                 }
             } else if (sf.getSourceLayer().equals("GELEZINK")) {
                 var gkodas = sf.getString("GKODAS");
                 var tipas = sf.getLong("TIPAS");
 
                 if (Arrays.asList("gz1", "gz2", "gz1gz2").contains(gkodas) && tipas == 1) {
-                    addTransportationFeature("track", 11, sf, features);
+                    addTransportationFeature(CLASS_TRACK, 11, sf, features);
                 } else {
-                    addTransportationFeature("track", 8, sf, features);
+                    addTransportationFeature(CLASS_TRACK, 8, sf, features);
                 }
             }
         }
     }
 
-    public void addTransportationFeature(String attrClass, int minZoom, SourceFeature sf, FeatureCollector features) {
+    public void addTransportationFeature(String clazz, int minZoom, SourceFeature sf, FeatureCollector features) {
+        var level = (int) sf.getLong("LYGMUO");
+        var name = sf.getString("VARDAS");
+
+        var expressway = clazz.equals(CLASS_MOTORWAY);
+
+        var ref = expressway ? sf.getString("NUMERIS") : null;
+        var refLength = ref != null ? ref.length() : null;
+
+
         features.line(this.name())
-                .setAttr("class", attrClass)
-                .setAttr("ref", sf.getTag("NUMERIS"))
-                .setAttr("name", sf.getTag("VARDAS"))
-                .setAttr("level", sf.getTag("LYGMUO"))
-                .setAttr("kind_detail", sf.getTag("GKODAS"))
+                .setAttr(FIELD_CLASS, clazz)
+                .setAttr(FIELD_EXPRESSWAY, expressway)
+                .setAttr(FIELD_LEVEL, level)
                 .setAttr("minZoom", minZoom)
                 .setMinZoom(minZoom)
                 .setMinPixelSize(0.0)
                 .setPixelTolerance(0.0);
+
+        if (ref != null || name != null) {
+            features.line("transportation_name")
+                    .setAttr(FIELD_CLASS, clazz)
+                    .setAttr(FIELD_REF, ref)
+                    .setAttr(FIELD_REF_LENGTH, refLength)
+                    .setAttr(FIELD_NAME, name)
+                    .setAttr(FIELD_LEVEL, level)
+                    .setMinZoom(Math.min(minZoom + 2, 14));
+        }
     }
 
     @Override
