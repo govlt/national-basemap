@@ -38,17 +38,21 @@ public class Basemap extends ForwardingProfile {
                 new SourceProcessors(
                         SOURCE_GRPK,
                         Arrays.asList(
-                                new Landcover(),
-                                new Park(),
+                                new AerodromeLabel(),
+                                new Aeroway(),
                                 new Boundary(),
                                 new Building(),
-                                new Place(),
-                                new Transportation(),
+                                new Landcover(),
                                 new Landuse(),
-                                new Waterway(),
+                                new MountainPeak(),
+                                new Park(),
+                                new Place(),
+                                new POI(),
+                                new Transportation(),
+                                new TransportationName(),
                                 new Water(),
-                                new Aeroway(),
-                                new POI()
+                                new WaterName(),
+                                new Waterway()
                         )
                 ),
                 new SourceProcessors(
