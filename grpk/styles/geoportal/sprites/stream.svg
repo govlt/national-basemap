@@ -1,1 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 104 20" height="20" width="104"><title>stream.svg</title><rect fill="none" x="0" y="0" width="104" height="20"></rect><path fill="#002d6e" transform="translate(2 2)" d="M 10,13 6,10 v 2 H 1 v 2 h 5 v 2 z"></path></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="104" height="20" viewBox="0 0 104 20"><title>stream.svg</title><rect width="104" height="20" x="0" y="0" fill="none"/><path fill="#002d6e" d="M 10,13 6,10 v 2 H 1 v 2 h 5 v 2 z" transform="translate(2 2)"/></svg>
