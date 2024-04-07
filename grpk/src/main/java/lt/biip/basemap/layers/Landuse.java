@@ -18,6 +18,7 @@ public class Landuse implements ForwardingProfile.FeaturePostProcessor, Forwardi
 
             switch (code) {
                 case "vp1" -> addPolygon("cemetery", features);
+                case "vk1" -> addPolygon("stadium", features);
                 case "pu0" -> addPolygon("residential", features);
                 case "pu3" -> addPolygon("industrial", features);
             }
