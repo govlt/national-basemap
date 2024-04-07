@@ -6,6 +6,7 @@ import com.onthegomap.planetiler.ForwardingProfile;
 import com.onthegomap.planetiler.VectorTile;
 import com.onthegomap.planetiler.geo.GeometryException;
 import com.onthegomap.planetiler.reader.SourceFeature;
+import lt.biip.basemap.constants.Source;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public class Water implements ForwardingProfile.FeaturePostProcessor, Forwarding
 
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
-        if (sf.getSource().equals("grpk") && sf.getSourceLayer().startsWith("PLOTAI") && sf.canBePolygon()) {
+        if (sf.getSource().equals(Source.GRPK) && sf.getSourceLayer().startsWith("PLOTAI") && sf.canBePolygon()) {
             var code = sf.getString("GKODAS");
 
             switch (code) {

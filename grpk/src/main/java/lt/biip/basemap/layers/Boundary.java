@@ -5,6 +5,7 @@ import com.onthegomap.planetiler.FeatureMerge;
 import com.onthegomap.planetiler.ForwardingProfile;
 import com.onthegomap.planetiler.VectorTile;
 import com.onthegomap.planetiler.reader.SourceFeature;
+import lt.biip.basemap.constants.Source;
 import lt.biip.basemap.utils.LanguageUtils;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public class Boundary implements ForwardingProfile.FeaturePostProcessor, Forward
 
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
-        if (sf.getSource().equals("grpk") && sf.getSourceLayer().equals("RIBOS") && sf.canBeLine()) {
+        if (sf.getSource().equals(Source.GRPK) && sf.getSourceLayer().equals("RIBOS") && sf.canBeLine()) {
             var code = sf.getString("GKODAS");
 
             switch (code) {

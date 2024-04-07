@@ -6,6 +6,7 @@ import com.onthegomap.planetiler.FeatureMerge;
 import com.onthegomap.planetiler.ForwardingProfile;
 import com.onthegomap.planetiler.VectorTile;
 import com.onthegomap.planetiler.reader.SourceFeature;
+import lt.biip.basemap.constants.Source;
 import lt.biip.basemap.utils.LanguageUtils;
 
 import java.util.Arrays;
@@ -20,7 +21,7 @@ public class Transportation implements ForwardingProfile.FeaturePostProcessor, F
 
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
-        if (sf.getSource().equals("grpk") && sf.canBeLine()) {
+        if (sf.getSource().equals(Source.GRPK) && sf.canBeLine()) {
             if (sf.getSourceLayer().equals("KELIAI")) {
                 var paskirtis = sf.getString("PASKIRTIS");
                 var tipas = sf.getLong("TIPAS");

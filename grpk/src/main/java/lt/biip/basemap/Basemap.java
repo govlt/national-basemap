@@ -3,6 +3,7 @@ package lt.biip.basemap;
 import com.onthegomap.planetiler.ForwardingProfile;
 import com.onthegomap.planetiler.Planetiler;
 import com.onthegomap.planetiler.config.Arguments;
+import lt.biip.basemap.constants.Source;
 import lt.biip.basemap.layers.*;
 
 import java.nio.file.Path;
@@ -12,19 +13,17 @@ import java.util.List;
 
 public class Basemap extends ForwardingProfile {
 
-    public static final String SOURCE_GRPK = "grpk";
-    public static final String SOURCE_AR = "ar";
 
     public static void main(String[] args) throws Exception {
         Planetiler.create(Arguments.fromConfigFile(Path.of("config.properties")))
                 .setProfile(new Basemap())
                 .addShapefileSource(
-                        SOURCE_GRPK,
+                        Source.GRPK,
                         Path.of("data", "sources", "grpk-espg-4326.shp.zip"),
                         "https://cdn.biip.lt/tiles/sources/grpk/grpk-espg-4326.shp.zip"
                 )
                 .addShapefileSource(
-                        SOURCE_AR,
+                        Source.AR,
                         Path.of("data", "sources", "ar-espg-4326.shp.zip"),
                         "https://cdn.biip.lt/tiles/sources/registru-centras/ar-espg-4326.shp.zip"
                 )
@@ -36,7 +35,7 @@ public class Basemap extends ForwardingProfile {
     public Basemap() {
         var handlers = Arrays.asList(
                 new SourceProcessors(
-                        SOURCE_GRPK,
+                        Source.GRPK,
                         Arrays.asList(
                                 new AerodromeLabel(),
                                 new Aeroway(),
@@ -56,7 +55,7 @@ public class Basemap extends ForwardingProfile {
                         )
                 ),
                 new SourceProcessors(
-                        SOURCE_AR,
+                        Source.AR,
                         List.of(
                                 new HouseNumber()
                         )
