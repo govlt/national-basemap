@@ -18,7 +18,8 @@ public class Landcover implements ForwardingProfile.FeaturePostProcessor, Forwar
 
             switch (code) {
                 case "hd6" -> addPolygon("wetland", "wetland", 10, features);
-                case "sd4" -> addPolygon("farmland", "meadow", 10, features);
+                case "sd2", "sd4" -> addPolygon("farmland", "meadow", 10, features);
+                case "sd11" -> addPolygon("farmland", "farmland", 10, features);
                 case "ms4" -> addPolygon("farmland", "allotments", 10, features);
                 case "sd42" -> addPolygon("sand", null, 10, features);
                 case "ms0", "sd15" -> addPolygon("wood", "forest", 2, features);
