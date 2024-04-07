@@ -27,11 +27,10 @@ public class Landcover implements ForwardingProfile.FeaturePostProcessor, Forwar
     }
 
 
-    public void addPolygon(String attrClass, String subclass, int minZoom, SourceFeature sf, FeatureCollector features) {
+    public void addPolygon(String clazz, String subclass, int minZoom, SourceFeature sf, FeatureCollector features) {
         features.polygon(this.name())
-                .setAttr("class", attrClass)
-                .setAttr("name", sf.getTag("VARDAS"))
-                .setAttr("gkodas", sf.getTag("GKODAS"))
+                .setAttr("class", clazz)
+                .setAttr("subclass", subclass)
                 .setMinZoom(minZoom);
     }
 

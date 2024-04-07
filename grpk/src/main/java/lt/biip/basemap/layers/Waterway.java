@@ -5,6 +5,7 @@ import com.onthegomap.planetiler.FeatureMerge;
 import com.onthegomap.planetiler.ForwardingProfile;
 import com.onthegomap.planetiler.VectorTile;
 import com.onthegomap.planetiler.reader.SourceFeature;
+import lt.biip.basemap.utils.LanguageUtils;
 
 import java.util.List;
 
@@ -24,15 +25,15 @@ public class Waterway implements ForwardingProfile.FeaturePostProcessor, Forward
         }
     }
 
-    void addWaterwayLine(String attrClass, SourceFeature sf, FeatureCollector features) {
+    void addWaterwayLine(String clazz, SourceFeature sf, FeatureCollector features) {
         var length = (int) sf.getLong("PLOTIS");
         var name = sf.getString("VARDAS", "");
         var minZoom = name.isBlank() ? 12 : 9;
 
         features.line(this.name())
-                .setAttr("class", attrClass)
+                .setAttr("class", clazz)
                 .setAttr("intermittent", 0)
-                .setAttr("name", name)
+                .putAttrs(LanguageUtils.getNames(sf.tags()))
                 .setMinPixelSize(0)
                 .setPixelTolerance(0.0)
                 .setMinZoom(minZoom)

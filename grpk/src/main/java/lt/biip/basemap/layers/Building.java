@@ -14,9 +14,7 @@ public class Building implements ForwardingProfile.FeaturePostProcessor, Forward
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
         if (sf.getSource().equals("grpk") && sf.getSourceLayer().equals("PASTAT") && sf.canBePolygon()) {
-            features.polygon(this.name())
-                    .setAttr("gkodas", sf.getTag("GKODAS"))
-                    .setMinZoom(11);
+            features.polygon(this.name()).setMinZoom(11);
         }
     }
 

@@ -17,20 +17,18 @@ public class Water implements ForwardingProfile.FeaturePostProcessor, Forwarding
             var code = sf.getString("GKODAS");
 
             switch (code) {
-                case "hd1", "hd2" -> addWaterPolygon("river", sf, features);
-                case "hd3", "hd4", "hd9" -> addWaterPolygon("lake", sf, features);
-                case "hd5" -> addWaterPolygon("ocean", sf, features);
+                case "hd1", "hd2" -> addWaterPolygon("river", 6, sf, features);
+                case "hd3", "hd4", "hd9" -> addWaterPolygon("lake", 6, sf, features);
+                case "hd5" -> addWaterPolygon("ocean", 0, sf, features);
             }
         }
     }
 
 
-    public void addWaterPolygon(String attrClass, SourceFeature sf, FeatureCollector features) {
+    public void addWaterPolygon(String clazz, int minZoom, SourceFeature sf, FeatureCollector features) {
         features.polygon(this.name())
-                .setAttr("class", attrClass)
-                .setAttr("name", sf.getTag("VARDAS"))
-                .setAttr("gkodas", sf.getTag("GKODAS"))
-                .setMinZoom(2);
+                .setAttr("class", clazz)
+                .setMinZoom(minZoom);
     }
 
     @Override

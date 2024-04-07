@@ -4,6 +4,7 @@ import com.onthegomap.planetiler.FeatureCollector;
 import com.onthegomap.planetiler.ForwardingProfile;
 import com.onthegomap.planetiler.VectorTile;
 import com.onthegomap.planetiler.reader.SourceFeature;
+import lt.biip.basemap.utils.LanguageUtils;
 
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class Place implements ForwardingProfile.FeatureProcessor {
         }
     }
 
-    void addFeature(String attrClass, int minZoom, SourceFeature sf, FeatureCollector features) {
+    void addFeature(String clazz, int minZoom, SourceFeature sf, FeatureCollector features) {
         var capital = switch (sf.getString("ADM_TIP")) {
             case "SOST" -> 2;
             case "APSK" -> 4;
@@ -39,8 +40,8 @@ public class Place implements ForwardingProfile.FeatureProcessor {
         };
 
         features.point("place")
-                .setAttr("class", attrClass)
-                .setAttr("name", sf.getTag("VARDAS"))
+                .putAttrs(LanguageUtils.getNames(sf.tags()))
+                .setAttr("class", clazz)
                 .setAttr("capital", capital)
                 .setAttr("gkodas", sf.getTag("GKODAS"))
                 .setAttr("adm_tip", sf.getTag("ADM_TIP"))

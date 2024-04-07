@@ -3,6 +3,7 @@ package lt.biip.basemap.layers;
 import com.onthegomap.planetiler.FeatureCollector;
 import com.onthegomap.planetiler.ForwardingProfile;
 import com.onthegomap.planetiler.reader.SourceFeature;
+import lt.biip.basemap.utils.LanguageUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -37,7 +38,7 @@ public class AerodromeLabel implements ForwardingProfile.FeatureProcessor {
 
             features.centroid("aerodrome_label")
                     .setMinZoom(isInternational ? 8 : 10)
-                    .setAttr("name", name)
+                    .putAttrs(LanguageUtils.getNames(sf.tags()))
                     .setAttr("iata", iata)
                     .setAttr("icao", icao)
                     .setAttr("class", clazz);

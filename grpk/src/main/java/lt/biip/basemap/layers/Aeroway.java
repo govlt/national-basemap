@@ -20,9 +20,9 @@ public class Aeroway implements ForwardingProfile.FeatureProcessor {
     }
 
 
-    public void addFeature(String attrClass, SourceFeature sf, FeatureCollector features) {
+    public void addFeature(String clazz, SourceFeature sf, FeatureCollector features) {
         features.polygon("aeroway")
-                .setAttr("class", attrClass)
+                .setAttr("class", clazz)
                 .setMinZoom(10)
                 .setMinPixelSize(2);
     }

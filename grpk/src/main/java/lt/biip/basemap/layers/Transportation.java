@@ -6,6 +6,7 @@ import com.onthegomap.planetiler.FeatureMerge;
 import com.onthegomap.planetiler.ForwardingProfile;
 import com.onthegomap.planetiler.VectorTile;
 import com.onthegomap.planetiler.reader.SourceFeature;
+import lt.biip.basemap.utils.LanguageUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -16,7 +17,6 @@ public class Transportation implements ForwardingProfile.FeaturePostProcessor, F
     static final String FIELD_EXPRESSWAY = "expressway";
     static final String FIELD_REF = "ref";
     static final String FIELD_REF_LENGTH = "ref_length";
-    static final String FIELD_NAME = "name";
     static final String FIELD_LEVEL = "level";
 
     public static final String CLASS_MOTORWAY = "motorway";
@@ -101,10 +101,10 @@ public class Transportation implements ForwardingProfile.FeaturePostProcessor, F
 
         if (ref != null || name != null) {
             features.line("transportation_name")
+                    .putAttrs(LanguageUtils.getNames(sf.tags()))
                     .setAttr(FIELD_CLASS, clazz)
                     .setAttr(FIELD_REF, ref)
                     .setAttr(FIELD_REF_LENGTH, refLength)
-                    .setAttr(FIELD_NAME, name)
                     .setAttr(FIELD_LEVEL, level)
                     .setMinZoom(Math.min(minZoom + 2, 14));
         }

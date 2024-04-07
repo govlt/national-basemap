@@ -4,6 +4,7 @@ package lt.biip.basemap.layers;
 import com.onthegomap.planetiler.FeatureCollector;
 import com.onthegomap.planetiler.ForwardingProfile;
 import com.onthegomap.planetiler.reader.SourceFeature;
+import lt.biip.basemap.utils.LanguageUtils;
 
 public class POI implements ForwardingProfile.FeatureProcessor {
 
@@ -23,10 +24,10 @@ public class POI implements ForwardingProfile.FeatureProcessor {
         }
     }
 
-    void addFeature(String attrClass, SourceFeature sf, FeatureCollector features) {
+    void addFeature(String clazz, SourceFeature sf, FeatureCollector features) {
         features.point("poi")
-                .setAttr("name", sf.getTag("VARDAS"))
-                .setAttr("class", attrClass)
+                .putAttrs(LanguageUtils.getNames(sf.tags()))
+                .setAttr("class", clazz)
                 .setMinZoom(10);
     }
 }

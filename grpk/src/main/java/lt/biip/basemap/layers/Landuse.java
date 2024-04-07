@@ -25,11 +25,9 @@ public class Landuse implements ForwardingProfile.FeaturePostProcessor, Forwardi
     }
 
 
-    public void addPolygon(String attrClass, SourceFeature sf, FeatureCollector features) {
+    public void addPolygon(String clazz, SourceFeature sf, FeatureCollector features) {
         features.polygon(this.name())
-                .setAttr("class", attrClass)
-                .setAttr("name", sf.getTag("VARDAS"))
-                .setAttr("gkodas", sf.getTag("GKODAS"))
+                .setAttr("class", clazz)
                 .setMinZoom(10);
     }
 

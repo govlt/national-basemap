@@ -5,6 +5,7 @@ import com.onthegomap.planetiler.FeatureMerge;
 import com.onthegomap.planetiler.ForwardingProfile;
 import com.onthegomap.planetiler.VectorTile;
 import com.onthegomap.planetiler.reader.SourceFeature;
+import lt.biip.basemap.utils.LanguageUtils;
 
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class Boundary implements ForwardingProfile.FeaturePostProcessor, Forward
                 .setAttr("disputed", 0)
                 // TODO determine if border is maritime or not
                 .setAttr("maritime", 0)
-                .setAttr("name", sf.getTag("VARDAS"));
+                .putAttrs(LanguageUtils.getNames(sf.tags()));
     }
 
     @Override

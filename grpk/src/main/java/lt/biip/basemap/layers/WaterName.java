@@ -5,6 +5,7 @@ import com.onthegomap.planetiler.FeatureCollector;
 import com.onthegomap.planetiler.ForwardingProfile;
 import com.onthegomap.planetiler.geo.GeometryException;
 import com.onthegomap.planetiler.reader.SourceFeature;
+import lt.biip.basemap.utils.LanguageUtils;
 import org.geotools.process.geometry.CenterLine;
 
 public class WaterName implements ForwardingProfile.FeatureProcessor {
@@ -30,10 +31,11 @@ public class WaterName implements ForwardingProfile.FeatureProcessor {
 
             features.geometry("water_name", geom)
                     .setAttr("class", clazz)
-                    .setAttr("name", sf.getTag("VARDAS"))
+                    .putAttrs(LanguageUtils.getNames(sf.tags()))
                     .setMinPixelSize(0.0)
                     .setPixelTolerance(0.0)
                     .setMinZoom(minZoom);
+
         } catch (GeometryException e) {
             throw new RuntimeException(e);
         }
