@@ -38,7 +38,9 @@ public class Transportation implements ForwardingProfile.FeaturePostProcessor, F
                 } else if (tipas == 4) {
                     addTransportationFeature(FieldValue.CLASS_TERTIARY, 8, sf, features);
                 } else if (tipas == 6) {
-                    addTransportationFeature(FieldValue.CLASS_RESIDENTIAL, 12, sf, features);
+                    // Gerosios vilties st. and other similar streets belong to tipas 6
+                    // For now just assign service, because residential filters it out in some styles completely
+                    addTransportationFeature(FieldValue.CLASS_SERVICE, 12, sf, features);
                 } else if (tipas == 7 && paskirtis.equals("JUNG")) {
                     addTransportationFeature(FieldValue.CLASS_LINK, 13, sf, features);
                 } else if (tipas == 7 || tipas == 9) {
