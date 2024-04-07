@@ -17,17 +17,17 @@ public class Landcover implements ForwardingProfile.FeaturePostProcessor, Forwar
             var code = sf.getString("GKODAS");
 
             switch (code) {
-                case "hd6" -> addPolygon("wetland", "wetland", 10, sf, features);
-                case "sd4" -> addPolygon("farmland", "meadow", 10, sf, features);
-                case "ms4" -> addPolygon("farmland", "allotments", 10, sf, features);
-                case "sd42" -> addPolygon("sand", null, 10, sf, features);
-                case "ms0", "sd15" -> addPolygon("wood", "forest", 2, sf, features);
+                case "hd6" -> addPolygon("wetland", "wetland", 10, features);
+                case "sd4" -> addPolygon("farmland", "meadow", 10, features);
+                case "ms4" -> addPolygon("farmland", "allotments", 10, features);
+                case "sd42" -> addPolygon("sand", null, 10, features);
+                case "ms0", "sd15" -> addPolygon("wood", "forest", 2, features);
             }
         }
     }
 
 
-    public void addPolygon(String clazz, String subclass, int minZoom, SourceFeature sf, FeatureCollector features) {
+    public void addPolygon(String clazz, String subclass, int minZoom, FeatureCollector features) {
         features.polygon(this.name())
                 .setAttr("class", clazz)
                 .setAttr("subclass", subclass)

@@ -12,15 +12,15 @@ public class Aeroway implements ForwardingProfile.FeatureProcessor {
             var code = sf.getString("GKODAS");
 
             switch (code) {
-                case "va1" -> addFeature("aerodrome", sf, features);
-                case "va11" -> addFeature("runway", sf, features);
-                case "va12" -> addFeature("helipad", sf, features);
+                case "va1" -> addFeature("aerodrome", features);
+                case "va11" -> addFeature("runway", features);
+                case "va12" -> addFeature("helipad", features);
             }
         }
     }
 
 
-    public void addFeature(String clazz, SourceFeature sf, FeatureCollector features) {
+    public void addFeature(String clazz, FeatureCollector features) {
         features.polygon("aeroway")
                 .setAttr("class", clazz)
                 .setMinZoom(10)

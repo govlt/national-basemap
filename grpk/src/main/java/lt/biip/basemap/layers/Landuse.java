@@ -17,15 +17,15 @@ public class Landuse implements ForwardingProfile.FeaturePostProcessor, Forwardi
             var code = sf.getString("GKODAS");
 
             switch (code) {
-                case "vp1" -> addPolygon("cemetery", sf, features);
-                case "pu0" -> addPolygon("residential", sf, features);
-                case "pu3" -> addPolygon("industrial", sf, features);
+                case "vp1" -> addPolygon("cemetery", features);
+                case "pu0" -> addPolygon("residential", features);
+                case "pu3" -> addPolygon("industrial", features);
             }
         }
     }
 
 
-    public void addPolygon(String clazz, SourceFeature sf, FeatureCollector features) {
+    public void addPolygon(String clazz, FeatureCollector features) {
         features.polygon(this.name())
                 .setAttr("class", clazz)
                 .setMinZoom(10);

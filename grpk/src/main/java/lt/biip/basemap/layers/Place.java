@@ -2,11 +2,8 @@ package lt.biip.basemap.layers;
 
 import com.onthegomap.planetiler.FeatureCollector;
 import com.onthegomap.planetiler.ForwardingProfile;
-import com.onthegomap.planetiler.VectorTile;
 import com.onthegomap.planetiler.reader.SourceFeature;
 import lt.biip.basemap.utils.LanguageUtils;
-
-import java.util.List;
 
 public class Place implements ForwardingProfile.FeatureProcessor {
 
