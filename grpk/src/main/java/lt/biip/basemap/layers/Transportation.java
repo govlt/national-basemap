@@ -11,13 +11,18 @@ import lt.biip.basemap.utils.LanguageUtils;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.onthegomap.planetiler.util.LanguageUtils.nullIfEmpty;
+
 public class Transportation implements ForwardingProfile.FeaturePostProcessor, ForwardingProfile.FeatureProcessor {
+
+    static final List<String> PAVED_VALUES = Arrays.asList("A", "C", "G", "Md");
 
     static final String FIELD_CLASS = "class";
     static final String FIELD_EXPRESSWAY = "expressway";
     static final String FIELD_REF = "ref";
     static final String FIELD_REF_LENGTH = "ref_length";
     static final String FIELD_LEVEL = "level";
+    static final String FIELD_SURFACE = "level";
 
     public static final String CLASS_MOTORWAY = "motorway";
     public static final String CLASS_TRUNK = "trunk";
@@ -82,18 +87,19 @@ public class Transportation implements ForwardingProfile.FeaturePostProcessor, F
 
     public void addTransportationFeature(String clazz, int minZoom, SourceFeature sf, FeatureCollector features) {
         var level = (int) sf.getLong("LYGMUO");
-        var name = sf.getString("VARDAS");
+        var name = nullIfEmpty(sf.getString("VARDAS"));
 
         var expressway = clazz.equals(CLASS_MOTORWAY);
 
-        var ref = expressway ? sf.getString("NUMERIS") : null;
+        var ref = expressway ? nullIfEmpty(sf.getString("NUMERIS")) : null;
         var refLength = ref != null ? ref.length() : null;
-
+        var surface = PAVED_VALUES.contains(sf.getString("DANGA")) ? "paved" : "unpaved";
 
         features.line(this.name())
                 .setAttr(FIELD_CLASS, clazz)
                 .setAttr(FIELD_EXPRESSWAY, expressway)
                 .setAttr(FIELD_LEVEL, level)
+                .setAttr(FIELD_SURFACE, surface)
                 .setAttr("minZoom", minZoom)
                 .setMinZoom(minZoom)
                 .setMinPixelSize(0.0)
@@ -106,6 +112,8 @@ public class Transportation implements ForwardingProfile.FeaturePostProcessor, F
                     .setAttr(FIELD_REF, ref)
                     .setAttr(FIELD_REF_LENGTH, refLength)
                     .setAttr(FIELD_LEVEL, level)
+                    .setMinPixelSize(0.0)
+                    .setPixelTolerance(0.0)
                     .setMinZoom(Math.min(minZoom + 2, 14));
         }
     }
