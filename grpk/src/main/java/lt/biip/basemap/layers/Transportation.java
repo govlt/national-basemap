@@ -18,7 +18,6 @@ public class Transportation implements ForwardingProfile.FeaturePostProcessor, F
 
     static final List<String> PAVED_VALUES = Arrays.asList("A", "C", "G", "Md");
 
-
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
         if (sf.getSource().equals(Source.GRPK) && sf.canBeLine()) {
@@ -28,48 +27,54 @@ public class Transportation implements ForwardingProfile.FeaturePostProcessor, F
                 var danga = sf.getString("DANGA");
 
                 if (tipas == 1) {
-                    addTransportationFeature(FieldValue.CLASS_MOTORWAY, 2, sf, features);
+                    addTransportationFeature(FieldValue.CLASS_MOTORWAY, null, 2, sf, features);
                 } else if (tipas == 5) {
-                    addTransportationFeature(FieldValue.CLASS_TRUNK, 4, sf, features);
+                    addTransportationFeature(FieldValue.CLASS_TRUNK, null, 4, sf, features);
                 } else if (tipas == 2) {
-                    addTransportationFeature(FieldValue.CLASS_PRIMARY, 4, sf, features);
+                    addTransportationFeature(FieldValue.CLASS_PRIMARY, null, 4, sf, features);
                 } else if (tipas == 3) {
-                    addTransportationFeature(FieldValue.CLASS_SECONDARY, 8, sf, features);
+                    addTransportationFeature(FieldValue.CLASS_SECONDARY, null, 8, sf, features);
                 } else if (tipas == 4) {
-                    addTransportationFeature(FieldValue.CLASS_TERTIARY, 8, sf, features);
+                    addTransportationFeature(FieldValue.CLASS_TERTIARY, null, 8, sf, features);
                 } else if (tipas == 6) {
                     // Gerosios vilties st. and other similar streets belong to tipas 6
                     // For now just assign service, because residential filters it out in some styles completely
-                    addTransportationFeature(FieldValue.CLASS_SERVICE, 12, sf, features);
+                    addTransportationFeature(FieldValue.CLASS_SERVICE, null, 12, sf, features);
                 } else if (tipas == 7 && paskirtis.equals("JUNG")) {
-                    addTransportationFeature(FieldValue.CLASS_LINK, 13, sf, features);
+                    addTransportationFeature(FieldValue.CLASS_LINK, null, 13, sf, features);
                 } else if (tipas == 7 || tipas == 9) {
-                    addTransportationFeature(FieldValue.CLASS_SERVICE, 13, sf, features);
+                    addTransportationFeature(FieldValue.CLASS_SERVICE, null, 13, sf, features);
                 } else if (tipas == 8 && danga.equals("Ž")) {
-                    addTransportationFeature(FieldValue.CLASS_PATH, 14, sf, features);
+                    addTransportationFeature(FieldValue.CLASS_PATH, null, 14, sf, features);
                 } else if (tipas == 8) {
-                    addTransportationFeature(FieldValue.CLASS_SERVICE, 13, sf, features);
+                    addTransportationFeature(FieldValue.CLASS_SERVICE, null, 13, sf, features);
                 } else if (tipas == 10 || tipas == 11 || tipas == 13) {
-                    addTransportationFeature(FieldValue.CLASS_PATH, 14, sf, features);
+                    addTransportationFeature(FieldValue.CLASS_PATH, null, 14, sf, features);
                 } else if (tipas == 14) {
-                    addTransportationFeature(FieldValue.CLASS_FERRY, 13, sf, features);
+                    addTransportationFeature(FieldValue.CLASS_FERRY, null, 13, sf, features);
                 } else {
-                    addTransportationFeature(FieldValue.CLASS_UNCLASSIFIED, 14, sf, features);
+                    addTransportationFeature(FieldValue.CLASS_UNCLASSIFIED, null, 14, sf, features);
                 }
             } else if (sf.getSourceLayer().equals("GELEZINK")) {
                 var gkodas = sf.getString("GKODAS");
-                var tipas = sf.getLong("TIPAS");
+                var minZoom = sf.getLong("TIPAS") == 1 ? 8 : 11;
 
-                if (Arrays.asList("gz1", "gz2", "gz1gz2").contains(gkodas) && tipas == 1) {
-                    addTransportationFeature(FieldValue.CLASS_TRACK, 11, sf, features);
-                } else {
-                    addTransportationFeature(FieldValue.CLASS_TRACK, 8, sf, features);
+                switch (gkodas) {
+                    case "gz1", "gz2", "gz1gz2", "gz10" ->
+                            addTransportationFeature(FieldValue.CLASS_RAIL, FieldValue.SUBCLASS_RAIL, minZoom, sf, features);
+                    case "gz4" -> {
+                        if ("funik.".equals(sf.getString("INFO"))) {
+                            addTransportationFeature(FieldValue.CLASS_RAIL, FieldValue.SUBCLASS_FUNICULAR, minZoom, sf, features);
+                        } else {
+                            addTransportationFeature(FieldValue.CLASS_RAIL, FieldValue.SUBCLASS_NARROW_GAUGE, minZoom, sf, features);
+                        }
+                    }
                 }
             }
         }
     }
 
-    public void addTransportationFeature(String clazz, int minZoom, SourceFeature sf, FeatureCollector features) {
+    public void addTransportationFeature(String clazz, String subclass, int minZoom, SourceFeature sf, FeatureCollector features) {
         var level = (int) sf.getLong("LYGMUO");
         var name = nullIfEmpty(sf.getString("VARDAS"));
 
@@ -81,18 +86,20 @@ public class Transportation implements ForwardingProfile.FeaturePostProcessor, F
 
         features.line(this.name())
                 .setAttr(Field.CLASS, clazz)
+                .setAttr(Field.SUBCLASS, subclass)
                 .setAttr(Field.EXPRESSWAY, expressway)
                 .setAttr(Field.LEVEL, level)
                 .setAttr(Field.SURFACE, surface)
-                .setAttr("minZoom", minZoom)
                 .setMinZoom(minZoom)
                 .setMinPixelSize(0.0)
                 .setPixelTolerance(0.0);
 
+        // TODO transportation_name building should be moved to TransportationName class once Transportation layer becomes stable
         if (ref != null || name != null) {
             features.line("transportation_name")
                     .putAttrs(LanguageUtils.getNames(sf.tags()))
                     .setAttr(Field.CLASS, clazz)
+                    .setAttr(Field.SUBCLASS, subclass)
                     .setAttr(Field.REF, ref)
                     .setAttr(Field.REF_LENGTH, refLength)
                     .setAttr(Field.LEVEL, level)
@@ -123,6 +130,7 @@ public class Transportation implements ForwardingProfile.FeaturePostProcessor, F
 
     private static final class Field {
         static final String CLASS = "class";
+        static final String SUBCLASS = "subclass";
         static final String EXPRESSWAY = "expressway";
         static final String REF = "ref";
         static final String REF_LENGTH = "ref_length";
@@ -143,5 +151,9 @@ public class Transportation implements ForwardingProfile.FeaturePostProcessor, F
         static final String CLASS_FERRY = "ferry";
         static final String CLASS_UNCLASSIFIED = "unclassified";
         static final String CLASS_TRACK = "track";
+        static final String CLASS_RAIL = "rail";
+        static final String SUBCLASS_RAIL = "rail";
+        static final String SUBCLASS_NARROW_GAUGE = "narrow_gauge";
+        static final String SUBCLASS_FUNICULAR = "funicular";
     }
 }
