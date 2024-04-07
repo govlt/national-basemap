@@ -1,1 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 104 10" height="10" width="104"><title>river.svg</title><rect fill="none" x="0" y="0" width="104" height="10"></rect><path fill="#002d6e" transform="translate(2 2)" d="M 10,3 6,0 V 2 H 1 v 2 h 5 v 2 z"></path></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="104" height="10" viewBox="0 0 104 10"><title>river.svg</title><rect width="104" height="10" x="0" y="0" fill="none"/><path fill="#002d6e" d="M 10,3 6,0 V 2 H 1 v 2 h 5 v 2 z" transform="translate(2 2)"/></svg>
