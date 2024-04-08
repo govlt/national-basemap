@@ -84,15 +84,28 @@ public class Transportation implements ForwardingProfile.FeaturePostProcessor, F
         var refLength = ref != null ? ref.length() : null;
         var surface = PAVED_VALUES.contains(sf.getString("DANGA")) ? "paved" : "unpaved";
 
-        features.line(this.name())
-                .setAttr(Field.CLASS, clazz)
-                .setAttr(Field.SUBCLASS, subclass)
-                .setAttr(Field.EXPRESSWAY, expressway)
-                .setAttr(Field.LEVEL, level)
-                .setAttr(Field.SURFACE, surface)
-                .setMinZoom(minZoom)
-                .setMinPixelSize(0.0)
-                .setPixelTolerance(0.0);
+        if (level > 0) {
+            features.line(this.name())
+                    .setAttr(Field.CLASS, clazz)
+                    .setAttr(Field.SUBCLASS, subclass)
+                    .setAttr(Field.EXPRESSWAY, expressway)
+                    .setAttr(Field.LEVEL, level)
+                    .setAttr(Field.BRUNNEL, "bridge")
+                    .setAttr(Field.SURFACE, surface)
+                    .setMinZoom(minZoom)
+                    .setMinPixelSize(0.0)
+                    .setPixelTolerance(0.0);
+        } else {
+            features.line(this.name())
+                    .setAttr(Field.CLASS, clazz)
+                    .setAttr(Field.SUBCLASS, subclass)
+                    .setAttr(Field.EXPRESSWAY, expressway)
+                    .setAttr(Field.LEVEL, level)
+                    .setAttr(Field.SURFACE, surface)
+                    .setMinZoom(minZoom)
+                    .setMinPixelSize(0.0)
+                    .setPixelTolerance(0.0);
+        }
 
         // TODO transportation_name building should be moved to TransportationName class once Transportation layer becomes stable
         if (ref != null || name != null) {
@@ -102,6 +115,7 @@ public class Transportation implements ForwardingProfile.FeaturePostProcessor, F
                     .setAttr(Field.SUBCLASS, subclass)
                     .setAttr(Field.REF, ref)
                     .setAttr(Field.REF_LENGTH, refLength)
+                    .setAttr(Field.BRUNNEL, name)
                     .setAttr(Field.LEVEL, level)
                     .setMinPixelSize(0.0)
                     .setPixelTolerance(0.0)
@@ -134,8 +148,9 @@ public class Transportation implements ForwardingProfile.FeaturePostProcessor, F
         static final String EXPRESSWAY = "expressway";
         static final String REF = "ref";
         static final String REF_LENGTH = "ref_length";
-        static final String LEVEL = "level";
-        static final String SURFACE = "level";
+        static final String LEVEL = "layer";
+        static final String BRUNNEL = "brunnel";
+        static final String SURFACE = "surface";
     }
 
     private static class FieldValue {
