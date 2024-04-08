@@ -27,7 +27,7 @@ WORKDIR /opt/grpk
 COPY --chown=$USER:$USER grpk/docker/martin/config.yaml config.yaml
 
 # Fonts
-COPY --chown=$USER:$USER grpk/styles/geoportal/fonts styles/open-map-tiles/fonts styles/positron/fonts styles/bright/fonts  fonts/
+COPY --chown=$USER:$USER grpk/styles/geoportal/fonts grpk/styles/open-map-tiles/fonts grpk/styles/positron/fonts grpk/styles/bright/fonts  fonts/
 
 # Sprites
 COPY --chown=$USER:$USER grpk/styles/geoportal/sprites styles/geoportal/sprites
