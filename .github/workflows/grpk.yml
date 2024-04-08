@@ -75,6 +75,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Minify styles
+        run: find grpk/styles -name "style.json" -print0 | xargs -0 -I{} sh -c 'jq -c . "{}" > tmp.json && mv tmp.json "{}"'
+
       - name: Replace style urls for docker
         run: find grpk/styles -type f -name "style.json" -print0 | xargs -0 sed -i -e 's|${{ env.BASE_URL }}|${{ env.BASE_TARGET_URL }}|g'
         env:
