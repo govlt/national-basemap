@@ -82,6 +82,7 @@ jobs:
           ls -lah
           echo bright
           ls -lah bright
+          find . -type f -name "style.json"
           find . -type f -name "style.json" -print0 | xargs -0 sed -i '' -e 's|${{ env.BASE_URL }}|${{ env.BASE_TARGET_URL }}|g'
         env:
           BASE_URL: http://localhost:3000/
