@@ -1,6 +1,8 @@
 name: "GRPK: pmtiles generate and deploy"
 
 on:
+  push:
+    branches: [ main ]
   workflow_dispatch:
     inputs:
       deploy:
@@ -20,6 +22,7 @@ jobs:
     name: Generate GRPK pmtiles
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    if: github.event_name == 'workflow_dispatch'
     permissions:
       contents: read
     steps:
