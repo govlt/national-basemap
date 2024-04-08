@@ -46,3 +46,39 @@ jobs:
         working-directory: grpk/styles/geoportal
         run: |
           for file in *.json; do [[ -f "$file" ]] && echo "Validating file: $file" && gl-style-validate "$file"; done
+
+  generate-grpk-pmtiles:
+    name: Generate GRPK pmtiles
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Cache GRPK data sources
+        uses: actions/cache@v4
+        with:
+          path: grpk/data/sources
+          key: grpk-data-sources
+
+      - name: Generate GRPK pmtiles
+        run: ./gradlew -q run
+
+      - name: Upload GRPK pmtiles artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: grpk
+          path: grpk/data/output
+          if-no-files-found: error
+          retention-days: ${{ github.ref == 'refs/heads/main' && 30 || 7 }}
+          compression-level: 0
