@@ -34,24 +34,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: 21
-
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v3
-
       - name: Generate GRPK pmtiles
-        run: ./gradlew -q run
-
-      - name: Upload GRPK pmtiles artifact
-        uses: actions/upload-artifact@v4
+        uses: ./.github/actions/grpk-generate
         with:
-          name: grpk
-          path: grpk/data/output
-          if-no-files-found: error
-          compression-level: 0
+          cache-data-sources: false
 
       - name: Sync to S3
         uses: docker://docker.io/rclone/rclone:1.66
