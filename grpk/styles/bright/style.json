@@ -3990,6 +3990,35 @@
       }
     },
     {
+      "id": "housenumber",
+      "type": "symbol",
+      "source": "openmaptiles",
+      "source-layer": "housenumber",
+      "minzoom": 17,
+      "layout": {
+        "text-font": [
+          "Noto Sans Regular"
+        ],
+        "text-size": {
+          "stops": [
+            [
+              17,
+              9
+            ],
+            [
+              22,
+              11
+            ]
+          ]
+        },
+        "text-field": "{housenumber}",
+        "text-rotation-alignment": "map",
+        "symbol-avoid-edges": false,
+        "text-allow-overlap": false,
+        "text-ignore-placement": false
+      }
+    },
+    {
       "id": "waterway-name",
       "type": "symbol",
       "source": "openmaptiles",
