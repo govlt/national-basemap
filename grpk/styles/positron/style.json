@@ -28,8 +28,8 @@
     }
   },
   "center": [
-    23.881275,
-    55.169438
+    22.92,
+    55.17
   ],
   "zoom": 6,
   "glyphs": "http://localhost:3000/font/{fontstack}/{range}",
