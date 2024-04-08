@@ -1,26 +1,6 @@
 {
   "version": 8,
   "name": "Positron",
-  "metadata": {
-    "mapbox:autocomposite": false,
-    "mapbox:groups": {
-      "101da9f13b64a08fa4b6ac1168e89e5f": {
-        "collapsed": false,
-        "name": "Places"
-      },
-      "a14c9607bc7954ba1df7205bf660433f": {
-        "name": "Boundaries"
-      },
-      "b6371a3f2f5a9932464fa3867530a2e5": {
-        "collapsed": false,
-        "name": "Transportation"
-      }
-    },
-    "mapbox:type": "template",
-    "openmaptiles:mapbox:owner": "openmaptiles",
-    "openmaptiles:mapbox:source:url": "mapbox://openmaptiles.4qljc88t",
-    "openmaptiles:version": "3.x"
-  },
   "sources": {
     "openmaptiles": {
       "type": "vector",
