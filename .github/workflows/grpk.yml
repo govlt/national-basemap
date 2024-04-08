@@ -87,4 +87,5 @@ jobs:
           docker-context: .
           file: grpk/docker/Dockerfile
           environment: main
+          no-cache: true
           push: true
