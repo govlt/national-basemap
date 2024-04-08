@@ -77,7 +77,12 @@ jobs:
 
       - name: Replace style urls for docker
         working-directory: grpk/styles
-        run: find . -type f -name "style.json" -print0 | xargs -0 sed -i '' -e 's|${{ env.BASE_URL }}|${{ env.BASE_TARGET_URL }}|g'
+        run: |
+          pwd
+          ls -lah
+          echo bright
+          ls -lah bright
+          find . -type f -name "style.json" -print0 | xargs -0 sed -i '' -e 's|${{ env.BASE_URL }}|${{ env.BASE_TARGET_URL }}|g'
         env:
           BASE_URL: http://localhost:3000/
           BASE_TARGET_URL: https://dev-gis.biip.lt/basemap/grpk/
