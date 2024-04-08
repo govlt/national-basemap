@@ -6,6 +6,7 @@ pmtiles:
 
 sprites:
   sources:
+    bright: /opt/grpk/styles/bright/sprites
     geoportal: /opt/grpk/styles/geoportal/sprites
     openmaptiles: /opt/grpk/styles/openmaptiles/sprites
     positron: /opt/grpk/styles/positron/sprites
