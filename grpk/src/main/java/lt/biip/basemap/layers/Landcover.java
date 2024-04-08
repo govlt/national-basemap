@@ -16,17 +16,68 @@ public class Landcover implements ForwardingProfile.FeaturePostProcessor, Forwar
     public void processFeature(SourceFeature sf, FeatureCollector features) {
         if (sf.getSource().equals(Source.GRPK) && sf.getSourceLayer().startsWith("PLOTAI") && sf.canBePolygon()) {
             var code = sf.getString("GKODAS");
-            var area = sf.getString("SHAPE_Area");
+            var area = sf.getLong("SHAPE_Area");
 
-            switch (code) {
-                case "hd6" -> addPolygon("wetland", "wetland", 11, features);
-                case "sd2" -> addPolygon("farmland", "meadow", 12, features);
-                case "sd11" -> addPolygon("farmland", "farmland", 11, features);
-                case "ms4" -> addPolygon("farmland", "orchard", 12, features);
-                case "sd42" -> addPolygon("sand", null, 8, features);
-                case "ms0" -> addPolygon("forest", "forest", 5, features);
-                case "mj0", "sd15" -> addPolygon("forest", "forest", 13, features);
+            if (code.equals("hd6") && area > 2000000) {
+                addPolygon("wetland", "wetland", 8, features);
+            } else if (code.equals("hd6") && area > 1500000) {
+                addPolygon("wetland", "wetland", 9, features);
+            } else if (code.equals("hd6") && area > 1000000) {
+                addPolygon("wetland", "wetland", 10, features);
+            } else if (code.equals("hd6") && area > 500000) {
+                addPolygon("wetland", "wetland", 11, features);
+            } else if (code.equals("hd6")) {
+                addPolygon("wetland", "wetland", 12, features);
             }
+
+            else if (code.equals("sd2") && area > 2000000) {
+                addPolygon("farmland", "meadow", 8, features);
+            } else if (code.equals("sd2") && area > 1500000) {
+                addPolygon("farmland", "meadow", 9, features);
+            } else if (code.equals("sd2") && area > 1000000) {
+                addPolygon("farmland", "meadow", 10, features);
+            } else if (code.equals("sd2") && area > 500000) {
+                addPolygon("farmland", "meadow", 11, features);
+            } else if (code.equals("sd2")) {
+                addPolygon("farmland", "meadow", 12, features);
+            }
+
+            else if (code.equals("ms4")) {
+                addPolygon("farmland", "orchard", 12, features);
+            }
+
+            else if (code.equals("sd42") && area > 2000000) {
+                addPolygon("sand", "sand", 8, features);
+            } else if (code.equals("sd42") && area > 1500000) {
+                addPolygon("sand", "sand", 9, features);
+            } else if (code.equals("sd42") && area > 1000000) {
+                addPolygon("sand", "sand", 10, features);
+            } else if (code.equals("sd42") && area > 500000) {
+                addPolygon("sand", "sand", 11, features);
+            } else if (code.equals("sd42")) {
+                addPolygon("sand", "sand", 12, features);
+            }
+
+            else if (code.equals("ms0") && area > 3000000) {
+                addPolygon("wood", "forest", 5, features);
+            } else if (code.equals("ms0") && area > 2500000) {
+                addPolygon("wood", "forest", 7, features);
+            } else if (code.equals("ms0") && area > 2000000) {
+                addPolygon("wood", "forest", 8, features);
+            } else if (code.equals("ms0") && area > 1500000) {
+                addPolygon("wood", "forest", 9, features);
+            } else if (code.equals("ms0") && area > 1000000) {
+                addPolygon("wood", "forest", 10, features);
+            } else if (code.equals("ms0") && area > 500000) {
+                addPolygon("wood", "forest", 11, features);
+            } else if (code.equals("ms0")) {
+                addPolygon("wood", "forest", 12, features);
+            }
+
+            else if (code.equals("mj0") || code.equals("sd15")) {
+                addPolygon("forest", "forest", 12, features);
+            }
+
         }
     }
 

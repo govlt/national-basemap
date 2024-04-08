@@ -84,5 +84,3 @@ public class Basemap extends ForwardingProfile {
 
     }
 }
-
-

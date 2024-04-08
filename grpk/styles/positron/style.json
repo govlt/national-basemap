@@ -195,7 +195,7 @@
       "type": "fill",
       "source": "openmaptiles",
       "source-layer": "landcover",
-      "minzoom": 10,
+      "minzoom": 5,
       "filter": [
         "all",
         [
@@ -218,7 +218,7 @@
           "base": 1,
           "stops": [
             [
-              8,
+              5,
               0
             ],
             [

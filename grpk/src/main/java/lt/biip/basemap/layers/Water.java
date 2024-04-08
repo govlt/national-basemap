@@ -16,12 +16,44 @@ public class Water implements ForwardingProfile.FeaturePostProcessor, Forwarding
     public void processFeature(SourceFeature sf, FeatureCollector features) {
         if (sf.getSource().equals(Source.GRPK) && sf.getSourceLayer().startsWith("PLOTAI") && sf.canBePolygon()) {
             var code = sf.getString("GKODAS");
+            var area = sf.getLong("SHAPE_Area");
 
-            switch (code) {
-                case "hd1", "hd2" -> addWaterPolygon("river", 6, sf, features);
-                case "hd3", "hd4", "hd9" -> addWaterPolygon("lake", 6, sf, features);
-                case "hd5" -> addWaterPolygon("ocean", 0, sf, features);
+            if (List.of("hd3", "hd4", "hd9").contains(code) && area > 3000000) {
+                addWaterPolygon("lake", 5, sf, features);
+            } else if (List.of("hd3", "hd4", "hd9").contains(code) && area > 2500000) {
+                addWaterPolygon("lake", 7, sf, features);
+            } else if (List.of("hd3", "hd4", "hd9").contains(code)&& area > 2000000) {
+                addWaterPolygon("lake", 8, sf, features);
+            } else if (List.of("hd3", "hd4", "hd9").contains(code) && area > 1500000) {
+                addWaterPolygon("lake", 9, sf, features);
+            } else if (List.of("hd3", "hd4", "hd9").contains(code) && area > 1000000) {
+                addWaterPolygon("lake", 10, sf, features);
+            } else if (List.of("hd3", "hd4", "hd9").contains(code) && area > 500000) {
+                addWaterPolygon("lake", 11, sf, features);
+            } else if (List.of("hd3", "hd4", "hd9").contains(code)) {
+                addWaterPolygon("lake", 12, sf, features);
             }
+
+            else if (List.of("hd1", "hd2").contains(code) && area > 3000000) {
+                addWaterPolygon("river", 5, sf, features);
+            } else if (List.of("hd1", "hd2").contains(code) && area > 2500000) {
+                addWaterPolygon("river", 7, sf, features);
+            } else if (List.of("hd1", "hd2").contains(code)&& area > 2000000) {
+                addWaterPolygon("river", 8, sf, features);
+            } else if (List.of("hd1", "hd2").contains(code) && area > 1500000) {
+                addWaterPolygon("river", 9, sf, features);
+            } else if (List.of("hd1", "hd2").contains(code) && area > 1000000) {
+                addWaterPolygon("river", 10, sf, features);
+            } else if (List.of("hd1", "hd2").contains(code) && area > 500000) {
+                addWaterPolygon("river", 11, sf, features);
+            } else if (List.of("hd1", "hd2").contains(code)) {
+                addWaterPolygon("river", 12, sf, features);
+            }
+
+            else if (code.equals("hd5")) {
+                addWaterPolygon("ocean", 0, sf, features);
+            }
+
         }
     }
 
