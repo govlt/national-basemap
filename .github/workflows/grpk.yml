@@ -1,15 +1,20 @@
-name: "GRPK: pmtiles generate and deploy"
+name: "GRPK: deploy basemap"
 
 on:
   push:
     branches: [ main ]
   workflow_dispatch:
     inputs:
-      deploy:
-        description: Deploy to S3
-        type: boolean
-        default: false
+      type:
+        description: Type
         required: true
+        type: choice
+        default: all
+        options:
+          - all
+          - docker
+          - style
+          - pmtiles-cdn
 
 permissions: { }
 
@@ -18,11 +23,11 @@ env:
   GRPK_GLYPHS_URL: https://dev-gis.biip.lt/tiles/static/font/{fontstack}/{range}
 
 jobs:
-  generate-grpk-pmtiles:
-    name: Generate GRPK pmtiles
+  deploy-grpk-pmtiles-cdn:
+    name: Deploy GRPK pmtiles to CDN
     runs-on: ubuntu-latest
     timeout-minutes: 60
-    if: github.event_name == 'workflow_dispatch'
+    if: inputs.type == 'all' || inputs.type == 'pmtiles'
     permissions:
       contents: read
     steps:
@@ -40,15 +45,6 @@ jobs:
       - name: Generate GRPK pmtiles
         run: ./gradlew -q run
 
-      - name: Copy styles
-        run: cp -r grpk/styles grpk/data/output/styles
-
-      - name: Replace GeoPortal style with non debug urls
-        run: |
-          jq '.sources.grpk = "${{ env.GRPK_SOURCE_URL }}"' style.json > tmp.json && mv tmp.json style.json
-          jq -c '.glyphs = "${{ env.GRPK_GLYPHS_URL }}"' style.json > tmp.json && mv tmp.json style.json
-        working-directory: grpk/data/output/styles/geoportal
-
       - name: Upload GRPK pmtiles artifact
         uses: actions/upload-artifact@v4
         with:
@@ -59,9 +55,37 @@ jobs:
 
       - name: Sync to S3
         uses: docker://docker.io/rclone/rclone:1.66
-        if: ${{ inputs.deploy }}
         with:
-          args: "sync grpk/data/output s3:/tiles/grpk --s3-acl=public-read --fast-list --checksum --update --use-server-modtime --metadata --inplace --delete-during"
+          args: "sync grpk/data/output s3:/tiles/grpk --include grpk.pmtiles --s3-acl=public-read --fast-list --checksum --update --use-server-modtime --metadata --inplace --delete-during"
+        env:
+          RCLONE_CONFIG_S3_TYPE: s3
+          RCLONE_CONFIG_S3_PROVIDER: Other
+          RCLONE_CONFIG_S3_ENDPOINT: ${{ secrets.S3_BIIP_ENDPOINT }}
+          RCLONE_CONFIG_S3_ACCESS_KEY_ID: ${{ secrets.S3_BIIP_ACCESS_KEY_ID }}
+          RCLONE_CONFIG_S3_SECRET_ACCESS_KEY: ${{ secrets.S3_BIIP_SECRET_ACCESS_KEY }}
+
+  deploy-grpk-styles-cdn:
+    name: Deploy GRPK styles to CDN
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    if: inputs.type == 'all' || inputs.type == 'styles'
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Replace style urls for docker
+        working-directory: grpk/styles
+        run: find . -type f -name "style.json" -print0 | xargs -0 sed -i '' -e 's|${{ env.BASE_URL }}|${{ env.BASE_TARGET_URL }}|g'
+        env:
+          BASE_URL: http://localhost:3000/
+          BASE_TARGET_URL: https://dev-gis.biip.lt/basemap/grpk/
+
+      - name: Sync to S3
+        uses: docker://docker.io/rclone/rclone:1.66
+        with:
+          args: "sync grpk/styles s3:/tiles/grpk/styles --s3-acl=public-read --fast-list --checksum --update --use-server-modtime --metadata --inplace --delete-during"
         env:
           RCLONE_CONFIG_S3_TYPE: s3
           RCLONE_CONFIG_S3_PROVIDER: Other
@@ -73,6 +97,7 @@ jobs:
     name: Generate and push GRPK docker image
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    if: github.event_name == 'push' || inputs.type == 'all' || inputs.type == 'docker'
     permissions:
       contents: read
       packages: write
