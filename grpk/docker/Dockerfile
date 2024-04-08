@@ -23,9 +23,19 @@ USER $USER
 
 WORKDIR /opt/grpk
 
+# Martin configuration
 COPY --chown=$USER:$USER grpk/docker/martin/config.yaml config.yaml
-COPY --chown=$USER:$USER grpk/styles/geoportal/fonts styles/geoportal/fonts
+
+# Fonts
+COPY --chown=$USER:$USER grpk/styles/geoportal/fonts styles/open-map-tiles/fonts styles/positron/fonts styles/bright/fonts  fonts/
+
+# Sprites
 COPY --chown=$USER:$USER grpk/styles/geoportal/sprites styles/geoportal/sprites
+COPY --chown=$USER:$USER grpk/styles/open-map-tiles/sprites styles/open-map-tiles/sprites
+COPY --chown=$USER:$USER grpk/styles/positron/sprites styles/positron/sprites
+COPY --chown=$USER:$USER grpk/styles/bright/sprites styles/bright/sprites
+
+# Pmtiles
 COPY --chown=$USER:$USER --from=build /app/grpk/data/output/grpk.pmtiles pmtiles/grpk.pmtiles
 
 CMD ["--config", "config.yaml"]

@@ -9,14 +9,17 @@
     }
   },
   "styles": {
-    "grpk-geoportal": {
-      "style": "/opt/grpk/styles/geoportal/style.json"
+    "bright": {
+      "style": "/opt/grpk/styles/bright/style.json"
+    },
+    "positron": {
+      "style": "/opt/grpk/styles/positron/style.json"
     },
     "open-map-tiles": {
       "style": "/opt/grpk/styles/open-map-tiles/style.json"
     },
-    "positron": {
-      "style": "/opt/grpk/styles/positron/style.json"
+    "grpk-geoportal": {
+      "style": "/opt/grpk/styles/geoportal/style.json"
     }
   }
 }
