@@ -15,8 +15,8 @@
     "positron": {
       "style": "/opt/grpk/styles/positron/style.json"
     },
-    "open-map-tiles": {
-      "style": "/opt/grpk/styles/open-map-tiles/style.json"
+    "openmaptiles": {
+      "style": "/opt/grpk/styles/openmaptiles/style.json"
     },
     "grpk-geoportal": {
       "style": "/opt/grpk/styles/geoportal/style.json"

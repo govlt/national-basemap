@@ -31,7 +31,7 @@ COPY --chown=$USER:$USER grpk/styles/geoportal/fonts styles/open-map-tiles/fonts
 
 # Sprites
 COPY --chown=$USER:$USER grpk/styles/geoportal/sprites styles/geoportal/sprites
-COPY --chown=$USER:$USER grpk/styles/open-map-tiles/sprites styles/open-map-tiles/sprites
+COPY --chown=$USER:$USER grpk/styles/openmaptiles/sprites styles/openmaptiles/sprites
 COPY --chown=$USER:$USER grpk/styles/positron/sprites styles/positron/sprites
 COPY --chown=$USER:$USER grpk/styles/bright/sprites styles/bright/sprites
 

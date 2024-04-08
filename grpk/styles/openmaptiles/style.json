@@ -20,7 +20,7 @@
     }
   },
   "glyphs": "http://localhost:3000/font/{fontstack}/{range}",
-  "sprite": "http://localhost:3000/sprite/open-map-tiles",
+  "sprite": "http://localhost:3000/sprite/openmaptiles",
   "layers": [
     {
       "id": "background",
