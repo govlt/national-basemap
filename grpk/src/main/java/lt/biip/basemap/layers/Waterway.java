@@ -11,7 +11,6 @@ import lt.biip.basemap.constants.Source;
 import lt.biip.basemap.utils.LanguageUtils;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.regex.Pattern;
 
 import static com.onthegomap.planetiler.util.LanguageUtils.nullIfEmpty;
@@ -22,6 +21,7 @@ public class Waterway implements ForwardingProfile.FeaturePostProcessor, Forward
     static final Pattern PATTERN_NAMES_IGNORE = Pattern.compile("-\\d+$");
 
     static final ZoomFunction.MeterToPixelThresholds MIN_PIXEL_LENGTHS = ZoomFunction.meterThresholds()
+            .put(8, 300_000)
             .put(9, 8_000)
             .put(10, 4_000)
             .put(11, 1_000);
