@@ -19,7 +19,16 @@ repositories {
 dependencies {
     implementation(libs.planetiler)
     implementation(libs.geotoolsProcessGeometry)
+
+    testImplementation(libs.junitJupyter)
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
+
+tasks.named<Test>("test") {
+    // Use JUnit Platform for unit tests.
+    useJUnitPlatform()
+}
+
 
 application {
     mainClass = "lt.biip.basemap.Basemap"

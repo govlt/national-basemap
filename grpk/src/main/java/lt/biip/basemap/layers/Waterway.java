@@ -10,8 +10,14 @@ import lt.biip.basemap.constants.Source;
 import lt.biip.basemap.utils.LanguageUtils;
 
 import java.util.List;
+import java.util.regex.Pattern;
+
+import static com.onthegomap.planetiler.util.LanguageUtils.nullIfEmpty;
 
 public class Waterway implements ForwardingProfile.FeaturePostProcessor, ForwardingProfile.FeatureProcessor {
+
+    // We have rivers with names S-3, S-8. This regex filters out names ending with - and number
+    static final Pattern PATTERN_NAMES_IGNORE = Pattern.compile("-\\d+$");
 
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
@@ -29,10 +35,10 @@ public class Waterway implements ForwardingProfile.FeaturePostProcessor, Forward
 
     void addWaterwayLine(String clazz, SourceFeature sf, FeatureCollector features) {
         var length = (int) sf.getLong("PLOTIS");
-        var name = sf.getString("VARDAS", "");
-        var minZoom = name.isBlank() ? 12 : 9;
+        var name = nullIfEmpty(sf.getString("VARDAS"));
 
-        features.line(this.name())
+        var feature = features.line(this.name())
+                .setBufferPixels(4)
                 .setAttr("class", clazz)
                 .setAttr("intermittent", 0)
                 .putAttrs(LanguageUtils.getNames(sf.tags()))
@@ -40,6 +46,15 @@ public class Waterway implements ForwardingProfile.FeaturePostProcessor, Forward
                 .setPixelTolerance(0.0)
                 .setMinZoom(minZoom)
                 .setSortKeyDescending(length);
+
+        if (Waterway.hasHumanReadableName(name)) {
+            feature.putAttrs(LanguageUtils.getNames(sf.tags()));
+        }
+    }
+
+    static boolean hasHumanReadableName(String name) {
+        return name != null && !name.isBlank() && !PATTERN_NAMES_IGNORE.matcher(name).find();
+
     }
 
     @Override
