@@ -11,6 +11,7 @@ import lt.biip.basemap.constants.Source;
 import lt.biip.basemap.utils.LanguageUtils;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 import static com.onthegomap.planetiler.util.LanguageUtils.nullIfEmpty;
@@ -29,12 +30,18 @@ public class Waterway implements ForwardingProfile.FeaturePostProcessor, Forward
     public void processFeature(SourceFeature sf, FeatureCollector features) {
         if (sf.getSource().equals(Source.GRPK) && sf.getSourceLayer().equals(Layer.GRPK_HIDRO_L) && sf.canBeLine()) {
             var type = (int) sf.getLong("TIPAS");
+            var code = sf.getString("GKODAS");
 
-            switch (type) {
-                case 1 -> addWaterwayLine("river", 9, sf, features);
-                case 2 -> addWaterwayLine("canal", 9, sf, features);
-                case 3, 4 -> addWaterwayLine("ditch", 13, sf, features);
-                default -> addWaterwayLine("unknown", 13, sf, features);
+            if (code.equals("hc1") && type == 1) {
+                addWaterwayLine("river", 8, sf, features);
+            } else if (List.of("hc3", "hc33").contains(code) && type == 1) {
+                addWaterwayLine("river", 9, sf, features);
+            } else if (List.of("hc1", "hc3", "hc31", "hc32", "hc33").contains(code) && type == 2) {
+                addWaterwayLine("canal", 9, sf, features);
+            } else if (List.of("hc31", "hc32").contains(code) && type == 1) {
+                addWaterwayLine("river", 10, sf, features);
+            } else if (List.of("hc31", "hc32").contains(code) && (type == 3 || type == 4)) {
+                addWaterwayLine("ditch", 11, sf, features);
             }
         }
     }
