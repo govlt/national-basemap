@@ -6,6 +6,7 @@ import com.onthegomap.planetiler.FeatureMerge;
 import com.onthegomap.planetiler.ForwardingProfile;
 import com.onthegomap.planetiler.VectorTile;
 import com.onthegomap.planetiler.reader.SourceFeature;
+import lt.biip.basemap.constants.Layer;
 import lt.biip.basemap.constants.Source;
 import lt.biip.basemap.utils.LanguageUtils;
 
@@ -21,7 +22,7 @@ public class Transportation implements ForwardingProfile.FeaturePostProcessor, F
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
         if (sf.getSource().equals(Source.GRPK) && sf.canBeLine()) {
-            if (sf.getSourceLayer().equals("KELIAI")) {
+            if (sf.getSourceLayer().equals(Layer.GRPK_KELIAI)) {
                 var paskirtis = sf.getString("PASKIRTIS");
                 var tipas = sf.getLong("TIPAS");
                 var danga = sf.getString("DANGA");
@@ -55,7 +56,7 @@ public class Transportation implements ForwardingProfile.FeaturePostProcessor, F
                 } else {
                     addTransportationFeature(FieldValue.CLASS_UNCLASSIFIED, null, 14, sf, features);
                 }
-            } else if (sf.getSourceLayer().equals("GELEZINK")) {
+            } else if (sf.getSourceLayer().equals(Layer.GRPK_GELEZINK)) {
                 var gkodas = sf.getString("GKODAS");
                 var minZoom = sf.getLong("TIPAS") == 1 ? 8 : 11;
 

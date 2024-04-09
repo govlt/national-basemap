@@ -6,6 +6,7 @@ import com.onthegomap.planetiler.ForwardingProfile;
 import com.onthegomap.planetiler.VectorTile;
 import com.onthegomap.planetiler.geo.GeometryException;
 import com.onthegomap.planetiler.reader.SourceFeature;
+import lt.biip.basemap.constants.Layer;
 import lt.biip.basemap.constants.Source;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public class Landcover implements ForwardingProfile.FeaturePostProcessor, Forwar
 
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
-        if (sf.getSource().equals(Source.GRPK) && sf.getSourceLayer().startsWith("PLOTAI") && sf.canBePolygon()) {
+        if (sf.getSource().equals(Source.GRPK) && sf.getSourceLayer().startsWith(Layer.GRPK_PLOTAI_PREFIX) && sf.canBePolygon()) {
             var code = sf.getString("GKODAS");
             var area = sf.getLong("SHAPE_Area");
 

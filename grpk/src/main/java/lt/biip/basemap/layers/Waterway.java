@@ -5,6 +5,7 @@ import com.onthegomap.planetiler.FeatureMerge;
 import com.onthegomap.planetiler.ForwardingProfile;
 import com.onthegomap.planetiler.VectorTile;
 import com.onthegomap.planetiler.reader.SourceFeature;
+import lt.biip.basemap.constants.Layer;
 import lt.biip.basemap.constants.Source;
 import lt.biip.basemap.utils.LanguageUtils;
 
@@ -14,7 +15,7 @@ public class Waterway implements ForwardingProfile.FeaturePostProcessor, Forward
 
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
-        if (sf.getSource().equals(Source.GRPK) && sf.getSourceLayer().equals("HIDRO_L") && sf.canBeLine()) {
+        if (sf.getSource().equals(Source.GRPK) && sf.getSourceLayer().equals(Layer.GRPK_HIDRO_L) && sf.canBeLine()) {
             var type = (int) sf.getLong("TIPAS");
 
             switch (type) {

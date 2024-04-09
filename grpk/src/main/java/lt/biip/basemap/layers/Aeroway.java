@@ -3,13 +3,14 @@ package lt.biip.basemap.layers;
 import com.onthegomap.planetiler.FeatureCollector;
 import com.onthegomap.planetiler.ForwardingProfile;
 import com.onthegomap.planetiler.reader.SourceFeature;
+import lt.biip.basemap.constants.Layer;
 import lt.biip.basemap.constants.Source;
 
 public class Aeroway implements ForwardingProfile.FeatureProcessor {
 
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
-        if (sf.getSource().equals(Source.GRPK) && sf.getSourceLayer().startsWith("PLOTAI") && sf.canBePolygon()) {
+        if (sf.getSource().equals(Source.GRPK) && sf.getSourceLayer().startsWith(Layer.GRPK_PLOTAI_PREFIX) && sf.canBePolygon()) {
             var code = sf.getString("GKODAS");
 
             switch (code) {

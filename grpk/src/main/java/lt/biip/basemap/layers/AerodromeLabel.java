@@ -3,6 +3,7 @@ package lt.biip.basemap.layers;
 import com.onthegomap.planetiler.FeatureCollector;
 import com.onthegomap.planetiler.ForwardingProfile;
 import com.onthegomap.planetiler.reader.SourceFeature;
+import lt.biip.basemap.constants.Layer;
 import lt.biip.basemap.constants.Source;
 import lt.biip.basemap.utils.LanguageUtils;
 
@@ -23,7 +24,7 @@ public class AerodromeLabel implements ForwardingProfile.FeatureProcessor {
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
         if (sf.getSource().equals(Source.GRPK) &&
-                sf.getSourceLayer().startsWith("PLOTAI") &&
+                sf.getSourceLayer().startsWith(Layer.GRPK_PLOTAI_PREFIX) &&
                 sf.canBePolygon() &&
                 sf.getString("GKODAS", "").equals("va1") &&
                 !sf.getString("VARDAS", "").isBlank() &&
