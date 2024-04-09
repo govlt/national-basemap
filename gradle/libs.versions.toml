@@ -1,7 +1,9 @@
 [versions]
 planetiler = "0.7.0"
 geotools = "29.2"
+junit = "5.10.1"
 
 [libraries]
 planetiler = { module = "com.onthegomap.planetiler:planetiler-core", version.ref = "planetiler" }
+junitJupyter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
 geotoolsProcessGeometry = { module = "org.geotools:gt-process-geometry", version.ref = "geotools" }
