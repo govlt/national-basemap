@@ -3,6 +3,7 @@ package lt.biip.basemap.layers;
 import com.onthegomap.planetiler.FeatureCollector;
 import com.onthegomap.planetiler.ForwardingProfile;
 import com.onthegomap.planetiler.reader.SourceFeature;
+import lt.biip.basemap.constants.Layer;
 import lt.biip.basemap.constants.Source;
 import lt.biip.basemap.utils.LanguageUtils;
 
@@ -10,7 +11,7 @@ public class Place implements ForwardingProfile.FeatureProcessor {
 
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
-        if (sf.getSource().equals(Source.GRPK) && sf.getSourceLayer().equals("VIETOV_T") && sf.isPoint()) {
+        if (sf.getSource().equals(Source.GRPK) && sf.getSourceLayer().equals(Layer.GRPK_VIETOV_T) && sf.isPoint()) {
             var code = sf.getString("GKODAS");
 
             // TODO: add ANTR at higher zoom levels

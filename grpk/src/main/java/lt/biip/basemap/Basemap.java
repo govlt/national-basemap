@@ -3,6 +3,7 @@ package lt.biip.basemap;
 import com.onthegomap.planetiler.ForwardingProfile;
 import com.onthegomap.planetiler.Planetiler;
 import com.onthegomap.planetiler.config.Arguments;
+import lt.biip.basemap.constants.Layer;
 import lt.biip.basemap.constants.Source;
 import lt.biip.basemap.layers.*;
 
@@ -12,14 +13,28 @@ import java.util.List;
 
 
 public class Basemap extends ForwardingProfile {
-
+    // For local development in order to speed up build it's recommended to comment out some GRPK layers
+    static final String[] GRPK_LAYERS = {
+            Layer.GRPK_GELEZINK,
+            Layer.GRPK_HIDRO_L,
+            Layer.GRPK_KELIAI,
+            Layer.GRPK_PASTAT,
+            Layer.GRPK_PLOTAI_PREFIX,
+            Layer.GRPK_RIBOS,
+            Layer.GRPK_VIETOV_P,
+            Layer.GRPK_VIETOV_T,
+    };
 
     public static void main(String[] args) throws Exception {
+        var grpkGlobPattern = "{" + String.join(",", GRPK_LAYERS) + "}*.shp";
+
         Planetiler.create(Arguments.fromConfigFile(Path.of("config.properties")))
                 .setProfile(new Basemap())
-                .addShapefileSource(
+                .addShapefileGlobSource(
+                        null,
                         Source.GRPK,
                         Path.of("data", "sources", "grpk-espg-4326.shp.zip"),
+                        grpkGlobPattern,
                         "https://cdn.biip.lt/tiles/sources/grpk/grpk-espg-4326.shp.zip"
                 )
                 .addShapefileSource(
