@@ -17,7 +17,8 @@ public class POI implements ForwardingProfile.FeatureProcessor {
         if (sf.getSource().equals(Source.GRPK) &&
                 sf.getSourceLayer().equals(Layer.GRPK_VIETOV_T) &&
                 sf.isPoint() &&
-                emptyToNull(sf.getString("VARDAS")) != null
+                emptyToNull(sf.getString("VARDAS")) != null &&
+                emptyToNull(sf.getString("ANTR")) == null
         ) {
             var code = sf.getString("GKODAS");
 
