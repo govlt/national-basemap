@@ -8,8 +8,6 @@ import lt.biip.basemap.constants.Source;
 import lt.biip.basemap.layers.*;
 
 import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.List;
 
 
 public class Basemap extends ForwardingProfile {
@@ -48,10 +46,10 @@ public class Basemap extends ForwardingProfile {
     }
 
     public Basemap() {
-        var handlers = Arrays.asList(
+        var handlers = new SourceProcessors[]{
                 new SourceProcessors(
                         Source.GRPK,
-                        Arrays.asList(
+                        new FeatureProcessor[]{
                                 new AerodromeLabel(),
                                 new Aeroway(),
                                 new Boundary(),
@@ -66,15 +64,16 @@ public class Basemap extends ForwardingProfile {
                                 new TransportationName(),
                                 new Water(),
                                 new WaterName(),
-                                new Waterway()
-                        )
+                                new Waterway(),
+                        }
                 ),
                 new SourceProcessors(
                         Source.AR,
-                        List.of(
+                        new FeatureProcessor[]{
                                 new HouseNumber()
-                        )
-                ));
+                        }
+                )
+        };
 
         for (var sourceHandlers : handlers) {
             for (var handler : sourceHandlers.processors) {
@@ -94,7 +93,7 @@ public class Basemap extends ForwardingProfile {
 
     private record SourceProcessors(
             String source,
-            List<? extends FeatureProcessor> processors
+            FeatureProcessor[] processors
     ) {
 
     }
