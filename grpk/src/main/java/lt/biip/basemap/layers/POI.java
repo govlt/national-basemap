@@ -24,7 +24,7 @@ public class POI implements ForwardingProfile.FeatureProcessor {
             switch (code) {
                 case "uur14" -> addFeature("park", 5, sf, features);
                 case "uvp1" -> addFeature("cemetery", 10, sf, features);
-                case "unk0" -> addFeature("attraction", 15, sf, features);
+                case "unk0" -> addFeature("unknown", 15, sf, features);
             }
         }
     }
