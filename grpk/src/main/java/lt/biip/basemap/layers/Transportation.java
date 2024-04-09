@@ -40,9 +40,9 @@ public class Transportation implements ForwardingProfile.FeaturePostProcessor, F
                 } else if (tipas == 6) {
                     // Gerosios vilties st. and other similar streets belong to tipas 6
                     // For now just assign service, because residential filters it out in some styles completely
-                    addTransportationFeature(FieldValue.CLASS_SERVICE, null, 12, sf, features);
-                } else if (tipas == 7 && paskirtis.equals("JUNG")) {
-                    addTransportationFeature(FieldValue.CLASS_LINK, null, 13, sf, features);
+                    addTransportationFeature(FieldValue.CLASS_MINOR, null, 12, sf, features);
+                } else if (tipas == 7 && (paskirtis.equals("JUNG") || paskirtis.equals("LEGR"))) {
+                    addTransportationFeature(FieldValue.CLASS_SECONDARY, null, 12, sf, features);
                 } else if (tipas == 7 || tipas == 9) {
                     addTransportationFeature(FieldValue.CLASS_SERVICE, null, 13, sf, features);
                 } else if (tipas == 8 && danga.equals("Ž")) {
@@ -87,7 +87,7 @@ public class Transportation implements ForwardingProfile.FeaturePostProcessor, F
 
         var brunnel = switch (level) {
             case 1, 2, 3 -> "bridge";
-            case -1 -> "tunnell";
+            case -1 -> "tunnel";
             default -> null;
         };
 
@@ -156,6 +156,7 @@ public class Transportation implements ForwardingProfile.FeaturePostProcessor, F
         static final String CLASS_TERTIARY = "tertiary";
         static final String CLASS_RESIDENTIAL = "residential";
         static final String CLASS_LINK = "link";
+        static final String CLASS_MINOR = "minor";
         static final String CLASS_SERVICE = "service";
         static final String CLASS_PATH = "path";
         static final String CLASS_FERRY = "ferry";
