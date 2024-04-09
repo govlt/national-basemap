@@ -8,6 +8,8 @@ import lt.biip.basemap.constants.Layer;
 import lt.biip.basemap.constants.Source;
 import lt.biip.basemap.utils.LanguageUtils;
 
+import static com.google.common.base.Strings.emptyToNull;
+
 public class POI implements ForwardingProfile.FeatureProcessor {
 
     @Override
@@ -15,21 +17,28 @@ public class POI implements ForwardingProfile.FeatureProcessor {
         if (sf.getSource().equals(Source.GRPK) &&
                 sf.getSourceLayer().equals(Layer.GRPK_VIETOV_T) &&
                 sf.isPoint() &&
-                !sf.getString("VARDAS", "").isBlank()
+                emptyToNull(sf.getString("VARDAS")) != null
         ) {
             var code = sf.getString("GKODAS");
 
             switch (code) {
-                case "uur14" -> addFeature("park", sf, features);
-                case "uvp1" -> addFeature("cemetery", sf, features);
+                case "uur14" -> addFeature("park", 5, sf, features);
+                case "uvp1" -> addFeature("cemetery", 10, sf, features);
+                case "unk0" -> addFeature("attraction", 15, sf, features);
             }
         }
     }
 
-    void addFeature(String clazz, SourceFeature sf, FeatureCollector features) {
+    void addFeature(String clazz, int rank, SourceFeature sf, FeatureCollector features) {
         features.point("poi")
+                .setBufferPixels(64)
                 .putAttrs(LanguageUtils.getNames(sf.tags()))
                 .setAttr("class", clazz)
-                .setMinZoom(10);
+                .setAttr("rank", rank)
+                .setAttr("level", 0)
+                .setMinZoom(10)
+                .setPointLabelGridPixelSize(14, 64)
+                .setSortKey(rank);
     }
+
 }
