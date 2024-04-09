@@ -41,10 +41,8 @@ public class Waterway implements ForwardingProfile.FeaturePostProcessor, Forward
                 .setBufferPixels(4)
                 .setAttr("class", clazz)
                 .setAttr("intermittent", 0)
-                .putAttrs(LanguageUtils.getNames(sf.tags()))
-                .setMinPixelSize(0)
-                .setPixelTolerance(0.0)
-                .setMinZoom(minZoom)
+                .setMinPixelSizeBelowZoom(11, 0)
+                .setMinZoom(9)
                 .setSortKeyDescending(length);
 
         if (Waterway.hasHumanReadableName(name)) {
