@@ -5,6 +5,7 @@ import com.onthegomap.planetiler.FeatureMerge;
 import com.onthegomap.planetiler.ForwardingProfile;
 import com.onthegomap.planetiler.VectorTile;
 import com.onthegomap.planetiler.reader.SourceFeature;
+import com.onthegomap.planetiler.util.ZoomFunction;
 import lt.biip.basemap.constants.Layer;
 import lt.biip.basemap.constants.Source;
 import lt.biip.basemap.utils.LanguageUtils;
@@ -19,6 +20,11 @@ public class Waterway implements ForwardingProfile.FeaturePostProcessor, Forward
 
     // We have rivers with names S-3, S-8. This regex filters out names ending with - and number
     static final Pattern PATTERN_NAMES_IGNORE = Pattern.compile("-\\d+$");
+
+    static final ZoomFunction.MeterToPixelThresholds MIN_PIXEL_LENGTHS = ZoomFunction.meterThresholds()
+            .put(9, 8_000)
+            .put(10, 4_000)
+            .put(11, 1_000);
 
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
@@ -68,9 +74,11 @@ public class Waterway implements ForwardingProfile.FeaturePostProcessor, Forward
             return items;
         }
 
+        var minLength = zoom <= 11 ? MIN_PIXEL_LENGTHS.apply(zoom).doubleValue() : 0.5;
+
         return FeatureMerge.mergeLineStrings(
                 items,
-                0.5, // after merging, remove lines that are still less than 0.5px long
+                minLength, // after merging, remove lines that are still less than 0.5px long
                 0.1, // simplify output linestrings using a 0.1px tolerance
                 4.0 // remove any detail more than 4px outside the tile boundary
         );
