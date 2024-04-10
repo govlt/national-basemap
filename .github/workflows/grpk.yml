@@ -2,7 +2,10 @@ name: "GRPK: deploy basemap"
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
   workflow_dispatch:
     inputs:
       type:
@@ -23,6 +26,18 @@ env:
   GRPK_GLYPHS_URL: https://dev-gis.biip.lt/tiles/static/font/{fontstack}/{range}
 
 jobs:
+  config:
+    name: Configure publish options
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      grpk-docker-environment: ${{ steps.docker.outputs.docker-environment || 'main' }}
+    steps:
+      - name: Set if stable GRPK
+        if: startsWith(github.ref, 'refs/tags/')
+        id: docker
+        run: echo "docker-environment=stable" >> "${GITHUB_OUTPUT}"
+
   deploy-grpk-pmtiles-cdn:
     name: Deploy GRPK pmtiles to CDN
     runs-on: ubuntu-latest
@@ -85,7 +100,9 @@ jobs:
     name: Generate and push GRPK docker image
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    if: github.event_name == 'push' || inputs.type == 'all' || inputs.type == 'docker'
+    if: inputs.type != 'styles' && inputs.type != 'pmtiles-cdn'
+    concurrency: gprk-basemap-docker-${{ needs.config.outputs.grpk-docker-environment }}
+    needs: config
     permissions:
       contents: read
       packages: write
@@ -99,6 +116,6 @@ jobs:
           docker-image: ghcr.io/aplinkosministerija/biip-grpk-basemap
           docker-context: .
           file: grpk/docker/Dockerfile
-          environment: main
+          environment: ${{ needs.config.outputs.grpk-docker-environment }}
           no-cache: true
           push: true
