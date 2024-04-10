@@ -1,11 +1,35 @@
-# Vector Map of Lithuania 🗺️
+# Vector Basemap of Lithuania 🗺️
 
-Welcome to the exciting world of mapping Lithuania! Dive into the beauty and functionality of our free and open-source
-map project inspired by [Proton Maps](https://protomaps.com/).
+Revolutionizing mapping technology for Lithuania with a free and completely open-source vector Basemap of Lithuania with no
+restrictions on usage. This project utilizes cutting-edge vector mapping technology, akin to giants like Google Maps,
+Apple Maps, and Mapbox, and is compliant with the VectorMapTiles standard.
 
-## What's Inside?
+## Key features
 
-This project offers an early-stage experiment in creating a free and open source vector map for Lithuania.
+1. **Lightning-Fast Updates**: vector basemap updates are lightning-fast, taking approximately ~2 minutes to build on an
+   M1 MacBook and ~6 minutes on a free GitHub runner.
+2. **Compact and Efficient**: Unlike traditional raster-based technologies, vector basemap of Lithuania occupies only
+   ~350 MB as a single file. Say goodbye to managing millions of image files!
+3. **Instant Style Changes**: Customize your maps on the fly with instant style changes. No more waiting for complete
+   rebuilds as with raster based maps.
+4. **Precision and Accuracy**: Utilizing data from
+   the [Georeferenced Cadastral Register (GRPK)]((https://www.geoportal.lt/geoportal/web/georeferencinio-pagrindo-kadastras-grpk))
+   and [address registry](https://www.registrucentras.lt/p/1187), vector basemap offers unparalleled accuracy.
+5. **Infrastructure Flexibility**: Seamlessly integrate vector basemap into your existing infrastructure with just one
+   style url or self-host it independently. Enjoy the freedom to choose what works best for you.
+6. **Various Self-Hosting Options**: Explore multiple self-hosting options, including hosting a single
+   ~350MB [PMTiles](https://docs.protomaps.com/pmtiles/) file and style files in your S3
+   or file storage. Or using our provided docker image based on Martin tile server.
+7. **OpenVectorTiles Standard**: We adhere to the [VectorMapTiles](https://openmaptiles.org/about/) standard, allowing
+   effortless integration of various
+   open-source styles, including unconventional ones like the [Pirate style](https://openmaptiles.org/styles/) 🏴‍☠️
+8. **Efficient Data Delivery**: Vector tiles are designed for compactness and optimization, ensuring lightning-fast data
+   delivery over the internet, making map smoother and more responsive.
+9. **Easy Usage**: With [Pseudo-Mercator](https://en.wikipedia.org/wiki/Web_Mercator_projection) projection (EPSG:3857),
+   integration is seamless. Vector basemap aligns effortlessly with popular map services like Google Maps and
+   OpenStreetMap.
+10. **Completely Open Source and Free**: Join our community of contributors and users in shaping the future of mapping.
+    Everything, from the basemap building process to its usage, is open-source and free of restrictions.
 
 ## Getting Started 🚀
 
