@@ -93,6 +93,6 @@ jobs:
           docker-image: ghcr.io/aplinkosministerija/biip-grpk-basemap
           docker-context: .
           file: grpk/docker/Dockerfile
-          environment: ${ inputs.docker-image-tag }}
+          environment: ${{ inputs.docker-image-tag }}
           no-cache: true
           push: true

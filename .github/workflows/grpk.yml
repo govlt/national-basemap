@@ -1,5 +1,5 @@
 name: "GRPK: publish basemap"
-run-name: "GRPK: publish basemap ${{ startsWith(github.ref, 'refs/tags/') && 'stable' || 'development' }}"
+run-name: "GRPK: publish basemap (${{ startsWith(github.ref, 'refs/tags/') && 'stable' || 'development' }})"
 
 on:
   pull_request:
