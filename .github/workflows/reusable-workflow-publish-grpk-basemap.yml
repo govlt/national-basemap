@@ -1,4 +1,4 @@
-name: "GRPK: publish GRPK basemap"
+name: "Reusable workflow: publish GRPK basemap"
 
 on:
   workflow_call:
