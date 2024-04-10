@@ -83,7 +83,7 @@ jobs:
         run: find grpk/styles -type f -name "style.json" -print0 | xargs -0 sed -i -e 's|${{ env.BASE_URL }}|${{ env.BASE_TARGET_URL }}|g'
         env:
           BASE_URL: http://localhost:3000/
-          BASE_TARGET_URL: https://staging-gis.biip.lt/basemap/grpk/
+          BASE_TARGET_URL: https://gis.biip.lt/basemap/grpk/
 
       - name: Sync to S3
         uses: docker://docker.io/rclone/rclone:1.66
