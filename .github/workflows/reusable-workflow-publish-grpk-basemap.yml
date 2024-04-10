@@ -68,7 +68,7 @@ jobs:
       - name: Sync to S3
         uses: docker://docker.io/rclone/rclone:1.66
         with:
-          args: "sync grpk/styles s3:/tiles/grpk/styles --s3-acl=public-read --fast-list --checksum --update --use-server-modtime --metadata --inplace --delete-during"
+          args: "sync grpk/styles s3:/tiles/grpk/styles --include style.json  --s3-acl=public-read --fast-list --checksum --update --use-server-modtime --metadata --inplace --delete-during"
         env:
           RCLONE_CONFIG_S3_TYPE: s3
           RCLONE_CONFIG_S3_PROVIDER: Other
