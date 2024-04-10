@@ -1,10 +1,11 @@
 # Vector Basemap of Lithuania 🗺️
 
-Revolutionizing mapping technology for Lithuania with a free and completely open-source vector Basemap of Lithuania with no
+Revolutionizing mapping technology for Lithuania with a free and completely open-source vector Basemap of Lithuania with
+no
 restrictions on usage. This project utilizes cutting-edge vector mapping technology, akin to giants like Google Maps,
 Apple Maps, and Mapbox, and is compliant with the VectorMapTiles standard.
 
-## Key features
+## Key features 🚀
 
 1. **Lightning-Fast Updates**: vector basemap updates are lightning-fast, taking approximately ~2 minutes to build on an
    M1 MacBook and ~6 minutes on a free GitHub runner.
@@ -12,8 +13,8 @@ Apple Maps, and Mapbox, and is compliant with the VectorMapTiles standard.
    ~350 MB as a single file. Say goodbye to managing millions of image files!
 3. **Instant Style Changes**: Customize your maps on the fly with instant style changes. No more waiting for complete
    rebuilds as with raster based maps.
-4. **Precision and Accuracy**: Utilizing data from
-   the [Georeferenced Cadastral Register (GRPK)]((https://www.geoportal.lt/geoportal/web/georeferencinio-pagrindo-kadastras-grpk))
+4. **Precision and Accuracy**: Utilizing data from the Georeferenced Cadastral
+   Register ([GRPK](https://www.geoportal.lt/geoportal/web/georeferencinio-pagrindo-kadastras-grpk))
    and [address registry](https://www.registrucentras.lt/p/1187), vector basemap offers unparalleled accuracy.
 5. **Infrastructure Flexibility**: Seamlessly integrate vector basemap into your existing infrastructure with just one
    style url or self-host it independently. Enjoy the freedom to choose what works best for you.
@@ -31,7 +32,7 @@ Apple Maps, and Mapbox, and is compliant with the VectorMapTiles standard.
 10. **Completely Open Source and Free**: Join our community of contributors and users in shaping the future of mapping.
     Everything, from the basemap building process to its usage, is open-source and free of restrictions.
 
-## Getting Started 🚀
+## Getting Started 🛠️
 
 To embark on your mapping journey, follow these simple steps:
 
