@@ -22,6 +22,7 @@ jobs:
     with:
       docker-image-tag: stable
       tile-server-url: https://gis.biip.lt/basemap/grpk/
+      archive-version: ${{ github.ref_name }}
     secrets:
       S3_ENDPOINT: ${{ secrets.S3_BIIP_ENDPOINT }}
       S3_ACCESS_KEY_ID: ${{ secrets.S3_BIIP_ACCESS_KEY_ID }}
@@ -37,6 +38,7 @@ jobs:
     with:
       docker-image-tag: development
       tile-server-url: https://dev-gis.biip.lt/basemap/grpk/
+      archive-version: 0.0.0
     secrets:
       S3_ENDPOINT: ${{ secrets.S3_DEVELOPMENT_BIIP_ENDPOINT}}
       S3_ACCESS_KEY_ID: ${{ secrets.S3_DEVELOPMENT_BIIP_ACCESS_KEY_ID }}
