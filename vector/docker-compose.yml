@@ -1,0 +1,62 @@
+name: national-basemap-vector-local
+
+services:
+  vector-basemap-martin-tile-server:
+    build:
+      context: .
+      dockerfile: preview/martin.Dockerfile
+    pull_policy: build
+    networks:
+      - internal
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    healthcheck:
+      test: [ "CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/health || exit 1" ]
+      interval: 3s
+      timeout: 2s
+      start_period: 1s
+      retries: 10
+    develop:
+      watch:
+        - action: rebuild
+          path: martin/config.yaml
+        - action: rebuild
+          path: data/output/lithuania.pmtiles
+        - action: rebuild
+          path: styles
+
+  maputnik:
+    image: ghcr.io/maplibre/maputnik:main
+    platform: linux/amd64
+    restart: unless-stopped
+    networks:
+      - internal
+    ports:
+      - 8888:80
+
+  tileserver-gl:
+    restart: unless-stopped
+    build:
+      dockerfile_inline: |
+        FROM maptiler/tileserver-gl:v4.10.3
+        
+        COPY ./preview/tileserver-config.json /opt/config/config.json
+        COPY ./styles /opt/vector/styles
+        COPY ./data/output/lithuania.pmtiles /opt/vector/lithuania.pmtiles
+    command: --config /opt/config/config.json
+    networks:
+      - internal
+    ports:
+      - 8080:8080
+    develop:
+      watch:
+        - action: rebuild
+          path: preview/tileserver-config.json
+        - action: rebuild
+          path: data/output/lithuania.pmtiles
+        - action: rebuild
+          path: styles
+
+networks:
+  internal:

@@ -1,4 +1,4 @@
-# Vector Basemap of Lithuania
+# National Basemap of Lithuania
 
 Revolutionizing mapping technology for Lithuania with a free and completely open-source vector Basemap of Lithuania with
 no
@@ -162,25 +162,25 @@ To embark on your mapping journey, follow these simple steps:
 
 ### Generating GRPK Basemap
 
-To generate the basemap in PMTiles format, execute the following command:
+To generate the vector basemap in PMTiles format, execute the following command:
 
 ```shell
-make grpk-generate-basemap
+make vector-basemap-generate
 ```
 
 The generated PMTiles will be saved in `grpk/data/output/grpk.pmtiles`.
 
-This process may take some time as the GRPK data source will be downloaded if it doesn't exist already.
+This process may take some time as data sources will be downloaded if they don't exist already.
 
 #### Previewing
 
 Before previewing, make sure you have [Docker](https://www.docker.com/get-started/) installed, preferably with Docker
 Compose version 2.22 and later.
 
-After generating the GRPK basemap, execute the following command:
+After generating the vector basemap, execute the following command:
 
 ```shell
-make grpk-preview
+make vector-basemap-preview
 ```
 
 This will start:

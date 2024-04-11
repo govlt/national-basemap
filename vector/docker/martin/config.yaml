@@ -1,0 +1,15 @@
+preferred_encoding: gzip
+
+pmtiles:
+  sources:
+    vector: /opt/vector/pmtiles/lithuania.pmtiles
+
+sprites:
+  sources:
+    bright: /opt/vector/styles/bright/sprites
+    geoportal: /opt/vector/styles/geoportal/sprites
+    openmaptiles: /opt/vector/styles/openmaptiles/sprites
+    positron: /opt/vector/styles/positron/sprites
+
+fonts:
+  - /opt/vector/fonts

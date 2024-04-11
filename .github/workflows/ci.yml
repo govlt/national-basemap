@@ -37,13 +37,13 @@ jobs:
       - name: Install maplibre-gl-style-spec
         run: npm install @maplibre/maplibre-gl-style-spec --global
 
-      - name: Validate GRPK Mapbox GL styles
-        working-directory: grpk/styles/geoportal
+      - name: Validate MapLibre GL styles
+        working-directory: vector/styles/geoportal
         run: |
           for file in *.json; do [[ -f "$file" ]] && echo "Validating file: $file" && gl-style-validate "$file"; done
 
-  test-grpk:
-    name: Run GRPK tests
+  test-vector-basemap:
+    name: Run vector basemap tests
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
@@ -63,8 +63,8 @@ jobs:
       - name: Run tests
         run: ./gradlew test -i
 
-  generate-grpk-pmtiles:
-    name: Generate GRPK pmtiles
+  generate-vector-basemap-pmtiles:
+    name: Generate vector basemap PMTiles
     runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:
@@ -73,7 +73,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Generate GRPK pmtiles
-        uses: ./.github/actions/grpk-generate
+      - name: Generate vector basemap PMTiles
+        uses: ./.github/actions/basemap-vector-generate-pmtiles
         with:
           artifact-retention-days: ${{ github.ref == 'refs/heads/main' && 30 || 7 }}

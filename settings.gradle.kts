@@ -3,6 +3,6 @@ plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "0.7.0"
 }
 
-rootProject.name = "biip-basemap"
-include("grpk")
-project(":grpk").projectDir = file("grpk")
+rootProject.name = "national-basemap"
+include("vector")
+project(":vector").projectDir = file("vector")

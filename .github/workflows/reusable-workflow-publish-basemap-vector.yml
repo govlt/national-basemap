@@ -1,0 +1,124 @@
+name: "Reusable workflow: publish GRPK basemap"
+
+on:
+  workflow_call:
+    inputs:
+      tile-server-url:
+        description: Required input to set tile server url
+        type: string
+        required: true
+      docker-image-tag:
+        description: Required input to set docker image tag
+        type: string
+        required: true
+      archive-version:
+        description: Required input to set pmtiles version
+        type: string
+        required: true
+      s3-endpoint:
+        description: Required input set s3 endpoint
+        type: string
+        required: true
+
+    secrets:
+      S3_ACCESS_KEY_ID:
+        required: true
+      S3_SECRET_ACCESS_KEY:
+        required: true
+
+jobs:
+  publish-grpk-pmtiles-to-cdn:
+    name: Publish GRPK basemap pmtiles to CDN
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Change version
+        uses: dschanoeh/change-property@v1
+        with:
+          file: grpk/config.properties
+          property: archive_version
+          value: ${{ inputs.archive-version }}
+
+      - name: Generate PMTiles
+        uses: ./.github/actions/vector-basemap-generate
+        with:
+          cache-data-sources: false
+
+      - name: Sync to S3
+        uses: docker://docker.io/rclone/rclone:1.66
+        with:
+          args: "sync grpk/data/output s3:/tiles/grpk --include grpk.pmtiles --s3-acl=public-read --fast-list --checksum --update --use-server-modtime --metadata --inplace --delete-during"
+        env:
+          RCLONE_CONFIG_S3_TYPE: s3
+          RCLONE_CONFIG_S3_PROVIDER: Other
+          RCLONE_CONFIG_S3_ENDPOINT: ${{ inputs.s3-endpoint }}
+          RCLONE_CONFIG_S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
+          RCLONE_CONFIG_S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
+
+  publish-grpk-styles-to-cdn:
+    name: Publish GRPK basemap styles to CDN
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Minify styles
+        run: find vector/styles -name "style.json" -print0 | xargs -0 -I{} sh -c 'jq -c . "{}" > tmp.json && mv tmp.json "{}"'
+
+      - name: Replace style urls for docker
+        run: find vector/styles -type f -name "style.json" -print0 | xargs -0 sed -i -e 's|${{ env.BASE_URL }}|${{ inputs.tile-server-url }}|g'
+        env:
+          BASE_URL: http://localhost:3000
+
+      - name: Sync to S3
+        uses: docker://docker.io/rclone/rclone:1.66
+        with:
+          args: "sync grpk/styles s3:/tiles/vector/styles --include style.json  --s3-acl=public-read --fast-list --checksum --update --use-server-modtime --metadata --inplace --delete-during"
+        env:
+          RCLONE_CONFIG_S3_TYPE: s3
+          RCLONE_CONFIG_S3_PROVIDER: Other
+          RCLONE_CONFIG_S3_ENDPOINT: ${{ inputs.s3-endpoint }}
+          RCLONE_CONFIG_S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
+          RCLONE_CONFIG_S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
+
+      - name: Upload styles artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: styles
+          path: grpk/styles
+
+  push-grpk-docker-image:
+    name: Generate and push GRPK basemap docker image
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Change version
+        uses: dschanoeh/change-property@v1
+        with:
+          file: vector/config.properties
+          property: archive_version
+          value: ${{ inputs.archive-version }}
+
+      - name: Build & tag docker image
+        uses: AplinkosMinisterija/reusable-workflows/.github/actions/docker-build-tag-push@main
+        with:
+          docker-image: ghcr.io/govlt/national-basemap-vector
+          docker-context: .
+          file: grpk/docker/Dockerfile
+          environment: ${{ inputs.docker-image-tag }}
+          no-cache: true
+          push: true
