@@ -124,6 +124,21 @@ services:
 Periodically download the PMTiles archive from `https://cdn.biip.lt/tiles/grpk/grpk.pmtiles` to your own S3 or file
 storage and utilize it as needed.
 
+## Recipes
+
+### Extracting Basemap for a Specific Area
+
+To extract a basemap for a specific area, you can utilize the [PMTiles CLI](https://docs.protomaps.com/pmtiles/cli).
+This tool allows you to specify either a bounding box or a shape for extraction.
+
+For example, if you want to extract the basemap for Vilnius Old Town, you can use the following command:
+
+```bash
+pmtiles extract https://cdn.biip.lt/tiles/grpk/grpk.pmtiles vilnius-old-town.pmtiles --bbox=25.276352,54.694638,25.302195,54.671628
+```
+
+The resulting basemap for Vilnius Old Town occupies less than 1 MB!
+
 ## Getting Started Development
 
 To embark on your mapping journey, follow these simple steps:
