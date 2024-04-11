@@ -15,20 +15,10 @@ on:
         description: Required input to set pmtiles version
         type: string
         required: true
-      s3-endpoint:
-        description: Required input set s3 endpoint
-        type: string
-        required: true
-
-    secrets:
-      S3_ACCESS_KEY_ID:
-        required: true
-      S3_SECRET_ACCESS_KEY:
-        required: true
 
 jobs:
-  publish-grpk-pmtiles-to-cdn:
-    name: Publish GRPK basemap pmtiles to CDN
+  generate-basemap-vector-pmtiles:
+    name: Generate and upload PMTiles
     runs-on: ubuntu-latest
     timeout-minutes: 45
     permissions:
@@ -40,28 +30,25 @@ jobs:
       - name: Change version
         uses: dschanoeh/change-property@v1
         with:
-          file: grpk/config.properties
+          file: vector/config.properties
           property: archive_version
           value: ${{ inputs.archive-version }}
 
       - name: Generate PMTiles
-        uses: ./.github/actions/vector-basemap-generate
+        uses: ./.github/actions/basemap-vector-generate-pmtiles
         with:
-          cache-data-sources: false
+          cache-data-sources: true
 
-      - name: Sync to S3
-        uses: docker://docker.io/rclone/rclone:1.66
+      - name: Upload PMTiles artifact
+        uses: actions/upload-artifact@v4
         with:
-          args: "sync grpk/data/output s3:/tiles/grpk --include grpk.pmtiles --s3-acl=public-read --fast-list --checksum --update --use-server-modtime --metadata --inplace --delete-during"
-        env:
-          RCLONE_CONFIG_S3_TYPE: s3
-          RCLONE_CONFIG_S3_PROVIDER: Other
-          RCLONE_CONFIG_S3_ENDPOINT: ${{ inputs.s3-endpoint }}
-          RCLONE_CONFIG_S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
-          RCLONE_CONFIG_S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
+          name: vector-basemap-pmtiles
+          path: vector/data/output
+          if-no-files-found: error
+          compression-level: 0
 
-  publish-grpk-styles-to-cdn:
-    name: Publish GRPK basemap styles to CDN
+  generate-basemap-vector-styles:
+    name: Generate and upload styles
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
@@ -78,22 +65,47 @@ jobs:
         env:
           BASE_URL: http://localhost:3000
 
-      - name: Sync to S3
-        uses: docker://docker.io/rclone/rclone:1.66
-        with:
-          args: "sync grpk/styles s3:/tiles/vector/styles --include style.json  --s3-acl=public-read --fast-list --checksum --update --use-server-modtime --metadata --inplace --delete-during"
-        env:
-          RCLONE_CONFIG_S3_TYPE: s3
-          RCLONE_CONFIG_S3_PROVIDER: Other
-          RCLONE_CONFIG_S3_ENDPOINT: ${{ inputs.s3-endpoint }}
-          RCLONE_CONFIG_S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
-          RCLONE_CONFIG_S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
-
       - name: Upload styles artifact
         uses: actions/upload-artifact@v4
         with:
-          name: styles
-          path: grpk/styles
+          name: vector-basemap-styles
+          path: vector/styles
+
+  publish-basemap-vector:
+    name: Publish vector basemap
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs:
+      - generate-basemap-vector-pmtiles
+      - generate-basemap-vector-styles
+    environment:
+      name: basemap-vector
+    steps:
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Download PMTiles artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: vector-basemap-pmtiles
+          path: vector
+          merge-multiple: true
+
+      - name: Download styles artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: vector-basemap-styles
+          path: vector/styles
+          merge-multiple: true
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
 
   push-grpk-docker-image:
     name: Generate and push GRPK basemap docker image
