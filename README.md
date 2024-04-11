@@ -1,11 +1,11 @@
-# Vector Basemap of Lithuania 🗺️
+# Vector Basemap of Lithuania
 
 Revolutionizing mapping technology for Lithuania with a free and completely open-source vector Basemap of Lithuania with
 no
 restrictions on usage. This project utilizes cutting-edge vector mapping technology, akin to giants like Google Maps,
 Apple Maps, and Mapbox, and is compliant with the VectorMapTiles standard.
 
-## Key features 🚀
+## Key features
 
 1. **Lightning-Fast Updates**: vector basemap updates are lightning-fast, taking approximately ~2 minutes to build on an
    M1 MacBook and ~6 minutes on a free GitHub runner.
@@ -124,13 +124,13 @@ services:
 Periodically download the PMTiles archive from `https://cdn.biip.lt/tiles/grpk/grpk.pmtiles` to your own S3 or file
 storage and utilize it as needed.
 
-## Getting Started Development 🛠️
+## Getting Started Development
 
 To embark on your mapping journey, follow these simple steps:
 
 - **Install Java 21+:** Ensure Java is installed on your system to power up the mapping engine.
 
-## Instructions 📝
+## Instructions
 
 ### Generating GRPK Basemap
 
@@ -157,7 +157,8 @@ make grpk-preview
 
 This will start:
 
-- [Tileserver-GL](https://github.com/maptiler/tileserver-gl) at http://localhost:8080, which allows previewing PMTiles archive
+- [Tileserver-GL](https://github.com/maptiler/tileserver-gl) at http://localhost:8080, which allows previewing PMTiles
+  archive
   and styles;
 - [Martin tile server](https://martin.maplibre.org/) at http://localhost:3000, serving PMTiles, fonts, and sprites.
   Visit http://localhost:3000/catalog for more details;
@@ -166,14 +167,14 @@ This will start:
 Note: Docker will watch all required directories, so you don't need to rerun this command once PMTiles are regenerated
 or styles are changed.
 
-## Contributing 🤝
+## Contributing
 
 Calling all GIS enthusiasts! Your expertise is invaluable to us. Whether you spot issues or have groundbreaking ideas,
 feel free to open an issue or submit a pull request. Dive into
 our [contribution guidelines](https://github.com/AplinkosMinisterija/.github/blob/main/CONTRIBUTING.md) for more
 insights.
 
-## License 📄
+## License
 
 This project is licensed under the [MIT License](./LICENSE), inviting you to explore, adapt, and contribute to our
 mapping adventure!
