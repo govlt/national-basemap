@@ -79,8 +79,13 @@ jobs:
       - name: Create CDN styles
         run: find grpk/styles -name "style.json" -exec sh -c 'cp "$1" "$(dirname "$1")/style-cdn.json"' _ {} \;
 
+      - name: Replace style.json urls for docker
+        run: find grpk/styles -type f -name "style.json" -print0 | xargs -0 sed -i -e 's|${{ env.BASE_URL }}|${{ inputs.tile-server-url }}|g'
+        env:
+          BASE_URL: http://localhost:3000
+
       - name: Set CDN styles source url
-        run: find grpk/styles -type f -name "style.json" -print0 | xargs -0 sed -i -e 's|${{ env.VALUE }}|${{ env.REPLACE_WITH }}|g'
+        run: find grpk/styles -type f -name "style-cdn.json" -print0 | xargs -0 sed -i -e 's|${{ env.VALUE }}|${{ env.REPLACE_WITH }}|g'
         env:
           VALUE: http://localhost:3000/grpk
           REPLACE_WITH: ${{ inputs.s3-endpoint }}${{ env.S3_LOCATION }}
@@ -88,11 +93,6 @@ jobs:
       # TODO in the future remove this step by building glyphs and sprites in this workflow and serving them from S3
       - name: Replace style-cdn.json urls for docker
         run: find grpk/styles -type f -name "style-cdn.json" -print0 | xargs -0 sed -i -e 's|${{ env.BASE_URL }}|${{ inputs.tile-server-url }}|g'
-        env:
-          BASE_URL: http://localhost:3000
-
-      - name: Replace style.json urls for docker
-        run: find grpk/styles -type f -name "style.json" -print0 | xargs -0 sed -i -e 's|${{ env.BASE_URL }}|${{ inputs.tile-server-url }}|g'
         env:
           BASE_URL: http://localhost:3000
 
