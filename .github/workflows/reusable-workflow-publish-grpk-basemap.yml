@@ -89,6 +89,12 @@ jobs:
           RCLONE_CONFIG_S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
           RCLONE_CONFIG_S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
 
+      - name: Upload styles artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: styles
+          path: grpk/styles
+
   push-grpk-docker-image:
     name: Generate and push GRPK basemap docker image
     runs-on: ubuntu-latest
