@@ -46,6 +46,9 @@ jobs:
     permissions:
       contents: read
     steps:
+      - name: Install spreet
+        run: cargo install spreet
+
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -57,11 +60,26 @@ jobs:
         env:
           BASE_URL: http://localhost:3000
 
+      - name: Prepare styles output
+        run: |
+          mkdir -p output/font output/sprite output/styles
+            
+          styles=("positron" "bright" "openmaptiles")
+          for style in "${styles[@]}"; do
+            mkdir -p output/styles/"$style"
+          
+            cp -r vector/styles/"$style"/style.json output/styles/"$style"/style.json
+            cp -r vector/styles/"$style"/glyphs/. output/font
+          
+            spreet --unique --minify-index-file vector/styles/"$style"/sprites output/sprite/"$style"
+            spreet --retina --unique --minify-index-file vector/styles/"$style"/sprites output/sprite/"$style"@2x
+          done
+
       - name: Upload styles artifact
         uses: actions/upload-artifact@v4
         with:
           name: vector-basemap-styles
-          path: vector/styles
+          path: output
 
   publish-basemap-vector:
     name: Publish vector basemap
