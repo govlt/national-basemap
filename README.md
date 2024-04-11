@@ -139,6 +139,19 @@ pmtiles extract https://cdn.biip.lt/tiles/grpk/grpk.pmtiles vilnius-old-town.pmt
 
 The resulting basemap for Vilnius Old Town occupies less than 1 MB!
 
+## Architecture
+
+```mermaid
+flowchart TD
+    grpk["GeoPortal.lt\n<a href="https://www.geoportal.lt/geoportal/web/georeferencinio-pagrindo-kadastras-grpk">Georeferenced Cadastral Register (GRPK)</a>"]-->transform-grpk["<a href="https://github.com/AplinkosMinisterija/biip-vector-basemap/blob/main/.github/workflows/grpk-data-source.yml">Transform</a>"]-->|"<a href="https://cdn.biip.lt/tiles/sources/grpk/grpk-espg-4326.shp.zip">grpk-espg-4326.shp.zip</a>"|S3
+    ar["State Enterprise Centre of Registers\n<a href="https://www.registrucentras.lt/p/1187">Address Registry</a>"]-->transform-ar["<a href="https://github.com/AplinkosMinisterija/biip-vector-basemap/blob/main/.github/workflows/grpk-data-source.yml">Transform</a>"]-->|"<a href="https://cdn.biip.lt/tiles/sources/registru-centras/ar-espg-4326.shp.zip">ar-espg-4326.shp.zip</a>"|S3["S3\n(cdn.biip.lt)"]
+S3-->Planetiler-->PMTiles["PMTiles archive"]
+
+PMTiles-->martin["<a href="https://gis.biip.lt/basemap/grpk/grpk">BĮIP Vector Tile Server</a>"]
+PMTiles-->s3-pmtiles["S3\n<a href="https://cdn.biip.lt/tiles/grpk/grpk.pmtiles">grpk.pmtiles</a>"]
+PMTiles-->docker-image["Docker image\n<a href="https://github.com/AplinkosMinisterija/biip-vector-basemap/pkgs/container/biip-grpk-basemap">biip-grpk-basemap</a>"]
+```
+
 ## Getting Started Development
 
 To embark on your mapping journey, follow these simple steps:
