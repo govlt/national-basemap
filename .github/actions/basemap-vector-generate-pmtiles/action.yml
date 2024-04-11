@@ -1,0 +1,42 @@
+name: Generate vector basemap PMTiles
+description: Generate vector basemap PMTiles
+
+inputs:
+  artifact-retention-days:
+    description: Optional input set PMTiles artifact retention days
+    required: false
+  cache-data-sources:
+    description: Optional input to set if data sources should be cached
+    required: false
+    default: 'true'
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-java@v4
+      with:
+        distribution: temurin
+        java-version: 21
+
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v3
+
+    - name: Cache vector basemap data sources
+      uses: actions/cache@v4
+      if: ${{ inputs.cache-data-sources == 'true' }}
+      with:
+        path: grpk/data/sources
+        key: vector-basemap-data-sources
+
+    - name: Generate vector basemap PMTiles
+      shell: bash
+      run: ./gradlew -q run
+
+    - name: Upload PMTiles artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: vector-basemap-pmtiles
+        path: vector/data/output
+        if-no-files-found: error
+        retention-days: ${{ inputs.artifact-retention-days }}
+        compression-level: 0

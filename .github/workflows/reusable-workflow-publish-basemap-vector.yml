@@ -1,0 +1,132 @@
+name: "Reusable workflow: publish GRPK basemap"
+
+on:
+  workflow_call:
+    inputs:
+      tile-server-url:
+        description: Required input to set tile server url
+        type: string
+        required: true
+      docker-image-tag:
+        description: Required input to set docker image tag
+        type: string
+        required: true
+      archive-version:
+        description: Required input to set pmtiles version
+        type: string
+        required: true
+
+jobs:
+  generate-basemap-vector-pmtiles:
+    name: Generate and upload PMTiles
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Change version
+        uses: dschanoeh/change-property@v1
+        with:
+          file: vector/config.properties
+          property: archive_version
+          value: ${{ inputs.archive-version }}
+
+      - name: Generate PMTiles
+        uses: ./.github/actions/basemap-vector-generate-pmtiles
+        with:
+          cache-data-sources: true
+
+  generate-basemap-vector-styles:
+    name: Generate and upload styles
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Minify styles
+        run: find vector/styles -name "style.json" -print0 | xargs -0 -I{} sh -c 'jq -c . "{}" > tmp.json && mv tmp.json "{}"'
+
+      - name: Replace style urls for docker
+        run: find vector/styles -type f -name "style.json" -print0 | xargs -0 sed -i -e 's|${{ env.BASE_URL }}|${{ inputs.tile-server-url }}|g'
+        env:
+          BASE_URL: http://localhost:3000
+
+      - name: Upload styles artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: vector-basemap-styles
+          path: vector/styles
+
+  publish-basemap-vector:
+    name: Publish vector basemap
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    needs:
+      - generate-basemap-vector-pmtiles
+      - generate-basemap-vector-styles
+    environment:
+      name: basemap-vector
+    steps:
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Download PMTiles artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: vector-basemap-pmtiles
+          path: vector
+          merge-multiple: true
+
+      - name: Download styles artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: vector-basemap-styles
+          path: vector/styles
+          merge-multiple: true
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  push-grpk-docker-image:
+    name: Generate and push GRPK basemap docker image
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Change version
+        uses: dschanoeh/change-property@v1
+        with:
+          file: vector/config.properties
+          property: archive_version
+          value: ${{ inputs.archive-version }}
+
+      - name: Build & tag docker image
+        uses: AplinkosMinisterija/reusable-workflows/.github/actions/docker-build-tag-push@main
+        with:
+          docker-image: ghcr.io/govlt/national-basemap-vector
+          docker-context: .
+          file: vector/docker/Dockerfile
+          environment: ${{ inputs.docker-image-tag }}
+          no-cache: true
+          push: true

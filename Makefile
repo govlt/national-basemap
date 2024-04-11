@@ -1,9 +1,9 @@
-grpk-generate-basemap:
+vector-basemap-generate:
 	./gradlew run
 
-test:
+vector-basemap-test:
 	./gradlew test -i
 
-grpk-preview:
-	docker compose --project-directory grpk watch
+vector-basemap-preview:
+	docker compose --project-directory vector watch
 

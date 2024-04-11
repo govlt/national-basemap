@@ -1,0 +1,25 @@
+{
+  "options": {
+    "root": "vector",
+    "fonts": "fonts"
+    },
+  "data": {
+    "grpk": {
+      "pmtiles": "/opt/vector/lithuania.pmtiles"
+    }
+  },
+  "styles": {
+    "bright": {
+      "style": "/opt/vector/styles/bright/style.json"
+    },
+    "positron": {
+      "style": "/opt/vector/styles/positron/style.json"
+    },
+    "openmaptiles": {
+      "style": "/opt/vector/styles/openmaptiles/style.json"
+    },
+    "grpk-geoportal": {
+      "style": "/opt/vector/styles/geoportal/style.json"
+    }
+  }
+}
