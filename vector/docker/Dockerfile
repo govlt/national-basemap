@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY gradlew gradlew.bat settings.gradle.kts gradle.properties ./
 COPY gradle ./gradle
-COPY grpk ./grpk
+COPY vector ./vector
 
 RUN ./gradlew run
 
