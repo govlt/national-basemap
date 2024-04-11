@@ -35,7 +35,7 @@ runs:
     - name: Upload PMTiles artifact
       uses: actions/upload-artifact@v4
       with:
-        name: vector-basemap-generate-pmtiles
+        name: vector-basemap-pmtiles
         path: vector/data/output
         if-no-files-found: error
         retention-days: ${{ inputs.artifact-retention-days }}

@@ -39,14 +39,6 @@ jobs:
         with:
           cache-data-sources: true
 
-      - name: Upload PMTiles artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: vector-basemap-pmtiles
-          path: vector/data/output
-          if-no-files-found: error
-          compression-level: 0
-
   generate-basemap-vector-styles:
     name: Generate and upload styles
     runs-on: ubuntu-latest
@@ -75,6 +67,9 @@ jobs:
     name: Publish vector basemap
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    permissions:
+      contents: read
+      id-token: write
     needs:
       - generate-basemap-vector-pmtiles
       - generate-basemap-vector-styles
