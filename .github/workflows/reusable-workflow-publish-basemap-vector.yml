@@ -125,7 +125,7 @@ jobs:
         with:
           docker-image: ghcr.io/govlt/national-basemap-vector
           docker-context: .
-          file: grpk/docker/Dockerfile
+          file: vector/docker/Dockerfile
           environment: ${{ inputs.docker-image-tag }}
           no-cache: true
           push: true
