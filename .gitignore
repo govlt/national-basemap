@@ -42,7 +42,6 @@ bin/
 
 # Ignore pmtiles
 *.pmtiles
-osm/proton/fonts
-osm/proton/sprites
+
 # Ignore Gradle build output directory
 build

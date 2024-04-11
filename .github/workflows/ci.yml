@@ -37,11 +37,6 @@ jobs:
       - name: Install maplibre-gl-style-spec
         run: npm install @maplibre/maplibre-gl-style-spec --global
 
-      - name: Validate proton Mapbox GL styles
-        working-directory: osm/proton/styles
-        run: |
-          for file in *.json; do [[ -f "$file" ]] && echo "Validating file: $file" && gl-style-validate "$file"; done
-
       - name: Validate GRPK Mapbox GL styles
         working-directory: grpk/styles/geoportal
         run: |
