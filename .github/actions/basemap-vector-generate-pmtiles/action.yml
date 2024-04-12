@@ -25,7 +25,7 @@ runs:
       uses: actions/cache@v4
       if: ${{ inputs.cache-data-sources == 'true' }}
       with:
-        path: grpk/data/sources
+        path: vector/data/sources
         key: vector-basemap-data-sources
 
     - name: Generate vector basemap PMTiles
