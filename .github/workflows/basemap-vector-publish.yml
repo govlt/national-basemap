@@ -24,7 +24,9 @@ jobs:
     with:
       docker-image-tag: stable
       archive-version: ${{ github.ref_name }}
-      tile-server-url: https://gis.biip.lt/basemap/grpk
+      style-source-url: https://gis.biip.lt/basemap/grpk/grpk
+      style-glyphs-base-url: https://basemap.startupgov.lt/vector/font
+      style-sprites-base-url: https://basemap.startupgov.lt/vector/sprite
 
   publish-vector-basemap-preview:
     name: Publish vector basemap preview
@@ -36,4 +38,6 @@ jobs:
     with:
       docker-image-tag: preview
       archive-version: 0.0.0
-      tile-server-url: https://dev-gis.biip.lt/basemap/grpk
+      style-source-url: https://gis.biip.lt/basemap/grpk/grpk
+      style-glyphs-base-url: https://basemap.startupgov.lt/vector/font
+      style-sprites-base-url: https://basemap.startupgov.lt/vector/sprite
