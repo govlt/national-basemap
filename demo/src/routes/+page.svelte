@@ -5,7 +5,7 @@
 <MapLibre
 	class="map"
 	standardControls
-	style="https://cdn.biip.lt/tiles/grpk/styles/bright/style.json">
+	style="https://basemap.startupgov.lt/vector/styles/bright/style.json">
 </MapLibre>
 
 <style>
