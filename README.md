@@ -51,7 +51,7 @@ const map = new Map({
   target: 'map',
   layers: [
     new MapboxVectorLayer({
-      styleUrl: 'https://cdn.biip.lt/tiles/grpk/styles/bright/style.json'
+      styleUrl: 'https://basemap.startupgov.lt/vector/styles/bright/style.json'
     })
   ]
 });
@@ -65,27 +65,27 @@ library you prefer.
 Currently, the following styles are available:
 
 - **Topographic (Light)**: Offers detailed data representation. Style
-  URL: `https://cdn.biip.lt/tiles/grpk/styles/bright/style.json` (based
+  URL: `https://basemap.startupgov.lt/vector/styles/bright/style.json` (based
   on [OSM Bright](https://openmaptiles.org/styles/#osm-bright)).
-- **Gray**: Provides a subtle basemap. Style URL: `https://cdn.biip.lt/tiles/grpk/styles/positron/style.json` (based
-  on [Positron](https://openmaptiles.org/styles/#positron)).
+- **Gray**: Provides a subtle basemap. Style URL: `https://basemap.startupgov.lt/vector/styles/positron/style.json` (
+  based on [Positron](https://openmaptiles.org/styles/#positron)).
 
 You can explore these styles and their features using [Maputnik](https://maplibre.org/maputnik/#6/55.59/23.54). These
 styles are already utilized by the BĮIP team in production.
 
 Additionally, the basemap data source is compatible with the OpenMapTiles standard, allowing you to utilize any
 OpenMapTiles compatible style. For instance, you can use any styles from
-the [OpenMapTiles styles](https://openmaptiles.org/styles/). Use this style source
-URL: `https://gis.biip.lt/basemap/grpk/grpk`.
+the [OpenMapTiles styles](https://openmaptiles.org/styles/).
 
 ### PMTiles
 
 If you need to use vector basemap offline or prefer to avoid using a tile server, you can directly read PMTiles
 archives.
 
-The latest stable basemap PMTiles archive is hosted at https://cdn.biip.lt/tiles/grpk/grpk.pmtiles. You can inspect it
+The latest stable basemap PMTiles archive is hosted at `https://basemap.startupgov.lt/vector/lithuania.pmtiles`. You can
+inspect it
 using
-the [PMTiles viewer](https://protomaps.github.io/PMTiles/?url=https%3A%2F%2Fcdn.biip.lt%2Ftiles%2Fgrpk%2Fgrpk.pmtiles).
+the [PMTiles viewer](https://protomaps.github.io/PMTiles/?url=https%3A%2F%2Fbasemap.startupgov.lt%2Fvector%2Flithuania.pmtiles).
 
 For instructions on reading PMTiles directly, refer to
 the [PMTiles in the browser](https://docs.protomaps.com/pmtiles/maplibre) documentation.
@@ -97,7 +97,7 @@ You have the option to host the vector basemap on your own infrastructure.
 ### Vector Tile Server
 
 Utilize the provided Docker
-image [biip-grpk-basemap](https://github.com/AplinkosMinisterija/biip-vector-basemap/pkgs/container/biip-grpk-basemap),
+image [national-basemap-vector](https://github.com/govlt/national-basemap/pkgs/container/national-basemap-vector),
 which includes a vector tile server based on [Martin Tile Server](https://maplibre.org/martin/).
 This Docker image embeds PMTiles archive, fonts, and sprites inside it, enabling it to serve vector tiles on-the-fly.
 
@@ -105,8 +105,8 @@ Here's an example of its usage with Docker Compose:
 
 ```yaml
 services:
-  biip-grpk-basemap:
-    image: ghcr.io/aplinkosministerija/biip-grpk-basemap:stable
+  national-basemap-vector:
+    image: ghcr.io/govlt/national-basemap-vector:stable
     pull_policy: always
     restart: unless-stopped
     ports:
@@ -121,7 +121,8 @@ services:
 
 ### PMTiles
 
-Periodically download the PMTiles archive from `https://cdn.biip.lt/tiles/grpk/grpk.pmtiles` to your own S3 or file
+Periodically download the PMTiles archive from `https://basemap.startupgov.lt/vector/lithuania.pmtiles` to your own S3
+or file
 storage and utilize it as needed.
 
 ## Recipes
@@ -134,7 +135,7 @@ This tool allows you to specify either a bounding box or a shape for extraction.
 For example, if you want to extract the basemap for Vilnius Old Town, you can use the following command:
 
 ```bash
-pmtiles extract https://cdn.biip.lt/tiles/grpk/grpk.pmtiles vilnius-old-town.pmtiles --bbox=25.276352,54.694638,25.302195,54.671628
+pmtiles extract https://basemap.startupgov.lt/vector/lithuania.pmtiles vilnius-old-town.pmtiles --bbox=25.276352,54.694638,25.302195,54.671628
 ```
 
 The resulting basemap for Vilnius Old Town occupies less than 1 MB!
@@ -143,13 +144,13 @@ The resulting basemap for Vilnius Old Town occupies less than 1 MB!
 
 ```mermaid
 flowchart TD
-    grpk["GeoPortal.lt\n<a href="https://www.geoportal.lt/geoportal/web/georeferencinio-pagrindo-kadastras-grpk">Georeferenced Cadastral Register (GRPK)</a>"]-->transform-grpk["<a href="https://github.com/AplinkosMinisterija/biip-vector-basemap/blob/main/.github/workflows/grpk-data-source.yml">Transform</a>"]-->|"<a href="https://cdn.biip.lt/tiles/sources/grpk/grpk-espg-4326.shp.zip">grpk-espg-4326.shp.zip</a>"|S3
-    ar["State Enterprise Centre of Registers\n<a href="https://www.registrucentras.lt/p/1187">Address Registry</a>"]-->transform-ar["<a href="https://github.com/AplinkosMinisterija/biip-vector-basemap/blob/main/.github/workflows/grpk-data-source.yml">Transform</a>"]-->|"<a href="https://cdn.biip.lt/tiles/sources/registru-centras/ar-espg-4326.shp.zip">ar-espg-4326.shp.zip</a>"|S3["S3\n(cdn.biip.lt)"]
+    grpk["GeoPortal.lt\n<a href="https://www.geoportal.lt/geoportal/web/georeferencinio-pagrindo-kadastras-grpk">Georeferenced Cadastral Register (GRPK)</a>"]-->transform-grpk["<a href="https://github.com/govlt/national-basemap/blob/main/.github/workflows/basemap-vector-data-source.yml">Transform</a>"]-->|"<a href="https://cdn.biip.lt/tiles/sources/grpk/grpk-espg-4326.shp.zip">grpk-espg-4326.shp.zip</a>"|S3
+    ar["State Enterprise Centre of Registers\n<a href="https://www.registrucentras.lt/p/1187">Address Registry</a>"]-->transform-ar["<a href="https://github.com/govlt/national-basemap/blob/main/.github/workflows/basemap-vector-data-source.yml">Transform</a>"]-->|"<a href="https://cdn.biip.lt/tiles/sources/registru-centras/ar-espg-4326.shp.zip">ar-espg-4326.shp.zip</a>"|S3
 S3-->Planetiler-->PMTiles["PMTiles archive"]
 
-PMTiles-->martin["<a href="https://gis.biip.lt/basemap/grpk/grpk">BĮIP Vector Tile Server</a>"]
-PMTiles-->s3-pmtiles["S3\n<a href="https://cdn.biip.lt/tiles/grpk/grpk.pmtiles">grpk.pmtiles</a>"]
-PMTiles-->docker-image["Docker image\n<a href="https://github.com/AplinkosMinisterija/biip-vector-basemap/pkgs/container/biip-grpk-basemap">biip-grpk-basemap</a>"]
+PMTiles-->martin["<a href="https://gis.biip.lt/basemap/vector/vector">Vector Tile Server</a>"]
+PMTiles-->s3-pmtiles["S3\n<a href="https://basemap.startupgov.lt/vector/lithuania.pmtiles">lithuania.pmtiles</a>"]
+PMTiles-->docker-image["Docker image\n<a href="https://github.com/govlt/national-basemap/pkgs/container/national-basemap-vector">national-basemap-vector</a>"]
 ```
 
 ## Getting Started Development
@@ -160,7 +161,7 @@ To embark on your mapping journey, follow these simple steps:
 
 ## Instructions
 
-### Generating GRPK Basemap
+### Generating basemap vector
 
 To generate the vector basemap in PMTiles format, execute the following command:
 
@@ -168,7 +169,7 @@ To generate the vector basemap in PMTiles format, execute the following command:
 make vector-basemap-generate
 ```
 
-The generated PMTiles will be saved in `grpk/data/output/grpk.pmtiles`.
+The generated PMTiles will be saved in `vector/data/output/lithuania.pmtiles`.
 
 This process may take some time as data sources will be downloaded if they don't exist already.
 
@@ -199,8 +200,7 @@ or styles are changed.
 
 Calling all GIS enthusiasts! Your expertise is invaluable to us. Whether you spot issues or have groundbreaking ideas,
 feel free to open an issue or submit a pull request. Dive into
-our [contribution guidelines](https://github.com/AplinkosMinisterija/.github/blob/main/CONTRIBUTING.md) for more
-insights.
+our [contribution guidelines](https://github.com/govlt/.github/blob/main/CONTRIBUTING.md) for more insights.
 
 ## License
 
