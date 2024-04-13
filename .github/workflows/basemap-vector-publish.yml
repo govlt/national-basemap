@@ -38,7 +38,6 @@ jobs:
       group: basemap-vector-publish-preview
       cancel-in-progress: true
     with:
-      stable: true
       style-source-url: https://dev-vector.startupgov.lt/grpk
       style-glyphs-url: https://basemap.startupgov.lt/vector/font/{fontstack}/{range}.pbf
       style-sprites-base-url: https://basemap.startupgov.lt/vector/sprite
