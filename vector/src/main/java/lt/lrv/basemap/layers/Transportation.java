@@ -25,7 +25,6 @@ public class Transportation implements ForwardingProfile.FeaturePostProcessor, F
             if (sf.getSourceLayer().equals(Layer.GRPK_KELIAI)) {
                 var paskirtis = sf.getString("PASKIRTIS");
                 var tipas = sf.getLong("TIPAS");
-                var danga = sf.getString("DANGA");
 
                 if (tipas == 1) {
                     addTransportationFeature(FieldValue.CLASS_MOTORWAY, null, 2, sf, features);
@@ -35,21 +34,17 @@ public class Transportation implements ForwardingProfile.FeaturePostProcessor, F
                     addTransportationFeature(FieldValue.CLASS_PRIMARY, null, 4, sf, features);
                 } else if (tipas == 3) {
                     addTransportationFeature(FieldValue.CLASS_SECONDARY, null, 8, sf, features);
-                } else if (tipas == 4) {
-                    addTransportationFeature(FieldValue.CLASS_TERTIARY, null, 8, sf, features);
-                } else if (tipas == 6) {
-                    // Gerosios vilties st. and other similar streets belong to tipas 6
-                    // For now just assign service, because residential filters it out in some styles completely
-                    addTransportationFeature(FieldValue.CLASS_MINOR, null, 12, sf, features);
                 } else if (tipas == 7 && (paskirtis.equals("JUNG") || paskirtis.equals("LEGR"))) {
                     addTransportationFeature(FieldValue.CLASS_SECONDARY, null, 12, sf, features);
+                } else if (tipas == 4) {
+                    addTransportationFeature(FieldValue.CLASS_TERTIARY, null, 8, sf, features);
+                } else if (tipas == 6 || tipas == 8) {
+                    addTransportationFeature(FieldValue.CLASS_MINOR, null, 12, sf, features);
                 } else if (tipas == 7 || tipas == 9) {
                     addTransportationFeature(FieldValue.CLASS_SERVICE, null, 13, sf, features);
-                } else if (tipas == 8 && danga.equals("Ž")) {
-                    addTransportationFeature(FieldValue.CLASS_PATH, null, 14, sf, features);
-                } else if (tipas == 8) {
-                    addTransportationFeature(FieldValue.CLASS_SERVICE, null, 13, sf, features);
-                } else if (tipas == 10 || tipas == 11 || tipas == 13) {
+                } else if (tipas == 10 || tipas == 11) {
+                    addTransportationFeature(FieldValue.CLASS_TRACK, null, 13, sf, features);
+                } else if (tipas == 13) {
                     addTransportationFeature(FieldValue.CLASS_PATH, null, 14, sf, features);
                 } else if (tipas == 14) {
                     addTransportationFeature(FieldValue.CLASS_FERRY, null, 13, sf, features);
