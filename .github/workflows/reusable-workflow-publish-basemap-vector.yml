@@ -159,20 +159,6 @@ jobs:
           path: .
           merge-multiple: true
 
-      - name: Download PMTiles artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: vector-basemap-pmtiles
-          path: vector
-          merge-multiple: true
-
-      - name: Download styles artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: vector-basemap-styles
-          path: vector
-          merge-multiple: true
-
       - name: Download styles artifact
         uses: actions/download-artifact@v4
         with:
