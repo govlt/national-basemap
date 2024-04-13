@@ -45,11 +45,11 @@ public class Transportation implements ForwardingProfile.FeaturePostProcessor, F
                     addTransportationFeature(FieldValue.CLASS_SECONDARY, null, 12, sf, features);
                 } else if (tipas == 7 || tipas == 9) {
                     addTransportationFeature(FieldValue.CLASS_SERVICE, null, 13, sf, features);
-                } else if (tipas == 8 && danga.equals("Ž")) {
-                    addTransportationFeature(FieldValue.CLASS_PATH, null, 14, sf, features);
                 } else if (tipas == 8) {
-                    addTransportationFeature(FieldValue.CLASS_SERVICE, null, 13, sf, features);
-                } else if (tipas == 10 || tipas == 11 || tipas == 13) {
+                    addTransportationFeature(FieldValue.CLASS_MINOR, null, 12, sf, features);
+                } else if (tipas == 10 || tipas == 11) {
+                    addTransportationFeature(FieldValue.CLASS_TRACK, null, 14, sf, features);
+                } else if (tipas == 13) {
                     addTransportationFeature(FieldValue.CLASS_PATH, null, 14, sf, features);
                 } else if (tipas == 14) {
                     addTransportationFeature(FieldValue.CLASS_FERRY, null, 13, sf, features);
