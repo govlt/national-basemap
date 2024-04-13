@@ -23,6 +23,19 @@ on:
         description: Required input to set pmtiles version
         type: string
         required: true
+      stable:
+        description: Optional input to set if publish is stable
+        type: boolean
+        default: false
+
+    secrets:
+      cloudflare-api-token:
+        description: Cloudflare API Token
+        required: true
+      cloudflare-account-id:
+        description: Cloudflare Account ID
+        required: true
+
 
 jobs:
   generate-basemap-vector-pmtiles:
@@ -140,18 +153,13 @@ jobs:
     timeout-minutes: 30
     permissions:
       contents: read
-      pages: write
-      id-token: write
+      deployments: write
     needs:
-#      - generate-basemap-vector-pmtiles
       - generate-basemap-vector-styles
       - generate-basemap-demo-site
     environment:
       name: basemap-vector
     steps:
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
       - name: Download demo site artifact
         uses: actions/download-artifact@v4
         with:
@@ -171,9 +179,17 @@ jobs:
         with:
           path: '.'
 
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Publish to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
+        id: cloudflare
+        with:
+          apiToken: ${{ secrets.cloudflare-api-token }}
+          accountId: ${{ secrets.cloudflare-account-id }}
+          projectName: national-basemap
+          branch: ${{ inputs.stable && 'production' ||  (github.head_ref || github.ref_name) }}
+          directory: .
+          gitHubToken: ${{ github.token }}
+          wranglerVersion: '3'
 
   push-grpk-docker-image:
     name: Generate and push GRPK basemap docker image
