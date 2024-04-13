@@ -24,7 +24,7 @@ jobs:
     with:
       docker-image-tag: stable
       archive-version: ${{ github.ref_name }}
-      style-source-url: https://gis.biip.lt/basemap/grpk/grpk
+      style-source-url: https://vector.startupgov.lt
       style-glyphs-url: https://basemap.startupgov.lt/vector/font/{fontstack}/{range}.pbf
       style-sprites-base-url: https://basemap.startupgov.lt/vector/sprite
 
@@ -38,6 +38,6 @@ jobs:
     with:
       docker-image-tag: preview
       archive-version: 0.0.0
-      style-source-url: https://gis.biip.lt/basemap/grpk/grpk
+      style-source-url: https://dev-vector.startupgov.lt/
       style-glyphs-url: https://basemap.startupgov.lt/vector/font/{fontstack}/{range}.pbf
       style-sprites-base-url: https://basemap.startupgov.lt/vector/sprite
