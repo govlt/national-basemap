@@ -7,12 +7,12 @@ on:
         description: Required input to set style source url
         type: string
         required: true
-      style-sprites-base-url:
-        description: Required input to set style sprites base url
+      style-glyphs-url:
+        description: Required input to set style glyphs url
         type: string
         required: true
-      style-glyphs-base-url:
-        description: Required input to set style glyphs base url
+      style-sprites-base-url:
+        description: Required input to set style sprites base url
         type: string
         required: true
       docker-image-tag:
@@ -98,8 +98,8 @@ jobs:
       - name: Replace glyphs url for styles
         run: find vector/styles -type f -name "style.json" -print0 | xargs -0 sed -i -e 's|${{ env.LOCALHOST_URL }}|${{ env.URL }}|g'
         env:
-          LOCALHOST_URL: http://localhost:3000/font
-          URL: ${{ inputs.style-glyphs-base-url }}
+          LOCALHOST_URL: http://localhost:3000/font/{fontstack}/{range}
+          URL: ${{ inputs.style-glyphs-url }}
 
       - name: Replace glyphs url for styles
         run: find vector/styles -type f -name "style.json" -print0 | xargs -0 sed -i -e 's|${{ env.LOCALHOST_URL }}|${{ env.URL }}|g'
