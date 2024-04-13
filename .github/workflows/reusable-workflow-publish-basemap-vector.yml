@@ -15,14 +15,10 @@ on:
         description: Required input to set style sprites base url
         type: string
         required: true
-      docker-image-tag:
-        description: Required input to set docker image tag
-        type: string
-        required: true
       archive-version:
-        description: Required input to set pmtiles version
+        description: Optional input to set PMTiles archive version
         type: string
-        required: true
+        default: 0.0.0
       stable:
         description: Optional input to set if publish is stable
         type: boolean
@@ -215,6 +211,6 @@ jobs:
           docker-image: ghcr.io/govlt/national-basemap-vector
           docker-context: .
           file: vector/docker/Dockerfile
-          environment: ${{ inputs.docker-image-tag }}
+          environment: ${{ inputs.stable && 'stable' ||  'preview' }}
           no-cache: true
           push: true

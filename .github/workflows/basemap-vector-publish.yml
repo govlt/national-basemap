@@ -22,7 +22,6 @@ jobs:
     concurrency: basemap-vector-publish
     with:
       stable: true
-      docker-image-tag: stable
       archive-version: ${{ github.ref_name }}
       style-source-url: https://vector.startupgov.lt/grpk
       style-glyphs-url: https://basemap.startupgov.lt/vector/font/{fontstack}/{range}.pbf
@@ -40,8 +39,6 @@ jobs:
       cancel-in-progress: true
     with:
       stable: true
-      docker-image-tag: preview
-      archive-version: 0.0.0
       style-source-url: https://dev-vector.startupgov.lt/grpk
       style-glyphs-url: https://basemap.startupgov.lt/vector/font/{fontstack}/{range}.pbf
       style-sprites-base-url: https://basemap.startupgov.lt/vector/sprite
