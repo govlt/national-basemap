@@ -23,16 +23,17 @@ public class Landcover implements ForwardingProfile.FeaturePostProcessor, Forwar
 
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
-        if (sf.getSource().equals(Source.GRPK) && sf.getSourceLayer().startsWith(Layer.GRPK_PLOTAI_PREFIX) && sf.canBePolygon()) {
+        if (sf.getSource().equals(Source.GRPK) && (sf.getSourceLayer().startsWith(Layer.GRPK_PLOTAI_PREFIX) || sf.getSourceLayer().equals(Layer.GRPK_VIETOV_P)) && sf.canBePolygon()) {
             var code = sf.getString("GKODAS");
 
             switch (code) {
-                case "sd2" -> addPolygon("farmland", "meadow", 8, features);
+                case "sd2" -> addPolygon("grass", "meadow", 10, features);
+                case "uur14" -> addPolygon("grass", "park", 8, features);
                 case "ms4" -> addPolygon("farmland", "orchard", 12, features);
                 case "hd6" -> addPolygon("wetland", "wetland", 8, features);
                 case "sd42" -> addPolygon("sand", "sand", 8, features);
                 case "ms0" -> addPolygon("wood", "forest", 5, features);
-                case "mj0", "sd15" -> addPolygon("forest", "forest", 12, features);
+                case "mj0", "sd15" -> addPolygon("wood", "forest", 10, features);
             }
         }
     }
