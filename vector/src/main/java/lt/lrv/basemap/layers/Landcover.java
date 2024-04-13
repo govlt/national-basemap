@@ -23,7 +23,7 @@ public class Landcover implements ForwardingProfile.FeaturePostProcessor, Forwar
 
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
-        if (sf.getSource().equals(Source.GRPK) && (sf.getSourceLayer().startsWith(Layer.GRPK_PLOTAI_PREFIX) || sf.getSourceLayer().startsWith(Layer.GRPK_VIETOV_P))&& sf.canBePolygon()) {
+        if (sf.getSource().equals(Source.GRPK) && (sf.getSourceLayer().startsWith(Layer.GRPK_PLOTAI_PREFIX) || sf.getSourceLayer().equals(Layer.GRPK_VIETOV_P)) && sf.canBePolygon()) {
             var code = sf.getString("GKODAS");
 
             switch (code) {
