@@ -3,24 +3,42 @@ name: "Reusable workflow: publish basemap vector"
 on:
   workflow_call:
     inputs:
-      tile-server-url:
-        description: Required input to set tile server url
+      style-source-url:
+        description: Required input to set style source url
         type: string
         required: true
-      docker-image-tag:
-        description: Required input to set docker image tag
+      style-glyphs-url:
+        description: Required input to set style glyphs url
+        type: string
+        required: true
+      style-sprites-base-url:
+        description: Required input to set style sprites base url
         type: string
         required: true
       archive-version:
-        description: Required input to set pmtiles version
+        description: Optional input to set PMTiles archive version
         type: string
+        default: 0.0.0
+      stable:
+        description: Optional input to set if publish is stable
+        type: boolean
+        default: false
+
+    secrets:
+      cloudflare-api-token:
+        description: Cloudflare API Token
         required: true
+      cloudflare-account-id:
+        description: Cloudflare Account ID
+        required: true
+
 
 jobs:
   generate-basemap-vector-pmtiles:
     name: Generate and upload PMTiles
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    if: false
     permissions:
       contents: read
     steps:
@@ -86,10 +104,23 @@ jobs:
       - name: Minify styles
         run: find vector/styles -name "style.json" -print0 | xargs -0 -I{} sh -c 'jq -c . "{}" > tmp.json && mv tmp.json "{}"'
 
-      - name: Replace style urls for docker
-        run: find vector/styles -type f -name "style.json" -print0 | xargs -0 sed -i -e 's|${{ env.BASE_URL }}|${{ inputs.tile-server-url }}|g'
+      - name: Replace glyphs url for styles
+        run: find vector/styles -type f -name "style.json" -print0 | xargs -0 sed -i -e 's|${{ env.LOCALHOST_URL }}|${{ env.URL }}|g'
         env:
-          BASE_URL: http://localhost:3000
+          LOCALHOST_URL: http://localhost:3000/font/{fontstack}/{range}
+          URL: ${{ inputs.style-glyphs-url }}
+
+      - name: Replace glyphs url for styles
+        run: find vector/styles -type f -name "style.json" -print0 | xargs -0 sed -i -e 's|${{ env.LOCALHOST_URL }}|${{ env.URL }}|g'
+        env:
+          LOCALHOST_URL: http://localhost:3000/sprite
+          URL: ${{ inputs.style-sprites-base-url }}
+
+      - name: Replace style urls for docker
+        run: find vector/styles -type f -name "style.json" -print0 | xargs -0 sed -i -e 's|${{ env.LOCALHOST_URL }}|${{ env.URL }}|g'
+        env:
+          LOCALHOST_URL: http://localhost:3000/vector
+          URL: ${{ inputs.style-source-url }}
 
       - name: Prepare styles output
         run: |
@@ -118,37 +149,18 @@ jobs:
     timeout-minutes: 30
     permissions:
       contents: read
-      pages: write
-      id-token: write
+      deployments: write
     needs:
-      - generate-basemap-vector-pmtiles
       - generate-basemap-vector-styles
       - generate-basemap-demo-site
     environment:
       name: basemap-vector
     steps:
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
       - name: Download demo site artifact
         uses: actions/download-artifact@v4
         with:
           name: demo-site
           path: .
-          merge-multiple: true
-
-      - name: Download PMTiles artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: vector-basemap-pmtiles
-          path: vector
-          merge-multiple: true
-
-      - name: Download styles artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: vector-basemap-styles
-          path: vector
           merge-multiple: true
 
       - name: Download styles artifact
@@ -163,9 +175,17 @@ jobs:
         with:
           path: '.'
 
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Publish to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
+        id: cloudflare
+        with:
+          apiToken: ${{ secrets.cloudflare-api-token }}
+          accountId: ${{ secrets.cloudflare-account-id }}
+          projectName: national-basemap
+          branch: ${{ inputs.stable && 'production' ||  (github.head_ref || github.ref_name) }}
+          directory: .
+          gitHubToken: ${{ github.token }}
+          wranglerVersion: '3'
 
   push-grpk-docker-image:
     name: Generate and push GRPK basemap docker image
@@ -191,6 +211,6 @@ jobs:
           docker-image: ghcr.io/govlt/national-basemap-vector
           docker-context: .
           file: vector/docker/Dockerfile
-          environment: ${{ inputs.docker-image-tag }}
+          environment: ${{ inputs.stable && 'stable' ||  'preview' }}
           no-cache: true
           push: true

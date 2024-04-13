@@ -12,8 +12,7 @@ on:
 permissions:
   contents: read
   packages: write
-  pages: write
-  id-token: write
+  deployments: write
 
 jobs:
   publish-vector-basemap:
@@ -22,9 +21,14 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/')
     concurrency: basemap-vector-publish
     with:
-      docker-image-tag: stable
+      stable: true
       archive-version: ${{ github.ref_name }}
-      tile-server-url: https://gis.biip.lt/basemap/grpk
+      style-source-url: https://vector.startupgov.lt/grpk
+      style-glyphs-url: https://basemap.startupgov.lt/vector/font/{fontstack}/{range}.pbf
+      style-sprites-base-url: https://basemap.startupgov.lt/vector/sprite
+    secrets:
+      cloudflare-api-token: ${{  secrets.CLOUDFLARE_PAGES_API_TOKEN }}
+      cloudflare-account-id: ${{  secrets.CLOUDFLARE_PAGES_ACCOUNT_ID }}
 
   publish-vector-basemap-preview:
     name: Publish vector basemap preview
@@ -34,6 +38,10 @@ jobs:
       group: basemap-vector-publish-preview
       cancel-in-progress: true
     with:
-      docker-image-tag: preview
-      archive-version: 0.0.0
-      tile-server-url: https://dev-gis.biip.lt/basemap/grpk
+      stable: true
+      style-source-url: https://dev-vector.startupgov.lt/grpk
+      style-glyphs-url: https://basemap.startupgov.lt/vector/font/{fontstack}/{range}.pbf
+      style-sprites-base-url: https://basemap.startupgov.lt/vector/sprite
+    secrets:
+      cloudflare-api-token: ${{  secrets.CLOUDFLARE_PAGES_API_TOKEN }}
+      cloudflare-account-id: ${{  secrets.CLOUDFLARE_PAGES_ACCOUNT_ID }}
