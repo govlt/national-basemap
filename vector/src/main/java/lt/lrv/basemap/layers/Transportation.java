@@ -62,7 +62,7 @@ public class Transportation implements OpenMapTilesSchema.Transportation, Forwar
 
                 switch (gkodas) {
                     case "gz1", "gz2", "gz1gz2", "gz10" ->
-                            addTransportationFeature("rail", FieldValues.SUBCLASS_RAIL, minZoom, sf, features);
+                            addTransportationFeature(CLASS_RAIL, FieldValues.SUBCLASS_RAIL, minZoom, sf, features);
                     case "gz4" -> {
                         if ("funik.".equals(sf.getString("INFO"))) {
                             addTransportationFeature(CLASS_RAIL, FieldValues.SUBCLASS_FUNICULAR, minZoom, sf, features);
