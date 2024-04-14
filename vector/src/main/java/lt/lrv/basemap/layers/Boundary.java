@@ -20,21 +20,22 @@ public class Boundary implements OpenMapTilesSchema.Boundary, ForwardingProfile.
             var code = sf.getString("GKODAS");
 
             switch (code) {
-                case "as1", "fas1" -> addBoundaryFeature(2, sf, features);
-                case "as2" -> addBoundaryFeature(4, sf, features);
-                case "as3" -> addBoundaryFeature(5, sf, features);
-                case "as51" -> addBoundaryFeature(8, sf, features);
+                case "as1", "fas1" -> addBoundaryFeature(2, 0, sf, features);
+                case "as2" -> addBoundaryFeature(4, 5, sf, features);
+                case "as3" -> addBoundaryFeature(5, 8, sf, features);
+                case "as51" -> addBoundaryFeature(8, 10, sf, features);
             }
         }
     }
 
-    void addBoundaryFeature(int adminLevel, SourceFeature sf, FeatureCollector features) {
+    void addBoundaryFeature(int adminLevel, int minZoom, SourceFeature sf, FeatureCollector features) {
         features.line(this.name())
                 .setBufferPixels(BUFFER_SIZE)
                 .setAttr(Fields.ADMIN_LEVEL, adminLevel)
                 .setAttr(Fields.DISPUTED, 0)
                 // TODO determine if border is maritime or not
                 .setAttr(Fields.MARITIME, 0)
+                .setMinZoom(minZoom)
                 .putAttrs(LanguageUtils.getNames(sf.tags()));
     }
 
@@ -50,5 +51,10 @@ public class Boundary implements OpenMapTilesSchema.Boundary, ForwardingProfile.
                 0,
                 4
         );
+    }
+
+    @Override
+    public String name() {
+        return "boundary";
     }
 }
