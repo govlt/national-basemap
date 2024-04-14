@@ -20,7 +20,7 @@ public class Boundary implements OpenMapTilesSchema.Boundary, ForwardingProfile.
             var code = sf.getString("GKODAS");
 
             switch (code) {
-                case "as1", "fas1" -> addBoundaryFeature(2, 0, sf, features);
+                case "as1" -> addBoundaryFeature(2, 0, sf, features);
                 case "as2" -> addBoundaryFeature(4, 5, sf, features);
                 case "as3" -> addBoundaryFeature(5, 8, sf, features);
                 case "as51" -> addBoundaryFeature(8, 10, sf, features);
