@@ -8,10 +8,11 @@ import com.onthegomap.planetiler.geo.GeometryException;
 import com.onthegomap.planetiler.reader.SourceFeature;
 import lt.lrv.basemap.constants.Layer;
 import lt.lrv.basemap.constants.Source;
+import lt.lrv.basemap.openmaptiles.OpenMapTilesSchema;
 
 import java.util.List;
 
-public class Water implements ForwardingProfile.FeaturePostProcessor, ForwardingProfile.FeatureProcessor {
+public class Water implements OpenMapTilesSchema.Water, ForwardingProfile.FeaturePostProcessor {
 
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
@@ -19,9 +20,9 @@ public class Water implements ForwardingProfile.FeaturePostProcessor, Forwarding
             var code = sf.getString("GKODAS");
 
             switch (code) {
-                case "hd1", "hd2" -> addWaterPolygon("river", 5, features);
-                case "hd3", "hd4", "hd9" -> addWaterPolygon("lake", 5, features);
-                case "hd5" -> addWaterPolygon("ocean", 0, features);
+                case "hd1", "hd2" -> addWaterPolygon(FieldValues.CLASS_RIVER, 5, features);
+                case "hd3", "hd4", "hd9" -> addWaterPolygon(FieldValues.CLASS_LAKE, 5, features);
+                case "hd5" -> addWaterPolygon(FieldValues.CLASS_OCEAN, 0, features);
             }
         }
     }
@@ -29,9 +30,9 @@ public class Water implements ForwardingProfile.FeaturePostProcessor, Forwarding
 
     public void addWaterPolygon(String clazz, int minZoom, FeatureCollector features) {
         features.polygon(this.name())
-                .setBufferPixels(4)
+                .setBufferPixels(BUFFER_SIZE)
+                .setAttr(Fields.CLASS, clazz)
                 .setMinPixelSizeBelowZoom(11, 2)
-                .setAttr("class", clazz)
                 .setMinZoom(minZoom);
     }
 
@@ -42,10 +43,5 @@ public class Water implements ForwardingProfile.FeaturePostProcessor, Forwarding
         }
 
         return FeatureMerge.mergeNearbyPolygons(items, 3.125, 3.125, 0.5, 0.5);
-    }
-
-    @Override
-    public String name() {
-        return "water";
     }
 }

@@ -8,6 +8,7 @@ import com.onthegomap.planetiler.reader.SourceFeature;
 import com.onthegomap.planetiler.util.ZoomFunction;
 import lt.lrv.basemap.constants.Layer;
 import lt.lrv.basemap.constants.Source;
+import lt.lrv.basemap.openmaptiles.OpenMapTilesSchema;
 import lt.lrv.basemap.utils.LanguageUtils;
 
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.regex.Pattern;
 
 import static com.onthegomap.planetiler.util.LanguageUtils.nullIfEmpty;
 
-public class Waterway implements ForwardingProfile.FeaturePostProcessor, ForwardingProfile.FeatureProcessor {
+public class Waterway implements OpenMapTilesSchema.Waterway, ForwardingProfile.FeaturePostProcessor {
 
     // We have rivers with names S-3, S-8. This regex filters out names ending with - and number
     static final Pattern PATTERN_NAMES_IGNORE = Pattern.compile("-\\d+$");
@@ -33,15 +34,15 @@ public class Waterway implements ForwardingProfile.FeaturePostProcessor, Forward
             var code = sf.getString("GKODAS");
 
             if (code.equals("hc1") && type == 1) {
-                addWaterwayLine("river", 8, sf, features);
+                addWaterwayLine(FieldValues.CLASS_RIVER, 8, sf, features);
             } else if (List.of("hc3", "hc33").contains(code) && type == 1) {
-                addWaterwayLine("river", 9, sf, features);
+                addWaterwayLine(FieldValues.CLASS_RIVER, 9, sf, features);
             } else if (List.of("hc1", "hc3", "hc31", "hc32", "hc33").contains(code) && type == 2) {
-                addWaterwayLine("canal", 9, sf, features);
+                addWaterwayLine(FieldValues.CLASS_CANAL, 9, sf, features);
             } else if (List.of("hc31", "hc32").contains(code) && type == 1) {
-                addWaterwayLine("river", 10, sf, features);
+                addWaterwayLine(FieldValues.CLASS_RIVER, 10, sf, features);
             } else if (List.of("hc31", "hc32").contains(code) && (type == 3 || type == 4)) {
-                addWaterwayLine("ditch", 11, sf, features);
+                addWaterwayLine(FieldValues.CLASS_DITCH, 11, sf, features);
             }
         }
     }
@@ -51,9 +52,9 @@ public class Waterway implements ForwardingProfile.FeaturePostProcessor, Forward
         var name = nullIfEmpty(sf.getString("VARDAS"));
 
         var feature = features.line(this.name())
-                .setBufferPixels(4)
-                .setAttr("class", clazz)
-                .setAttr("intermittent", 0)
+                .setBufferPixels(BUFFER_SIZE)
+                .setAttr(Fields.CLASS, clazz)
+                .setAttr(Fields.INTERMITTENT, 0)
                 .setMinPixelSizeBelowZoom(11, 0)
                 .setMinZoom(minZoom)
                 .setSortKeyDescending(length);
@@ -82,10 +83,5 @@ public class Waterway implements ForwardingProfile.FeaturePostProcessor, Forward
                 0.1, // simplify output linestrings using a 0.1px tolerance
                 4.0 // remove any detail more than 4px outside the tile boundary
         );
-    }
-
-    @Override
-    public String name() {
-        return "waterway";
     }
 }

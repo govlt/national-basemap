@@ -7,11 +7,12 @@ import com.onthegomap.planetiler.VectorTile;
 import com.onthegomap.planetiler.reader.SourceFeature;
 import lt.lrv.basemap.constants.Layer;
 import lt.lrv.basemap.constants.Source;
+import lt.lrv.basemap.openmaptiles.OpenMapTilesSchema;
 import lt.lrv.basemap.utils.LanguageUtils;
 
 import java.util.List;
 
-public class Boundary implements ForwardingProfile.FeaturePostProcessor, ForwardingProfile.FeatureProcessor {
+public class Boundary implements OpenMapTilesSchema.Boundary, ForwardingProfile.FeaturePostProcessor {
 
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
@@ -29,10 +30,11 @@ public class Boundary implements ForwardingProfile.FeaturePostProcessor, Forward
 
     void addBoundaryFeature(int adminLevel, SourceFeature sf, FeatureCollector features) {
         features.line(this.name())
-                .setAttr("admin_level", adminLevel)
-                .setAttr("disputed", 0)
+                .setBufferPixels(BUFFER_SIZE)
+                .setAttr(Fields.ADMIN_LEVEL, adminLevel)
+                .setAttr(Fields.DISPUTED, 0)
                 // TODO determine if border is maritime or not
-                .setAttr("maritime", 0)
+                .setAttr(Fields.MARITIME, 0)
                 .putAttrs(LanguageUtils.getNames(sf.tags()));
     }
 
@@ -48,10 +50,5 @@ public class Boundary implements ForwardingProfile.FeaturePostProcessor, Forward
                 0,
                 4
         );
-    }
-
-    @Override
-    public String name() {
-        return "boundary";
     }
 }

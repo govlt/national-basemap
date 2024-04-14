@@ -1,10 +1,10 @@
 package lt.lrv.basemap.layers;
 
 import com.onthegomap.planetiler.FeatureCollector;
-import com.onthegomap.planetiler.ForwardingProfile;
 import com.onthegomap.planetiler.reader.SourceFeature;
+import lt.lrv.basemap.openmaptiles.OpenMapTilesSchema;
 
-public class MountainPeak implements ForwardingProfile.FeatureProcessor {
+public class MountainPeak implements OpenMapTilesSchema.MountainPeak {
 
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {

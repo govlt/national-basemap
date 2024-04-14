@@ -6,10 +6,11 @@ import com.onthegomap.planetiler.FeatureMerge;
 import com.onthegomap.planetiler.ForwardingProfile;
 import com.onthegomap.planetiler.VectorTile;
 import com.onthegomap.planetiler.reader.SourceFeature;
+import lt.lrv.basemap.openmaptiles.OpenMapTilesSchema;
 
 import java.util.List;
 
-public class TransportationName implements ForwardingProfile.FeaturePostProcessor, ForwardingProfile.FeatureProcessor {
+public class TransportationName implements OpenMapTilesSchema.TransportationName, ForwardingProfile.FeaturePostProcessor {
 
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
@@ -28,10 +29,5 @@ public class TransportationName implements ForwardingProfile.FeaturePostProcesso
                 0.1, // simplify output linestrings using a 0.1px tolerance
                 4.0 // remove any detail more than 4px outside the tile boundary
         );
-    }
-
-    @Override
-    public String name() {
-        return "transportation_name";
     }
 }

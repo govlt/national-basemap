@@ -1,13 +1,13 @@
 package lt.lrv.basemap.layers;
 
 import com.onthegomap.planetiler.FeatureCollector;
-import com.onthegomap.planetiler.ForwardingProfile;
 import com.onthegomap.planetiler.reader.SourceFeature;
 import lt.lrv.basemap.constants.Layer;
 import lt.lrv.basemap.constants.Source;
+import lt.lrv.basemap.openmaptiles.OpenMapTilesSchema;
 import lt.lrv.basemap.utils.LanguageUtils;
 
-public class Place implements ForwardingProfile.FeatureProcessor {
+public class Place implements OpenMapTilesSchema.Place {
 
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
@@ -17,13 +17,13 @@ public class Place implements ForwardingProfile.FeatureProcessor {
             // TODO: add ANTR at higher zoom levels
             if (sf.getString("ANTR", "").isEmpty()) {
                 switch (code) {
-                    case "uas1" -> addFeature("country", 0, sf, features);
-                    case "uas2" -> addFeature("province", 4, sf, features);
-                    case "uas511" -> addFeature("city", 6, sf, features);
-                    case "uas512" -> addFeature("town", 11, sf, features);
-                    case "uas52" -> addFeature("village", 12, sf, features);
-                    case "uas53" -> addFeature("suburb", 13, sf, features);
-                    case "uas54" -> addFeature("isolated_dwelling", 14, sf, features);
+                    case "uas1" -> addFeature(FieldValues.CLASS_COUNTRY, 0, sf, features);
+                    case "uas2" -> addFeature(FieldValues.CLASS_PROVINCE, 4, sf, features);
+                    case "uas511" -> addFeature(FieldValues.CLASS_CITY, 6, sf, features);
+                    case "uas512" -> addFeature(FieldValues.CLASS_TOWN, 11, sf, features);
+                    case "uas52" -> addFeature(FieldValues.CLASS_VILLAGE, 12, sf, features);
+                    case "uas53" -> addFeature(FieldValues.CLASS_SUBURB, 13, sf, features);
+                    case "uas54" -> addFeature(FieldValues.CLASS_ISOLATED_DWELLING, 14, sf, features);
                 }
             }
         }
@@ -38,12 +38,11 @@ public class Place implements ForwardingProfile.FeatureProcessor {
             default -> null;
         };
 
-        features.point("place")
+        features.point(this.name())
+                .setBufferPixels(BUFFER_SIZE)
                 .putAttrs(LanguageUtils.getNames(sf.tags()))
-                .setAttr("class", clazz)
-                .setAttr("capital", capital)
-                .setAttr("gkodas", sf.getTag("GKODAS"))
-                .setAttr("adm_tip", sf.getTag("ADM_TIP"))
+                .setAttr(Fields.CLASS, clazz)
+                .setAttr(Fields.CAPITAL, capital)
                 .setMinZoom(minZoom);
     }
 }
