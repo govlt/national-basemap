@@ -15,6 +15,10 @@ on:
         description: Required input to set style sprites base url
         type: string
         required: true
+      s3-endpoint:
+        description: Required input to set S3 endpoint
+        type: string
+        required: true
       archive-version:
         description: Optional input to set PMTiles archive version
         type: string
@@ -31,14 +35,18 @@ on:
       cloudflare-account-id:
         description: Cloudflare Account ID
         required: true
-
+      s3-access-key-id:
+        description: S3 access key id
+        required: true
+      s3-secret-access-key:
+        description: S3 secret access key
+        required: true
 
 jobs:
   generate-basemap-vector-pmtiles:
-    name: Generate and upload PMTiles
+    name: PMTiles to S3
     runs-on: ubuntu-latest
     timeout-minutes: 45
-    if: false
     permissions:
       contents: read
     steps:
@@ -56,6 +64,15 @@ jobs:
         uses: ./.github/actions/basemap-vector-generate-pmtiles
         with:
           cache-data-sources: true
+
+      - name: Upload PMTiles to S3
+        uses: ./.github/actions/rclone-sync
+        with:
+          s3-endpoint: ${{ inputs.s3-endpoint }}
+          s3-access-key-id: ${{ secrets.s3-access-key-id }}
+          s3-secret-access-key: ${{ secrets.s3-secret-access-key }}
+          source-path: vector/data/output
+          destination-path: /tiles/vector/pmtiles
 
   generate-basemap-demo-site:
     name: Build and upload demo site
@@ -125,7 +142,7 @@ jobs:
       - name: Prepare styles output
         run: |
           mkdir -p output/font output/sprite output/styles
-            
+          
           styles=("positron" "bright" "openmaptiles")
           for style in "${styles[@]}"; do
             mkdir -p output/styles/"$style"
