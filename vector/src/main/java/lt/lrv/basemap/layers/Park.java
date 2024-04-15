@@ -22,7 +22,7 @@ public class Park implements OpenMapTilesSchema.Park, ForwardingProfile.FeatureP
             if (code.equals("uur14")) {
                 features.polygon(this.name())
                         .setBufferPixels(BUFFER_SIZE)
-                        .setAttr(Fields.CLASS, "nature_reserve")
+                        .setAttr(Fields.CLASS, "public_park")
                         .setMinZoom(12);
             }
         }
