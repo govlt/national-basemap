@@ -17,9 +17,6 @@
     },
     "openmaptiles": {
       "style": "/opt/vector/styles/openmaptiles/style.json"
-    },
-    "grpk-geoportal": {
-      "style": "/opt/vector/styles/geoportal/style.json"
     }
   }
 }
