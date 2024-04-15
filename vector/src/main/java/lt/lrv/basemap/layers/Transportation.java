@@ -77,12 +77,8 @@ public class Transportation implements OpenMapTilesSchema.Transportation, Forwar
 
     public void addTransportationFeature(String clazz, String subclass, int minZoom, SourceFeature sf, FeatureCollector features) {
         var level = (int) sf.getLong("LYGMUO");
-        var name = nullIfEmpty(sf.getString("VARDAS"));
 
-        var expressway = clazz.equals(FieldValues.CLASS_MOTORWAY);
-
-        var ref = expressway ? nullIfEmpty(sf.getString("NUMERIS")) : null;
-        var refLength = ref != null ? ref.length() : null;
+        var expressway = "AM".equals(sf.getString("KATEGOR"));
         var surface = PAVED_VALUES.contains(sf.getString("DANGA")) ? "paved" : "unpaved";
 
         var brunnel = switch (level) {
@@ -103,21 +99,7 @@ public class Transportation implements OpenMapTilesSchema.Transportation, Forwar
                 .setMinPixelSize(0.0)
                 .setPixelTolerance(0.0);
 
-        // TODO transportation_name building should be moved to TransportationName class once Transportation layer becomes stable
-        if (ref != null || name != null) {
-            features.line(OpenMapTilesSchema.TransportationName.LAYER_NAME)
-                    .setBufferPixels(OpenMapTilesSchema.TransportationName.BUFFER_SIZE)
-                    .putAttrs(LanguageUtils.getNames(sf.tags()))
-                    .setAttr(OpenMapTilesSchema.TransportationName.Fields.CLASS, clazz)
-                    .setAttr(OpenMapTilesSchema.TransportationName.Fields.SUBCLASS, subclass)
-                    .setAttr(OpenMapTilesSchema.TransportationName.Fields.REF, ref)
-                    .setAttr(OpenMapTilesSchema.TransportationName.Fields.REF_LENGTH, refLength)
-                    .setAttr(OpenMapTilesSchema.TransportationName.Fields.BRUNNEL, brunnel)
-                    .setAttr(OpenMapTilesSchema.TransportationName.Fields.LEVEL, level)
-                    .setMinPixelSize(0.0)
-                    .setPixelTolerance(0.0)
-                    .setMinZoom(Math.min(minZoom + 2, 14));
-        }
+        TransportationName.addFeature(clazz, subclass, brunnel, level, minZoom, sf, features);
     }
 
     @Override
