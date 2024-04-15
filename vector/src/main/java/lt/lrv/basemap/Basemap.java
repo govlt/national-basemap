@@ -59,7 +59,7 @@ public class Basemap extends ForwardingProfile {
                                 new MountainPeak(),
                                 new Park(),
                                 new Place(),
-                                new POI(),
+                                new Poi(),
                                 new Transportation(),
                                 new TransportationName(),
                                 new Water(),

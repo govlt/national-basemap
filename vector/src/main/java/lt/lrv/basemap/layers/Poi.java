@@ -10,7 +10,7 @@ import lt.lrv.basemap.utils.LanguageUtils;
 
 import static com.google.common.base.Strings.emptyToNull;
 
-public class POI implements OpenMapTilesSchema.Poi {
+public class Poi implements OpenMapTilesSchema.Poi {
 
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
