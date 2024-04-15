@@ -52,9 +52,4 @@ public class Boundary implements OpenMapTilesSchema.Boundary, ForwardingProfile.
                 4
         );
     }
-
-    @Override
-    public String name() {
-        return "boundary";
-    }
 }
