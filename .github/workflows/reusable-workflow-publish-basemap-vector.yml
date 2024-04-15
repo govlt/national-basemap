@@ -72,7 +72,7 @@ jobs:
           s3-access-key-id: ${{ secrets.s3-access-key-id }}
           s3-secret-access-key: ${{ secrets.s3-secret-access-key }}
           source-path: vector/data/output
-          destination-path: /tiles/vector
+          destination-path: /tiles/vector/pmtiles
 
   generate-basemap-demo-site:
     name: Build and upload demo site
