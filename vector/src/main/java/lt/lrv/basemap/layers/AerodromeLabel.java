@@ -1,16 +1,16 @@
 package lt.lrv.basemap.layers;
 
 import com.onthegomap.planetiler.FeatureCollector;
-import com.onthegomap.planetiler.ForwardingProfile;
 import com.onthegomap.planetiler.reader.SourceFeature;
 import lt.lrv.basemap.constants.Layer;
 import lt.lrv.basemap.constants.Source;
+import lt.lrv.basemap.openmaptiles.OpenMapTilesSchema;
 import lt.lrv.basemap.utils.LanguageUtils;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class AerodromeLabel implements ForwardingProfile.FeatureProcessor {
+public class AerodromeLabel implements OpenMapTilesSchema.AerodromeLabel {
 
     // Some airports have multiple features and this leads to duplicated names. Use this to filter out them
     static final List<String> IGNORED_TOP_IDS = Arrays.asList(
@@ -38,12 +38,13 @@ public class AerodromeLabel implements ForwardingProfile.FeatureProcessor {
             var clazz = isInternational ? "international" : "regional";
 
 
-            features.centroid("aerodrome_label")
+            features.centroid(this.name())
+                    .setBufferPixels(BUFFER_SIZE)
                     .setMinZoom(isInternational ? 8 : 10)
                     .putAttrs(LanguageUtils.getNames(sf.tags()))
-                    .setAttr("iata", iata)
-                    .setAttr("icao", icao)
-                    .setAttr("class", clazz);
+                    .setAttr(Fields.IATA, iata)
+                    .setAttr(Fields.ICAO, icao)
+                    .setAttr(Fields.CLASS, clazz);
         }
     }
 

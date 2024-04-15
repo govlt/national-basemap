@@ -2,15 +2,15 @@ package lt.lrv.basemap.layers;
 
 
 import com.onthegomap.planetiler.FeatureCollector;
-import com.onthegomap.planetiler.ForwardingProfile;
 import com.onthegomap.planetiler.reader.SourceFeature;
 import lt.lrv.basemap.constants.Layer;
 import lt.lrv.basemap.constants.Source;
+import lt.lrv.basemap.openmaptiles.OpenMapTilesSchema;
 import lt.lrv.basemap.utils.LanguageUtils;
 
 import static com.google.common.base.Strings.emptyToNull;
 
-public class POI implements ForwardingProfile.FeatureProcessor {
+public class POI implements OpenMapTilesSchema.Poi {
 
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
@@ -23,7 +23,7 @@ public class POI implements ForwardingProfile.FeatureProcessor {
             var code = sf.getString("GKODAS");
 
             switch (code) {
-                case "uur14" -> addFeature("park", 5, sf, features);
+                case "uur14" -> addFeature(FieldValues.CLASS_PARK, 5, sf, features);
                 case "uvp1" -> addFeature("cemetery", 10, sf, features);
                 case "unk0" -> addFeature("unknown", 15, sf, features);
             }
@@ -31,12 +31,12 @@ public class POI implements ForwardingProfile.FeatureProcessor {
     }
 
     void addFeature(String clazz, int rank, SourceFeature sf, FeatureCollector features) {
-        features.point("poi")
-                .setBufferPixels(64)
+        features.point(this.name())
+                .setBufferPixels(BUFFER_SIZE)
                 .putAttrs(LanguageUtils.getNames(sf.tags()))
-                .setAttr("class", clazz)
-                .setAttr("rank", rank)
-                .setAttr("level", 0)
+                .setAttr(Fields.CLASS, clazz)
+                .setAttr(Fields.RANK, rank)
+                .setAttr(Fields.LEVEL, 0)
                 .setMinZoom(10)
                 .setPointLabelGridPixelSize(14, 64)
                 .setSortKey(rank);

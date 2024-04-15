@@ -8,15 +8,16 @@ import com.onthegomap.planetiler.geo.GeometryException;
 import com.onthegomap.planetiler.reader.SourceFeature;
 import lt.lrv.basemap.constants.Layer;
 import lt.lrv.basemap.constants.Source;
+import lt.lrv.basemap.openmaptiles.OpenMapTilesSchema;
 
 import java.util.List;
 
-public class Building implements ForwardingProfile.FeaturePostProcessor, ForwardingProfile.FeatureProcessor {
+public class Building implements OpenMapTilesSchema.Building, ForwardingProfile.FeaturePostProcessor {
 
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
         if (sf.getSource().equals(Source.GRPK) && sf.getSourceLayer().equals(Layer.GRPK_PASTAT) && sf.canBePolygon()) {
-            features.polygon(this.name()).setMinZoom(11);
+            features.polygon(this.name()).setBufferPixels(BUFFER_SIZE).setMinZoom(11);
         }
     }
 
@@ -27,10 +28,5 @@ public class Building implements ForwardingProfile.FeaturePostProcessor, Forward
         }
 
         return FeatureMerge.mergeNearbyPolygons(items, 3.125, 3.125, 0.5, 0.5);
-    }
-
-    @Override
-    public String name() {
-        return "building";
     }
 }

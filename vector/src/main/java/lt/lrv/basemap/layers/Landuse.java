@@ -9,11 +9,12 @@ import com.onthegomap.planetiler.reader.SourceFeature;
 import com.onthegomap.planetiler.util.ZoomFunction;
 import lt.lrv.basemap.constants.Layer;
 import lt.lrv.basemap.constants.Source;
+import lt.lrv.basemap.openmaptiles.OpenMapTilesSchema;
 
 import java.util.List;
 import java.util.Map;
 
-public class Landuse implements ForwardingProfile.FeaturePostProcessor, ForwardingProfile.FeatureProcessor {
+public class Landuse implements OpenMapTilesSchema.Landuse, ForwardingProfile.FeaturePostProcessor {
 
     private static final ZoomFunction<Number> MIN_PIXEL_SIZE_THRESHOLDS = ZoomFunction.fromMaxZoomThresholds(Map.of(
             13, 4,
@@ -27,27 +28,25 @@ public class Landuse implements ForwardingProfile.FeaturePostProcessor, Forwardi
             var code = sf.getString("GKODAS");
 
             switch (code) {
-                case "pu0" -> addPolygon("residential", "residential", 5, features);
-                case "pu3" -> addPolygon("industrial", "industrial", 5, features);
-                case "vp1" -> addPolygon("cemetery", "cemetery", 10, features);
-                case "ek0" -> addPolygon("quarry", "quarry", 10, features);
-                case "vg3" -> addPolygon("landfill", "landfill", 10, features);
-                case "vk1" -> addPolygon("stadium", "stadium", 10, features);
-                case "gt17", "gt18", "gt19" -> addPolygon("railway", "railway", 10, features);
+                case "pu0" -> addPolygon(FieldValues.CLASS_RESIDENTIAL, 5, features);
+                case "pu3" -> addPolygon(FieldValues.CLASS_INDUSTRIAL, 5, features);
+                case "vp1" -> addPolygon(FieldValues.CLASS_CEMETERY, 10, features);
+                case "ek0" -> addPolygon(FieldValues.CLASS_QUARRY, 10, features);
+                case "vk1" -> addPolygon(FieldValues.CLASS_STADIUM, 10, features);
+                case "gt17", "gt18", "gt19" -> addPolygon(FieldValues.CLASS_RAILWAY, 10, features);
             }
         }
     }
 
 
-    public void addPolygon(String clazz, String subclass, int minZoom, FeatureCollector features) {
+    public void addPolygon(String clazz, int minZoom, FeatureCollector features) {
         features.polygon(this.name())
-                .setBufferPixels(4)
+                .setBufferPixels(BUFFER_SIZE)
                 .setMinPixelSizeOverrides(MIN_PIXEL_SIZE_THRESHOLDS)
                 // Optimization from Planetiler-OpenMapTiles
                 // default is 0.1, this helps reduce size of some heavy z5-10 tiles
                 .setPixelToleranceBelowZoom(10, 0.25)
-                .setAttr("class", clazz)
-                .setAttr("subclass", subclass)
+                .setAttr(Fields.CLASS, clazz)
                 .setMinZoom(minZoom);
     }
 
@@ -58,10 +57,5 @@ public class Landuse implements ForwardingProfile.FeaturePostProcessor, Forwardi
         }
 
         return FeatureMerge.mergeNearbyPolygons(items, 3.125, 3.125, 0.5, 0.5);
-    }
-
-    @Override
-    public String name() {
-        return "landuse";
     }
 }

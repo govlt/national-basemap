@@ -8,10 +8,11 @@ import com.onthegomap.planetiler.geo.GeometryException;
 import com.onthegomap.planetiler.reader.SourceFeature;
 import lt.lrv.basemap.constants.Layer;
 import lt.lrv.basemap.constants.Source;
+import lt.lrv.basemap.openmaptiles.OpenMapTilesSchema;
 
 import java.util.List;
 
-public class Park implements ForwardingProfile.FeaturePostProcessor, ForwardingProfile.FeatureProcessor {
+public class Park implements OpenMapTilesSchema.Park, ForwardingProfile.FeaturePostProcessor {
 
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
@@ -19,8 +20,9 @@ public class Park implements ForwardingProfile.FeaturePostProcessor, ForwardingP
             var code = sf.getString("GKODAS");
 
             if (code.equals("uur14")) {
-                features.polygon("park")
-                        .setAttr("class", "nature_reserve")
+                features.polygon(this.name())
+                        .setBufferPixels(BUFFER_SIZE)
+                        .setAttr(Fields.CLASS, "nature_reserve")
                         .setMinZoom(12);
             }
         }
@@ -33,10 +35,5 @@ public class Park implements ForwardingProfile.FeaturePostProcessor, ForwardingP
         }
 
         return FeatureMerge.mergeNearbyPolygons(items, 3.125, 3.125, 0.5, 0.5);
-    }
-
-    @Override
-    public String name() {
-        return "park";
     }
 }
