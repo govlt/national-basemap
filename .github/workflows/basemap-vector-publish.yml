@@ -31,7 +31,7 @@ jobs:
       cloudflare-api-token: ${{ secrets.CLOUDFLARE_PAGES_API_TOKEN }}
       cloudflare-account-id: ${{ secrets.CLOUDFLARE_PAGES_ACCOUNT_ID }}
       s3-access-key-id: ${{ secrets.S3_ACCESS_KEY_ID }}
-      s3-secret-access-key: ${{ secrets.S3_SECRET_ACCESS_KEY }}ß
+      s3-secret-access-key: ${{ secrets.S3_SECRET_ACCESS_KEY }}
 
   publish-vector-basemap-preview:
     name: Publish vector basemap preview
