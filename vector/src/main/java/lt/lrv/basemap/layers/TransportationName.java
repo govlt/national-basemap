@@ -21,7 +21,7 @@ public class TransportationName implements OpenMapTilesSchema.TransportationName
         // Currently TransportationName processFeature is handled inside Transportation
     }
 
-    public static void addFeature(String clazz, String subclass, String brunnel, int level, int transportMinZoom, SourceFeature sf, FeatureCollector features) {
+    public static void addFeature(String clazz, String subclass, int transportMinZoom, SourceFeature sf, FeatureCollector features) {
         var name = nullIfEmpty(sf.getString("VARDAS"));
         var rawRef = Utils.coalesce(nullIfEmpty(sf.getString("ENUMERIS")), nullIfEmpty(sf.getString("NUMERIS")));
 
@@ -29,12 +29,11 @@ public class TransportationName implements OpenMapTilesSchema.TransportationName
             return;
         }
 
+        // brunnel attribute is excluded from road name line features so that tunnel and bridges don't prevent merging!
         var feature = features.line(LAYER_NAME)
                 .setBufferPixels(BUFFER_SIZE)
                 .setAttr(Fields.CLASS, clazz)
                 .setAttr(Fields.SUBCLASS, subclass)
-                .setAttr(Fields.BRUNNEL, brunnel)
-                .setAttr(Fields.LEVEL, level)
                 .setMinPixelSize(0.0)
                 .setPixelTolerance(0.0);
 
