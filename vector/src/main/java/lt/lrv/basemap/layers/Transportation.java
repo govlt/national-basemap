@@ -9,12 +9,9 @@ import com.onthegomap.planetiler.reader.SourceFeature;
 import lt.lrv.basemap.constants.Layer;
 import lt.lrv.basemap.constants.Source;
 import lt.lrv.basemap.openmaptiles.OpenMapTilesSchema;
-import lt.lrv.basemap.utils.LanguageUtils;
 
 import java.util.Arrays;
 import java.util.List;
-
-import static com.onthegomap.planetiler.util.LanguageUtils.nullIfEmpty;
 
 public class Transportation implements OpenMapTilesSchema.Transportation, ForwardingProfile.FeaturePostProcessor {
 
@@ -99,7 +96,7 @@ public class Transportation implements OpenMapTilesSchema.Transportation, Forwar
                 .setMinPixelSize(0.0)
                 .setPixelTolerance(0.0);
 
-        TransportationName.addFeature(clazz, subclass, brunnel, level, minZoom, sf, features);
+        TransportationName.addFeature(clazz, subclass, minZoom, sf, features);
     }
 
     @Override
