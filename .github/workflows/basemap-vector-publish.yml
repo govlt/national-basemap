@@ -26,9 +26,12 @@ jobs:
       style-source-url: https://vector.startupgov.lt/vector
       style-glyphs-url: https://basemap.startupgov.lt/vector/font/{fontstack}/{range}.pbf
       style-sprites-base-url: https://basemap.startupgov.lt/vector/sprite
+      s3-endpoint: ${{ vars.S3_ENDPOINT }}
     secrets:
-      cloudflare-api-token: ${{  secrets.CLOUDFLARE_PAGES_API_TOKEN }}
-      cloudflare-account-id: ${{  secrets.CLOUDFLARE_PAGES_ACCOUNT_ID }}
+      cloudflare-api-token: ${{ secrets.CLOUDFLARE_PAGES_API_TOKEN }}
+      cloudflare-account-id: ${{ secrets.CLOUDFLARE_PAGES_ACCOUNT_ID }}
+      s3-access-key-id: ${{ secrets.S3_ACCESS_KEY_ID }}
+      s3-secret-access-key: ${{ secrets.S3_SECRET_ACCESS_KEY }}ß
 
   publish-vector-basemap-preview:
     name: Publish vector basemap preview
@@ -41,6 +44,10 @@ jobs:
       style-source-url: https://dev-vector.startupgov.lt/vector
       style-glyphs-url: https://basemap.startupgov.lt/vector/font/{fontstack}/{range}.pbf
       style-sprites-base-url: https://basemap.startupgov.lt/vector/sprite
+      s3-endpoint: ${{ vars.S3_DEVELOPMENT_ENDPOINT }}
     secrets:
-      cloudflare-api-token: ${{  secrets.CLOUDFLARE_PAGES_API_TOKEN }}
-      cloudflare-account-id: ${{  secrets.CLOUDFLARE_PAGES_ACCOUNT_ID }}
+      cloudflare-api-token: ${{ secrets.CLOUDFLARE_PAGES_API_TOKEN }}
+      cloudflare-account-id: ${{ secrets.CLOUDFLARE_PAGES_ACCOUNT_ID }}
+      s3-access-key-id: ${{ secrets.S3_DEVELOPMENT_ACCESS_KEY_ID }}
+      s3-secret-access-key: ${{ secrets.S3_DEVELOPMENT_SECRET_ACCESS_KEY }}
+
