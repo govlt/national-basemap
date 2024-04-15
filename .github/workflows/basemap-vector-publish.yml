@@ -23,7 +23,7 @@ jobs:
     with:
       stable: true
       archive-version: ${{ github.ref_name }}
-      style-source-url: https://vector.startupgov.lt/grpk
+      style-source-url: https://vector.startupgov.lt/vector
       style-glyphs-url: https://basemap.startupgov.lt/vector/font/{fontstack}/{range}.pbf
       style-sprites-base-url: https://basemap.startupgov.lt/vector/sprite
     secrets:
@@ -38,7 +38,7 @@ jobs:
       group: basemap-vector-publish-preview
       cancel-in-progress: true
     with:
-      style-source-url: https://dev-vector.startupgov.lt/grpk
+      style-source-url: https://dev-vector.startupgov.lt/vector
       style-glyphs-url: https://basemap.startupgov.lt/vector/font/{fontstack}/{range}.pbf
       style-sprites-base-url: https://basemap.startupgov.lt/vector/sprite
     secrets:
