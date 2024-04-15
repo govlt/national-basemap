@@ -27,7 +27,7 @@ runs:
     - name: Sync to S3
       uses: docker://docker.io/rclone/rclone:1.66
       with:
-        args: "sync ${{ inputs.source-path }} s3:${{ inputs.destination-path }}--s3-acl=public-read --fast-list --checksum --update --use-server-modtime --metadata --inplace --delete-during"
+        args: "sync ${{ inputs.source-path }} s3:${{ inputs.destination-path }} --s3-acl=public-read --fast-list --checksum --update --use-server-modtime --metadata --inplace --delete-during"
       env:
         RCLONE_CONFIG_S3_TYPE: s3
         RCLONE_CONFIG_S3_PROVIDER: Other
