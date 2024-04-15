@@ -56,7 +56,7 @@ public class Poi implements OpenMapTilesSchema.Poi {
                 .setAttr(Fields.CLASS, clazz)
                 .setAttr(Fields.RANK, rank)
                 .setAttr(Fields.LEVEL, 0)
-                .setMinZoom(10)
+                .setMinZoom(12)
                 .setPointLabelGridPixelSize(14, 64)
                 .setSortKey(rank);
     }
