@@ -207,8 +207,8 @@ jobs:
           gitHubToken: ${{ github.token }}
           wranglerVersion: '3'
 
-  push-grpk-docker-image:
-    name: Generate and push GRPK basemap docker image
+  publish-basemap-vector-docker-image:
+    name: Docker image build and push
     runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:
