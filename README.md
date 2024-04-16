@@ -85,7 +85,7 @@ archives.
 The latest stable basemap PMTiles archive is hosted
 at `https://cdn.startupgov.lt/tiles/vector/pmtiles/lithuania.pmtiles`. You can
 inspect it using
-the [PMTiles viewer](https://protomaps.github.io/PMTiles/?url=https%3A%2F%2Fbasemap.startupgov.lt%2Fvector%2Flithuania.pmtiles).
+the [PMTiles viewer](https://protomaps.github.io/PMTiles/?url=https%3A%2F%2Fcdn.startupgov.lt%2Ftiles%2Fvector%2Fpmtiles%2Flithuania.pmtiles).
 
 For instructions on reading PMTiles directly, refer to
 the [PMTiles in the browser](https://docs.protomaps.com/pmtiles/maplibre) documentation.
