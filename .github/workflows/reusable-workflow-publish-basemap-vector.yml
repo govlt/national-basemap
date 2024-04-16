@@ -112,11 +112,14 @@ jobs:
     permissions:
       contents: read
     steps:
-      - name: Install spreet
-        run: cargo install spreet
-
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Restore Rust cache
+        uses: Swatinem/rust-cache@v2
+
+      - name: Install spreet
+        run: cargo install spreet
 
       - name: Minify styles
         run: find vector/styles -name "style.json" -print0 | xargs -0 -I{} sh -c 'jq -c . "{}" > tmp.json && mv tmp.json "{}"'
