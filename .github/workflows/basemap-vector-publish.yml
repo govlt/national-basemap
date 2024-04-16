@@ -24,8 +24,7 @@ jobs:
       stable: true
       archive-version: ${{ github.ref_name }}
       style-source-url: https://vector.startupgov.lt/vector
-      style-glyphs-url: https://basemap.startupgov.lt/vector/font/{fontstack}/{range}.pbf
-      style-sprites-base-url: https://basemap.startupgov.lt/vector/sprite
+      style-base-url: https://basemap.startupgov.lt
       s3-endpoint: ${{ vars.S3_ENDPOINT }}
     secrets:
       cloudflare-api-token: ${{ secrets.CLOUDFLARE_PAGES_API_TOKEN }}
@@ -42,8 +41,7 @@ jobs:
       cancel-in-progress: true
     with:
       style-source-url: https://dev-vector.startupgov.lt/vector
-      style-glyphs-url: https://basemap.startupgov.lt/vector/font/{fontstack}/{range}.pbf
-      style-sprites-base-url: https://basemap.startupgov.lt/vector/sprite
+      style-base-url: https://${{ github.head_ref || github.ref_name }}.national-basemap.pages.dev
       s3-endpoint: ${{ vars.S3_DEVELOPMENT_ENDPOINT }}
     secrets:
       cloudflare-api-token: ${{ secrets.CLOUDFLARE_PAGES_API_TOKEN }}
