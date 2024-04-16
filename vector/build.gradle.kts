@@ -20,6 +20,11 @@ dependencies {
     implementation(libs.planetiler)
     implementation(libs.geotoolsProcessGeometry)
 
+    // Required for AddressRegistryHouseNumbers
+    implementation(libs.geotoolsGeoJson)
+    implementation(libs.geotoolsEspgWKT)
+    implementation(libs.geotoolsEspgHSql)
+
     testImplementation(libs.junitJupyter)
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
