@@ -34,7 +34,7 @@ jobs:
         run: ogr2ogr -f "ESRI Shapefile" -lco ENCODING=UTF-8 -t_srs EPSG:4326 output/house-numbers-espg-4326.shp.zip vector/housenumbers.geojson
 
       - name: Upload to S3
-        uses: ./.github/actions/rclone-sync@main
+        uses: ./.github/actions/rclone-sync
         with:
           s3-endpoint: ${{ vars.S3_ENDPOINT }}
           s3-access-key-id: ${{ secrets.S3_ACCESS_KEY_ID }}
