@@ -48,12 +48,12 @@ import Map from 'ol/Map.js';
 import { MapboxVectorLayer } from 'ol-mapbox-style';
 
 const map = new Map({
-  target: 'map',
-  layers: [
-    new MapboxVectorLayer({
-      styleUrl: 'https://basemap.startupgov.lt/vector/styles/bright/style.json'
-    })
-  ]
+	target: 'map',
+	layers: [
+		new MapboxVectorLayer({
+			styleUrl: 'https://basemap.startupgov.lt/vector/styles/bright/style.json'
+		})
+	]
 });
 ```
 
@@ -82,10 +82,10 @@ the [OpenMapTiles styles](https://openmaptiles.org/styles/).
 If you need to use vector basemap offline or prefer to avoid using a tile server, you can directly read PMTiles
 archives.
 
-The latest stable basemap PMTiles archive is hosted at `https://basemap.startupgov.lt/vector/lithuania.pmtiles`. You can
-inspect it
-using
-the [PMTiles viewer](https://protomaps.github.io/PMTiles/?url=https%3A%2F%2Fbasemap.startupgov.lt%2Fvector%2Flithuania.pmtiles).
+The latest stable basemap PMTiles archive is hosted
+at `https://cdn.startupgov.lt/tiles/vector/pmtiles/lithuania.pmtiles`. You can
+inspect it using
+the [PMTiles viewer](https://protomaps.github.io/PMTiles/?url=https%3A%2F%2Fcdn.startupgov.lt%2Ftiles%2Fvector%2Fpmtiles%2Flithuania.pmtiles).
 
 For instructions on reading PMTiles directly, refer to
 the [PMTiles in the browser](https://docs.protomaps.com/pmtiles/maplibre) documentation.
@@ -121,9 +121,9 @@ services:
 
 ### PMTiles
 
-Periodically download the PMTiles archive from `https://basemap.startupgov.lt/vector/lithuania.pmtiles` to your own S3
-or file
-storage and utilize it as needed.
+Periodically download the PMTiles archive from `https://cdn.startupgov.lt/tiles/vector/pmtiles/lithuania.pmtiles` to
+your own S3
+or file storage and utilize it as needed.
 
 ## Recipes
 
@@ -135,7 +135,7 @@ This tool allows you to specify either a bounding box or a shape for extraction.
 For example, if you want to extract the basemap for Vilnius Old Town, you can use the following command:
 
 ```bash
-pmtiles extract https://basemap.startupgov.lt/vector/lithuania.pmtiles vilnius-old-town.pmtiles --bbox=25.276352,54.694638,25.302195,54.671628
+pmtiles extract https://cdn.startupgov.lt/tiles/vector/pmtiles/lithuania.pmtiles vilnius-old-town.pmtiles --bbox=25.276352,54.694638,25.302195,54.671628
 ```
 
 The resulting basemap for Vilnius Old Town occupies less than 1 MB!
@@ -144,12 +144,12 @@ The resulting basemap for Vilnius Old Town occupies less than 1 MB!
 
 ```mermaid
 flowchart TD
-    grpk["GeoPortal.lt\n<a href="https://www.geoportal.lt/geoportal/web/georeferencinio-pagrindo-kadastras-grpk">Georeferenced Cadastral Register (GRPK)</a>"]-->transform-grpk["<a href="https://github.com/govlt/national-basemap/blob/main/.github/workflows/basemap-vector-data-source.yml">Transform</a>"]-->|"<a href="https://cdn.biip.lt/tiles/sources/grpk/grpk-espg-4326.shp.zip">grpk-espg-4326.shp.zip</a>"|S3
-    ar["State Enterprise Centre of Registers\n<a href="https://www.registrucentras.lt/p/1187">Address Registry</a>"]-->transform-ar["<a href="https://github.com/govlt/national-basemap/blob/main/.github/workflows/basemap-vector-data-source.yml">Transform</a>"]-->|"<a href="https://cdn.biip.lt/tiles/sources/registru-centras/ar-espg-4326.shp.zip">ar-espg-4326.shp.zip</a>"|S3
+    grpk["GeoPortal.lt\n<a href="https://www.geoportal.lt/geoportal/web/georeferencinio-pagrindo-kadastras-grpk">Georeferenced Cadastral Register (GRPK)</a>"]-->transform-grpk["<a href="https://github.com/govlt/national-basemap/blob/main/.github/workflows/basemap-vector-data-source.yml">Transform</a>"]-->|"<a href="https://cdn.startupgov.lt/tiles/vector/sources/grpk/grpk-espg-4326.shp.zip">grpk-espg-4326.shp.zip</a>"|S3
+    ar["State Enterprise Centre of Registers\n<a href="https://www.registrucentras.lt/p/1187">Address Registry</a>"]-->transform-ar["<a href="https://github.com/govlt/national-basemap/blob/main/.github/workflows/basemap-vector-data-source.yml">Transform</a>"]-->|"<a href="https://cdn.startupgov.lt/tiles/vector/sources/address-registry/house-numbers-espg-4326.shp.zip">ar-espg-4326.shp.zip</a>"|S3
 S3-->Planetiler-->PMTiles["PMTiles archive"]
 
-PMTiles-->martin["<a href="https://gis.biip.lt/basemap/vector/vector">Vector Tile Server</a>"]
-PMTiles-->s3-pmtiles["S3\n<a href="https://basemap.startupgov.lt/vector/lithuania.pmtiles">lithuania.pmtiles</a>"]
+PMTiles-->martin["<a href="https://vector.startupgov.lt/catalog">Vector Tile Server</a>"]
+PMTiles-->s3-pmtiles["S3\n<a href="https://cdn.startupgov.lt/tiles/vector/pmtiles/lithuania.pmtiles">lithuania.pmtiles</a>"]
 PMTiles-->docker-image["Docker image\n<a href="https://github.com/govlt/national-basemap/pkgs/container/national-basemap-vector">national-basemap-vector</a>"]
 ```
 

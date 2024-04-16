@@ -33,12 +33,12 @@ public class Basemap extends ForwardingProfile {
                         Source.GRPK,
                         Path.of("data", "sources", "grpk-espg-4326.shp.zip"),
                         grpkGlobPattern,
-                        "https://cdn.biip.lt/tiles/sources/grpk/grpk-espg-4326.shp.zip"
+                        "https://cdn.startupgov.lt/tiles/vector/sources/grpk/grpk-espg-4326.shp.zip"
                 )
                 .addShapefileSource(
                         Source.AR,
                         Path.of("data", "sources", "ar-espg-4326.shp.zip"),
-                        "https://cdn.biip.lt/tiles/sources/registru-centras/ar-espg-4326.shp.zip"
+                        "https://cdn.startupgov.lt/tiles/vector/sources/address-registry/house-numbers-espg-4326.shp.zip"
                 )
                 .overwriteOutput(Path.of("data", "output", "lithuania.pmtiles"))
                 .run();
