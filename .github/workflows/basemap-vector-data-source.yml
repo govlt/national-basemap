@@ -25,7 +25,7 @@ jobs:
         uses: ./.github/actions/prepare-java-environment
 
       - name: Sync address registry
-        run: make vector-basemap-sync-address-registry
+        run: ./gradlew syncAddressRegistry
 
       - name: Create output directory
         run: mkdir output
