@@ -56,7 +56,6 @@ jobs:
     # GeoPortal download is really slow. Downloading less than 3 GB takes more than 3 hours :(
     timeout-minutes: 360
     container: ghcr.io/osgeo/gdal:ubuntu-full-3.8.5
-    if: false
     permissions: { }
     concurrency: basemap-vector-datasource-grpk
     environment:
