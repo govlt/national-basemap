@@ -13,13 +13,8 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: actions/setup-java@v4
-      with:
-        distribution: temurin
-        java-version: 21
-
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v3
+    - name: Prepare Java environment
+      uses: ./.github/actions/prepare-java-environment
 
     - name: Cache vector basemap data sources
       uses: actions/cache@v4

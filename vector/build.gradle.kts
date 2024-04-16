@@ -38,3 +38,9 @@ tasks.named<Test>("test") {
 application {
     mainClass = "lt.lrv.basemap.Basemap"
 }
+
+task("syncAddressRegistry", JavaExec::class) {
+    group = "syncAddressRegistry"
+    mainClass.set("lt/lrv/basemap/preparations/AddressRegistryHouseNumbers")
+    classpath = sourceSets["main"].runtimeClasspath
+}
