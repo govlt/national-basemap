@@ -11,7 +11,7 @@
     22.92,
     55.17
   ],
-  "zoom": 7,
+  "zoom": 6,
   "glyphs": "http://localhost:3000/font/{fontstack}/{range}",
   "sprite": "http://localhost:3000/sprite/positron",
   "layers": [
