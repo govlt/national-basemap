@@ -76,6 +76,8 @@ jobs:
     timeout-minutes: 5
     permissions:
       contents: read
+    env:
+      VITE_STYLE_BASE_URL: ${{ inputs.style-base-url }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
