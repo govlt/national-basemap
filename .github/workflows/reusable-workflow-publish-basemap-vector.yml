@@ -132,7 +132,7 @@ jobs:
         run: find vector/styles -type f -name "style.json" -print0 | xargs -0 sed -i -e 's|${{ env.LOCALHOST_URL }}|${{ env.URL }}|g'
         env:
           LOCALHOST_URL: http://localhost:3000/sprite
-          URL: ${{ inputs.style-base-url }}/sprite
+          URL: ${{ inputs.style-base-url }}/vector/sprite
 
       - name: Replace style urls for docker
         run: find vector/styles -type f -name "style.json" -print0 | xargs -0 sed -i -e 's|${{ env.LOCALHOST_URL }}|${{ env.URL }}|g'
