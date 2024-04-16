@@ -7,3 +7,6 @@ vector-basemap-test:
 vector-basemap-preview:
 	docker compose --project-directory vector watch
 
+vector-basemap-sync-address-registry:
+	./gradlew syncAddressRegistry
+

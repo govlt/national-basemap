@@ -20,6 +20,11 @@ dependencies {
     implementation(libs.planetiler)
     implementation(libs.geotoolsProcessGeometry)
 
+    // Required for AddressRegistryHouseNumbers
+    implementation(libs.geotoolsGeoJson)
+    implementation(libs.geotoolsEspgWKT)
+    implementation(libs.geotoolsEspgHSql)
+
     testImplementation(libs.junitJupyter)
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
@@ -32,4 +37,10 @@ tasks.named<Test>("test") {
 
 application {
     mainClass = "lt.lrv.basemap.Basemap"
+}
+
+task("syncAddressRegistry", JavaExec::class) {
+    group = "syncAddressRegistry"
+    mainClass.set("lt/lrv/basemap/preparations/AddressRegistryHouseNumbers")
+    classpath = sourceSets["main"].runtimeClasspath
 }

@@ -7,3 +7,6 @@ junit = "5.10.1"
 planetiler = { module = "com.onthegomap.planetiler:planetiler-core", version.ref = "planetiler" }
 junitJupyter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
 geotoolsProcessGeometry = { module = "org.geotools:gt-process-geometry", version.ref = "geotools" }
+geotoolsGeoJson = { module = "org.geotools:gt-geojson", version.ref = "geotools" }
+geotoolsEspgWKT = { module = "org.geotools:gt-epsg-wkt", version.ref = "geotools" }
+geotoolsEspgHSql = { module = "org.geotools:gt-epsg-hsql", version.ref = "geotools" }
