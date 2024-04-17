@@ -3,7 +3,7 @@
 Revolutionizing mapping technology for Lithuania with a free and completely open-source vector Basemap of Lithuania with
 no
 restrictions on usage. This project utilizes cutting-edge vector mapping technology, akin to giants like Google Maps,
-Apple Maps, and Mapbox, and is compliant with the VectorMapTiles standard.
+Apple Maps, and Mapbox, and is compliant with the OpenMapTiles standard.
 
 ## Key features
 
@@ -21,7 +21,7 @@ Apple Maps, and Mapbox, and is compliant with the VectorMapTiles standard.
 6. **Various Self-Hosting Options**: Explore multiple self-hosting options, including hosting a single
    ~350MB [PMTiles](https://docs.protomaps.com/pmtiles/) file and style files in your S3
    or file storage. Or using our provided docker image based on Martin tile server.
-7. **OpenVectorTiles Standard**: We adhere to the [VectorMapTiles](https://openmaptiles.org/about/) standard, allowing
+7. **OpenMapTiles Standard**: We adhere to the [OpenMapTiles](https://openmaptiles.org/about/) standard, allowing
    effortless integration of various
    open-source styles, including unconventional ones like the [Pirate style](https://openmaptiles.org/styles/) 🏴‍☠️
 8. **Efficient Data Delivery**: Vector tiles are designed for compactness and optimization, ensuring lightning-fast data
