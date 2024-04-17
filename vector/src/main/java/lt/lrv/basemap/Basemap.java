@@ -37,7 +37,7 @@ public class Basemap extends ForwardingProfile {
                 )
                 .addShapefileSource(
                         Source.AR,
-                        Path.of("data", "sources", "ar-espg-4326.shp.zip"),
+                        Path.of("data", "sources", "house-numbers-espg-4326.shp.zip"),
                         "https://cdn.startupgov.lt/tiles/vector/sources/address-registry/house-numbers-espg-4326.shp.zip"
                 )
                 .overwriteOutput(Path.of("data", "output", "lithuania.pmtiles"))
