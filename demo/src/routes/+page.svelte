@@ -7,6 +7,7 @@
 <MapLibre
 	class="map"
 	standardControls
+	hash
 	style="{ styleUrl }">
 </MapLibre>
 
