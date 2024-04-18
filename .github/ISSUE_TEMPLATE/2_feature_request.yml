@@ -1,5 +1,5 @@
 name: Feature request
-description: Suggest a new idea for National Basemap
+description: Suggest a new idea
 body:
   - type: textarea
     attributes:
