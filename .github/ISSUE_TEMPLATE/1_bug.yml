@@ -1,0 +1,38 @@
+name: Report a bug
+description: |
+  You found a bug in national basemap e.g. certain elements are absent or inaccurately represented.
+body:
+  - type: textarea
+    attributes:
+      label: Steps to reproduce
+      description: Please tell us exactly how to reproduce the problem you are running into.
+      placeholder: |
+        1. ...
+        2. ...
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Expected behavior
+      description: Please tell us what is expected to happen.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Actual behavior
+      description: Please tell us what is actually happening.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Screenshots
+      description: |
+        Upload any screenshots of the bug if applicable.
+      value: |
+        <details open>
+        <summary>Screenshots demonstration</summary>
+
+        [Upload media here]
+
+        </details>
