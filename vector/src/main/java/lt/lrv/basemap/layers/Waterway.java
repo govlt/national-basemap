@@ -43,6 +43,8 @@ public class Waterway implements OpenMapTilesSchema.Waterway, ForwardingProfile.
                 addWaterwayLine(FieldValues.CLASS_RIVER, 10, sf, features);
             } else if (List.of("hc31", "hc32").contains(code) && (type == 3 || type == 4)) {
                 addWaterwayLine(FieldValues.CLASS_DITCH, 11, sf, features);
+            } else {
+                addWaterwayLine(FieldValues.CLASS_STREAM, 12, sf, features);
             }
         }
     }
@@ -50,10 +52,17 @@ public class Waterway implements OpenMapTilesSchema.Waterway, ForwardingProfile.
     void addWaterwayLine(String clazz, int minZoom, SourceFeature sf, FeatureCollector features) {
         var length = (int) sf.getLong("PLOTIS");
         var name = nullIfEmpty(sf.getString("VARDAS"));
+        var code = sf.getString("GKODAS");
+
+        var brunnel = switch (code) {
+            case "op01", "hc1op0", "hc31op0", "hc32op0", "hc33op0", "hc3op0" -> "tunnel";
+            default -> null;
+        };
 
         var feature = features.line(this.name())
                 .setBufferPixels(BUFFER_SIZE)
                 .setAttr(Fields.CLASS, clazz)
+                .setAttr(Fields.BRUNNEL, brunnel)
                 .setAttr(Fields.INTERMITTENT, 0)
                 .setMinPixelSizeBelowZoom(11, 0)
                 .setMinZoom(minZoom)
