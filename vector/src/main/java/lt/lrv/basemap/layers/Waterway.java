@@ -31,28 +31,28 @@ public class Waterway implements OpenMapTilesSchema.Waterway, ForwardingProfile.
     public void processFeature(SourceFeature sf, FeatureCollector features) {
         if (sf.getSource().equals(Source.GRPK) && sf.getSourceLayer().equals(Layer.GRPK_HIDRO_L) && sf.canBeLine()) {
             var type = (int) sf.getLong("TIPAS");
-            var code = sf.getString("GKODAS");
 
-            if (code.equals("hc1") && type == 1) {
-                addWaterwayLine(FieldValues.CLASS_RIVER, 8, sf, features);
-            } else if (List.of("hc3", "hc33").contains(code) && type == 1) {
-                addWaterwayLine(FieldValues.CLASS_RIVER, 9, sf, features);
-            } else if (List.of("hc1", "hc3", "hc31", "hc32", "hc33").contains(code) && type == 2) {
-                addWaterwayLine(FieldValues.CLASS_CANAL, 9, sf, features);
-            } else if (List.of("hc31", "hc32").contains(code) && type == 1) {
-                addWaterwayLine(FieldValues.CLASS_RIVER, 10, sf, features);
-            } else if (List.of("hc31", "hc32").contains(code) && (type == 3 || type == 4)) {
-                addWaterwayLine(FieldValues.CLASS_DITCH, 11, sf, features);
-            } else if (!code.equals("fhc3")) {
-                addWaterwayLine(FieldValues.CLASS_STREAM, 12, sf, features);
+            switch (type) {
+                case 1 -> addWaterwayLine(9, sf, features);
+                case 2 -> addWaterwayLine(10, sf, features);
+                case 3, 4 -> addWaterwayLine(12, sf, features);
+                default -> addWaterwayLine(11, sf, features);
             }
         }
     }
 
-    void addWaterwayLine(String clazz, int minZoom, SourceFeature sf, FeatureCollector features) {
+    void addWaterwayLine(int minZoom, SourceFeature sf, FeatureCollector features) {
         var length = (int) sf.getLong("PLOTIS");
         var name = nullIfEmpty(sf.getString("VARDAS"));
         var code = sf.getString("GKODAS");
+        var type = (int) sf.getLong("TIPAS");
+
+        var clazz = switch (type) {
+            case 1 -> FieldValues.CLASS_RIVER;
+            case 2 -> FieldValues.CLASS_CANAL;
+            case 3, 4 -> FieldValues.CLASS_DITCH;
+            default -> FieldValues.CLASS_STREAM;
+        };
 
         var brunnel = switch (code) {
             case "op01", "hc1op0", "hc31op0", "hc32op0", "hc33op0", "hc3op0" -> FieldValues.BRUNNEL_TUNNEL;
@@ -62,7 +62,7 @@ public class Waterway implements OpenMapTilesSchema.Waterway, ForwardingProfile.
         var feature = features.line(this.name())
                 .setBufferPixels(BUFFER_SIZE)
                 .setAttr(Fields.CLASS, clazz)
-                .setAttr(Fields.BRUNNEL, brunnel)
+                .setAttrWithMinzoom(Fields.BRUNNEL, brunnel, 12)
                 .setAttr(Fields.INTERMITTENT, 0)
                 .setMinPixelSizeBelowZoom(11, 0)
                 .setMinZoom(minZoom)
