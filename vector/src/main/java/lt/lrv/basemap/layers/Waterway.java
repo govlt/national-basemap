@@ -43,7 +43,7 @@ public class Waterway implements OpenMapTilesSchema.Waterway, ForwardingProfile.
                 addWaterwayLine(FieldValues.CLASS_RIVER, 10, sf, features);
             } else if (List.of("hc31", "hc32").contains(code) && (type == 3 || type == 4)) {
                 addWaterwayLine(FieldValues.CLASS_DITCH, 11, sf, features);
-            } else {
+            } else if (!code.equals("fhc3")) {
                 addWaterwayLine(FieldValues.CLASS_STREAM, 12, sf, features);
             }
         }
@@ -55,7 +55,7 @@ public class Waterway implements OpenMapTilesSchema.Waterway, ForwardingProfile.
         var code = sf.getString("GKODAS");
 
         var brunnel = switch (code) {
-            case "op01", "hc1op0", "hc31op0", "hc32op0", "hc33op0", "hc3op0" -> "tunnel";
+            case "op01", "hc1op0", "hc31op0", "hc32op0", "hc33op0", "hc3op0" -> FieldValues.BRUNNEL_TUNNEL;
             default -> null;
         };
 
