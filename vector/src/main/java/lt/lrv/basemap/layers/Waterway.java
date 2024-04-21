@@ -11,6 +11,7 @@ import lt.lrv.basemap.constants.Source;
 import lt.lrv.basemap.openmaptiles.OpenMapTilesSchema;
 import lt.lrv.basemap.utils.LanguageUtils;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -46,6 +47,11 @@ public class Waterway implements OpenMapTilesSchema.Waterway, ForwardingProfile.
         var name = nullIfEmpty(sf.getString("VARDAS"));
         var code = sf.getString("GKODAS");
         var type = (int) sf.getLong("TIPAS");
+
+        // Do not include fictional water lines that overlap lakes
+        if (Arrays.asList("fhc1", "fhc3").contains(code)) {
+            return;
+        }
 
         var clazz = switch (type) {
             case 1 -> FieldValues.CLASS_RIVER;
