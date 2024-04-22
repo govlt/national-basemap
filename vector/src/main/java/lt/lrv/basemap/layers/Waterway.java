@@ -85,8 +85,8 @@ public class Waterway implements OpenMapTilesSchema.Waterway, ForwardingProfile.
 
     @Override
     public List<VectorTile.Feature> postProcess(int zoom, List<VectorTile.Feature> items) {
-        if (zoom >= 13) {
-            return items;
+        if (zoom >= 14) {
+            return FeatureMerge.mergeMultiLineString(items);
         }
 
         var minLength = zoom <= 11 ? MIN_PIXEL_LENGTHS.apply(zoom).doubleValue() : 0.5;
