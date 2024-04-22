@@ -3,7 +3,7 @@ package lt.lrv.basemap.layers;
 
 import com.onthegomap.planetiler.FeatureCollector;
 import com.onthegomap.planetiler.reader.SourceFeature;
-import lt.lrv.basemap.constants.Layer;
+import lt.lrv.basemap.constants.Layers;
 import lt.lrv.basemap.constants.Source;
 import lt.lrv.basemap.openmaptiles.OpenMapTilesSchema;
 import lt.lrv.basemap.utils.LanguageUtils;
@@ -15,7 +15,7 @@ public class Poi implements OpenMapTilesSchema.Poi {
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
         if (sf.getSource().equals(Source.GRPK) &&
-                sf.getSourceLayer().equals(Layer.GRPK_VIETOV_P) &&
+                sf.getSourceLayer().equals(Layers.GRPK_VIETOV_P) &&
                 sf.canBePolygon() &&
                 emptyToNull(sf.getString("VARDAS")) != null
         ) {
@@ -27,7 +27,7 @@ public class Poi implements OpenMapTilesSchema.Poi {
                 case "ums0", "uhd6", "uhd10" -> addFeature(null, 15, sf, features);
             }
         } else if (sf.getSource().equals(Source.GRPK) &&
-                sf.getSourceLayer().equals(Layer.GRPK_VIETOV_T) &&
+                sf.getSourceLayer().equals(Layers.GRPK_VIETOV_T) &&
                 sf.isPoint() &&
                 emptyToNull(sf.getString("VARDAS")) != null &&
                 emptyToNull(sf.getString("ANTR")) == null

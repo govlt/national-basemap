@@ -1,6 +1,6 @@
 package lt.lrv.basemap.constants;
 
-public class Layer {
+public class Layers {
     public static final String GRPK_GELEZINK = "GELEZINK";
     public static final String GRPK_HIDRO_L = "HIDRO_L";
     public static final String GRPK_KELIAI = "KELIAI";
@@ -12,6 +12,6 @@ public class Layer {
     public static final String GRPK_VIETOV_P = "VIETOV_P";
     public static final String GRPK_VIETOV_T = "VIETOV_T";
 
-    private Layer() {
+    private Layers() {
     }
 }
