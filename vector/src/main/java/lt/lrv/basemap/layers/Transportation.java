@@ -75,7 +75,7 @@ public class Transportation implements OpenMapTilesSchema.Transportation, Forwar
     public void addTransportationFeature(String clazz, String subclass, int minZoom, SourceFeature sf, FeatureCollector features) {
         var level = (int) sf.getLong("LYGMUO");
 
-        var expressway = "AM".equals(sf.getString("KATEGOR"));
+        var expressway = "AM".equals(sf.getString("KATEGOR")) ? 1 : null;
         var surface = PAVED_VALUES.contains(sf.getString("DANGA")) ? "paved" : "unpaved";
 
         var brunnel = switch (level) {
