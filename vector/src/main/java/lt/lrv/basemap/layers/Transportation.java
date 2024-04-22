@@ -92,8 +92,7 @@ public class Transportation implements OpenMapTilesSchema.Transportation, Forwar
                 .setAttrWithMinzoom(Fields.BRUNNEL, brunnel, 12)
                 .setAttrWithMinzoom(Fields.SURFACE, surface, 12)
                 .setMinZoom(minZoom)
-                .setMinPixelSize(0.0)
-                .setPixelTolerance(0.0);
+                .setMinPixelSize(0.0);
 
         TransportationName.addFeature(clazz, subclass, minZoom, sf, features);
     }
