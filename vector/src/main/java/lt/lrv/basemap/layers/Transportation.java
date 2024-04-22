@@ -89,7 +89,6 @@ public class Transportation implements OpenMapTilesSchema.Transportation, Forwar
                 .setAttr(Fields.CLASS, clazz)
                 .setAttr(Fields.SUBCLASS, subclass)
                 .setAttr(Fields.EXPRESSWAY, expressway)
-                .setAttr(Fields.LEVEL, level)
                 .setAttr(Fields.BRUNNEL, brunnel)
                 .setAttr(Fields.SURFACE, surface)
                 .setMinZoom(minZoom)
