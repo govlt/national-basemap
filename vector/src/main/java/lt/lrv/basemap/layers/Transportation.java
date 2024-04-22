@@ -34,8 +34,6 @@ public class Transportation implements OpenMapTilesSchema.Transportation, Forwar
                     addTransportationFeature(FieldValues.CLASS_PRIMARY, null, 4, sf, features);
                 } else if (tipas == 3) {
                     addTransportationFeature(FieldValues.CLASS_SECONDARY, null, 8, sf, features);
-                } else if (tipas == 7 && (paskirtis.equals("JUNG") || paskirtis.equals("LEGR"))) {
-                    addTransportationFeature(FieldValues.CLASS_SECONDARY, null, 12, sf, features);
                 } else if (tipas == 4) {
                     addTransportationFeature(FieldValues.CLASS_TERTIARY, null, 8, sf, features);
                 } else if (tipas == 6 || tipas == 8) {
