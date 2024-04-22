@@ -1,7 +1,9 @@
 <script>
 	import { MapLibre } from 'svelte-maplibre';
 
-	export let styleUrl = new URL('vector/styles/bright/style.json', import.meta.env.VITE_STYLE_BASE_URL).href;
+	const baseUrl = import.meta.env.VITE_STYLE_BASE_URL || 'https://basemap.startupgov.lt/';
+
+	export let styleUrl = new URL('vector/styles/bright/style.json', baseUrl).href;
 </script>
 
 <MapLibre
