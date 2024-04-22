@@ -76,7 +76,7 @@ public class Transportation implements OpenMapTilesSchema.Transportation, Forwar
         var level = (int) sf.getLong("LYGMUO");
 
         var expressway = "AM".equals(sf.getString("KATEGOR")) ? 1 : null;
-        var surface = PAVED_VALUES.contains(sf.getString("DANGA")) ? "paved" : "unpaved";
+        var surface = PAVED_VALUES.contains(sf.getString("DANGA")) ? FieldValues.SURFACE_PAVED : FieldValues.SURFACE_UNPAVED;
 
         var brunnel = switch (level) {
             case 1, 2, 3 -> "bridge";
