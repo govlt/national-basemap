@@ -22,8 +22,8 @@ public class Boundary implements OpenMapTilesSchema.Boundary, ForwardingProfile.
             switch (code) {
                 case "as1" -> addBoundaryFeature(2, 0, sf, features);
                 case "as2" -> addBoundaryFeature(4, 5, sf, features);
-                case "as3" -> addBoundaryFeature(5, 8, sf, features);
-                case "as51" -> addBoundaryFeature(8, 10, sf, features);
+                case "as3" -> addBoundaryFeature(5, 9, sf, features);
+                case "as51" -> addBoundaryFeature(8, 12, sf, features);
             }
         }
     }
@@ -49,7 +49,7 @@ public class Boundary implements OpenMapTilesSchema.Boundary, ForwardingProfile.
                 items,
                 0,
                 0,
-                4
+                BUFFER_SIZE
         );
     }
 }
