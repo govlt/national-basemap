@@ -23,7 +23,6 @@ public class Transportation implements OpenMapTilesSchema.Transportation, Forwar
     public void processFeature(SourceFeature sf, FeatureCollector features) {
         if (sf.getSource().equals(Source.GRPK) && sf.canBeLine()) {
             if (sf.getSourceLayer().equals(Layers.GRPK_KELIAI)) {
-                var paskirtis = sf.getString("PASKIRTIS");
                 var tipas = sf.getLong("TIPAS");
 
                 if (tipas == 1) {
