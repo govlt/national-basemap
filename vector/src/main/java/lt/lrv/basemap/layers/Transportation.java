@@ -71,12 +71,13 @@ public class Transportation implements OpenMapTilesSchema.Transportation, Forwar
     }
 
     public void addTransportationFeature(String clazz, String subclass, int minZoom, SourceFeature sf, FeatureCollector features) {
-        var level = (int) sf.getLong("LYGMUO");
+        var rawLevel = (int) sf.getLong("LYGMUO");
+        var level = rawLevel != -9999 ? rawLevel : null;
 
-        var expressway = "AM".equals(sf.getString("KATEGOR"));
-        var surface = PAVED_VALUES.contains(sf.getString("DANGA")) ? "paved" : "unpaved";
+        var expressway = "AM".equals(sf.getString("KATEGOR")) ? 1 : null;
+        var surface = PAVED_VALUES.contains(sf.getString("DANGA")) ? FieldValues.SURFACE_PAVED : FieldValues.SURFACE_UNPAVED;
 
-        var brunnel = switch (level) {
+        var brunnel = switch (rawLevel) {
             case 1, 2, 3 -> "bridge";
             case -1 -> "tunnel";
             default -> null;
@@ -86,13 +87,12 @@ public class Transportation implements OpenMapTilesSchema.Transportation, Forwar
                 .setBufferPixels(BUFFER_SIZE)
                 .setAttr(Fields.CLASS, clazz)
                 .setAttr(Fields.SUBCLASS, subclass)
-                .setAttr(Fields.EXPRESSWAY, expressway)
-                .setAttr(Fields.LEVEL, level)
-                .setAttr(Fields.BRUNNEL, brunnel)
-                .setAttr(Fields.SURFACE, surface)
+                .setAttrWithMinzoom(Fields.EXPRESSWAY, expressway, 8)
+                .setAttrWithMinzoom(Fields.BRUNNEL, brunnel, 12)
+                .setAttrWithMinzoom(Fields.SURFACE, surface, 12)
+                .setAttrWithMinzoom(Fields.LEVEL, level, 12)
                 .setMinZoom(minZoom)
-                .setMinPixelSize(0.0)
-                .setPixelTolerance(0.0);
+                .setMinPixelSize(0.0);
 
         TransportationName.addFeature(clazz, subclass, minZoom, sf, features);
     }
