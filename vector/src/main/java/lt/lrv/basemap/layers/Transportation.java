@@ -88,9 +88,9 @@ public class Transportation implements OpenMapTilesSchema.Transportation, Forwar
                 .setBufferPixels(BUFFER_SIZE)
                 .setAttr(Fields.CLASS, clazz)
                 .setAttr(Fields.SUBCLASS, subclass)
-                .setAttr(Fields.EXPRESSWAY, expressway)
-                .setAttr(Fields.BRUNNEL, brunnel)
-                .setAttr(Fields.SURFACE, surface)
+                .setAttrWithMinzoom(Fields.EXPRESSWAY, expressway, 8)
+                .setAttrWithMinzoom(Fields.BRUNNEL, brunnel, 12)
+                .setAttrWithMinzoom(Fields.SURFACE, surface, 12)
                 .setMinZoom(minZoom)
                 .setMinPixelSize(0.0)
                 .setPixelTolerance(0.0);
