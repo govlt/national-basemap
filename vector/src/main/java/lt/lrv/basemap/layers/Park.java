@@ -6,7 +6,7 @@ import com.onthegomap.planetiler.ForwardingProfile;
 import com.onthegomap.planetiler.VectorTile;
 import com.onthegomap.planetiler.geo.GeometryException;
 import com.onthegomap.planetiler.reader.SourceFeature;
-import lt.lrv.basemap.constants.Layer;
+import lt.lrv.basemap.constants.Layers;
 import lt.lrv.basemap.constants.Source;
 import lt.lrv.basemap.openmaptiles.OpenMapTilesSchema;
 
@@ -16,7 +16,7 @@ public class Park implements OpenMapTilesSchema.Park, ForwardingProfile.FeatureP
 
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
-        if (sf.getSource().equals(Source.GRPK) && sf.getSourceLayer().equals(Layer.GRPK_VIETOV_P) && sf.canBePolygon()) {
+        if (sf.getSource().equals(Source.GRPK) && sf.getSourceLayer().equals(Layers.GRPK_VIETOV_P) && sf.canBePolygon()) {
             var code = sf.getString("GKODAS");
 
             if (code.equals("uur14")) {

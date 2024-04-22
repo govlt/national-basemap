@@ -6,7 +6,7 @@ import com.onthegomap.planetiler.FeatureMerge;
 import com.onthegomap.planetiler.ForwardingProfile;
 import com.onthegomap.planetiler.VectorTile;
 import com.onthegomap.planetiler.reader.SourceFeature;
-import lt.lrv.basemap.constants.Layer;
+import lt.lrv.basemap.constants.Layers;
 import lt.lrv.basemap.constants.Source;
 import lt.lrv.basemap.openmaptiles.OpenMapTilesSchema;
 
@@ -22,7 +22,7 @@ public class Transportation implements OpenMapTilesSchema.Transportation, Forwar
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
         if (sf.getSource().equals(Source.GRPK) && sf.canBeLine()) {
-            if (sf.getSourceLayer().equals(Layer.GRPK_KELIAI)) {
+            if (sf.getSourceLayer().equals(Layers.GRPK_KELIAI)) {
                 var paskirtis = sf.getString("PASKIRTIS");
                 var tipas = sf.getLong("TIPAS");
 
@@ -53,7 +53,7 @@ public class Transportation implements OpenMapTilesSchema.Transportation, Forwar
                     //  OpenVectorTiles doesn't seem to support this value
                     addTransportationFeature("unclassified", null, 14, sf, features);
                 }
-            } else if (sf.getSourceLayer().equals(Layer.GRPK_GELEZINK)) {
+            } else if (sf.getSourceLayer().equals(Layers.GRPK_GELEZINK)) {
                 var gkodas = sf.getString("GKODAS");
                 var minZoom = sf.getLong("TIPAS") == 1 ? 8 : 11;
 

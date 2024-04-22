@@ -3,9 +3,10 @@ package lt.lrv.basemap;
 import com.onthegomap.planetiler.ForwardingProfile;
 import com.onthegomap.planetiler.Planetiler;
 import com.onthegomap.planetiler.config.Arguments;
-import lt.lrv.basemap.constants.Layer;
+import lt.lrv.basemap.constants.Layers;
 import lt.lrv.basemap.constants.Source;
 import lt.lrv.basemap.layers.*;
+import lt.lrv.basemap.openmaptiles.Layer;
 
 import java.nio.file.Path;
 
@@ -13,14 +14,14 @@ import java.nio.file.Path;
 public class Basemap extends ForwardingProfile {
     // For local development in order to speed up build it's recommended to comment out some GRPK layers
     static final String[] GRPK_LAYERS = {
-            Layer.GRPK_GELEZINK,
-            Layer.GRPK_HIDRO_L,
-            Layer.GRPK_KELIAI,
-            Layer.GRPK_PASTAT,
-            Layer.GRPK_PLOTAI_PREFIX,
-            Layer.GRPK_RIBOS,
-            Layer.GRPK_VIETOV_P,
-            Layer.GRPK_VIETOV_T,
+            Layers.GRPK_GELEZINK,
+            Layers.GRPK_HIDRO_L,
+            Layers.GRPK_KELIAI,
+            Layers.GRPK_PASTAT,
+            Layers.GRPK_PLOTAI_PREFIX,
+            Layers.GRPK_RIBOS,
+            Layers.GRPK_VIETOV_P,
+            Layers.GRPK_VIETOV_T,
     };
 
     public static void main(String[] args) throws Exception {
@@ -49,7 +50,7 @@ public class Basemap extends ForwardingProfile {
         var handlers = new SourceProcessors[]{
                 new SourceProcessors(
                         Source.GRPK,
-                        new FeatureProcessor[]{
+                        new Layer[]{
                                 new AerodromeLabel(),
                                 new Aeroway(),
                                 new Boundary(),
@@ -69,19 +70,16 @@ public class Basemap extends ForwardingProfile {
                 ),
                 new SourceProcessors(
                         Source.AR,
-                        new FeatureProcessor[]{
+                        new Layer[]{
                                 new HouseNumber()
                         }
                 )
         };
 
         for (var sourceHandlers : handlers) {
-            for (var handler : sourceHandlers.processors) {
-                registerSourceHandler(sourceHandlers.source, handler);
-
-                if (handler instanceof Handler) {
-                    registerHandler((Handler) handler);
-                }
+            for (var layer : sourceHandlers.layers) {
+                registerSourceHandler(sourceHandlers.source, layer);
+                registerHandler(layer);
             }
         }
     }
@@ -93,7 +91,7 @@ public class Basemap extends ForwardingProfile {
 
     private record SourceProcessors(
             String source,
-            FeatureProcessor[] processors
+            Layer[] layers
     ) {
 
     }

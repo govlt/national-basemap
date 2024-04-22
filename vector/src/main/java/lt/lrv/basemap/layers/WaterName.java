@@ -4,7 +4,7 @@ package lt.lrv.basemap.layers;
 import com.onthegomap.planetiler.FeatureCollector;
 import com.onthegomap.planetiler.geo.GeometryException;
 import com.onthegomap.planetiler.reader.SourceFeature;
-import lt.lrv.basemap.constants.Layer;
+import lt.lrv.basemap.constants.Layers;
 import lt.lrv.basemap.constants.Source;
 import lt.lrv.basemap.openmaptiles.OpenMapTilesSchema;
 import lt.lrv.basemap.utils.LanguageUtils;
@@ -15,7 +15,7 @@ public class WaterName implements OpenMapTilesSchema.WaterName {
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
         if (sf.getSource().equals(Source.GRPK) &&
-                sf.getSourceLayer().startsWith(Layer.GRPK_PLOTAI_PREFIX) &&
+                sf.getSourceLayer().startsWith(Layers.GRPK_PLOTAI_PREFIX) &&
                 sf.canBePolygon() &&
                 !sf.getString("VARDAS", "").isBlank()) {
             var code = sf.getString("GKODAS");

@@ -2,7 +2,7 @@ package lt.lrv.basemap.layers;
 
 import com.onthegomap.planetiler.FeatureCollector;
 import com.onthegomap.planetiler.reader.SourceFeature;
-import lt.lrv.basemap.constants.Layer;
+import lt.lrv.basemap.constants.Layers;
 import lt.lrv.basemap.constants.Source;
 import lt.lrv.basemap.openmaptiles.OpenMapTilesSchema;
 import lt.lrv.basemap.utils.LanguageUtils;
@@ -11,7 +11,7 @@ public class Place implements OpenMapTilesSchema.Place {
 
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
-        if (sf.getSource().equals(Source.GRPK) && sf.getSourceLayer().equals(Layer.GRPK_VIETOV_T) && sf.isPoint()) {
+        if (sf.getSource().equals(Source.GRPK) && sf.getSourceLayer().equals(Layers.GRPK_VIETOV_T) && sf.isPoint()) {
             var code = sf.getString("GKODAS");
 
             // TODO: add ANTR at higher zoom levels

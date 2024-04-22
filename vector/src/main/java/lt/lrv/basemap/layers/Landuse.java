@@ -7,7 +7,7 @@ import com.onthegomap.planetiler.VectorTile;
 import com.onthegomap.planetiler.geo.GeometryException;
 import com.onthegomap.planetiler.reader.SourceFeature;
 import com.onthegomap.planetiler.util.ZoomFunction;
-import lt.lrv.basemap.constants.Layer;
+import lt.lrv.basemap.constants.Layers;
 import lt.lrv.basemap.constants.Source;
 import lt.lrv.basemap.openmaptiles.OpenMapTilesSchema;
 
@@ -24,7 +24,7 @@ public class Landuse implements OpenMapTilesSchema.Landuse, ForwardingProfile.Fe
 
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
-        if (sf.getSource().equals(Source.GRPK) && sf.getSourceLayer().startsWith(Layer.GRPK_PLOTAI_PREFIX) && sf.canBePolygon()) {
+        if (sf.getSource().equals(Source.GRPK) && sf.getSourceLayer().startsWith(Layers.GRPK_PLOTAI_PREFIX) && sf.canBePolygon()) {
             var code = sf.getString("GKODAS");
 
             switch (code) {
