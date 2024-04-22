@@ -60,8 +60,8 @@ public class Waterway implements OpenMapTilesSchema.Waterway, ForwardingProfile.
         var feature = features.line(this.name())
                 .setBufferPixels(BUFFER_SIZE)
                 .setAttr(Fields.CLASS, clazz)
-                .setAttr(Fields.BRUNNEL, brunnel)
                 .setAttr(Fields.INTERMITTENT, 0)
+                .setAttrWithMinzoom(Fields.BRUNNEL, brunnel, 12)
                 .setMinPixelSizeBelowZoom(11, 0)
                 .setMinZoom(minZoom)
                 .setSortKeyDescending(length);
