@@ -12,6 +12,7 @@ import lt.lrv.basemap.openmaptiles.OpenMapTilesSchema;
 import lt.lrv.basemap.utils.LanguageUtils;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 import static com.onthegomap.planetiler.util.LanguageUtils.nullIfEmpty;
@@ -22,30 +23,27 @@ public class Waterway implements OpenMapTilesSchema.Waterway, ForwardingProfile.
     static final Pattern PATTERN_NAMES_IGNORE = Pattern.compile("-\\d+$");
 
     static final ZoomFunction.MeterToPixelThresholds MIN_PIXEL_LENGTHS = ZoomFunction.meterThresholds()
-            .put(8, 300_000)
-            .put(9, 8_000)
-            .put(10, 4_000)
-            .put(11, 1_000);
+            .put(8, 1_000)
+            .put(9, 500)
+            .put(10, 250)
+            .put(11, 50);
 
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
         if (sf.getSource().equals(Source.GRPK) && sf.getSourceLayer().equals(Layer.GRPK_HIDRO_L) && sf.canBeLine()) {
             var type = (int) sf.getLong("TIPAS");
             var code = sf.getString("GKODAS");
+            var gkey = nullIfEmpty(sf.getString("GRAKTAS"));
 
-            if (code.equals("hc1") && type == 1) {
-                addWaterwayLine(FieldValues.CLASS_RIVER, 8, sf, features);
-            } else if (List.of("hc3", "hc33").contains(code) && type == 1) {
+           if (List.of("hc1", "hc3", "hc33", "hc32", "hc31", "hc1op0", "hc3op0", "hc33op0", "hc32op0", "hc31op0", "op01").contains(code) && type == 1 && gkey != null) {
                 addWaterwayLine(FieldValues.CLASS_RIVER, 9, sf, features);
-            } else if (List.of("hc1", "hc3", "hc31", "hc32", "hc33").contains(code) && type == 2) {
+           } else if (List.of("hc1", "hc3", "hc33", "hc32", "hc31", "hc1op0", "hc3op0", "hc33op0", "hc32op0", "hc31op0", "op01").contains(code) && type == 2 && gkey != null) {
                 addWaterwayLine(FieldValues.CLASS_CANAL, 9, sf, features);
-            } else if (List.of("hc31", "hc32").contains(code) && type == 1) {
-                addWaterwayLine(FieldValues.CLASS_RIVER, 10, sf, features);
-            } else if (List.of("hc31", "hc32").contains(code) && (type == 3 || type == 4)) {
-                addWaterwayLine(FieldValues.CLASS_DITCH, 11, sf, features);
-            } else if (!code.equals("fhc3")) {
-                addWaterwayLine(FieldValues.CLASS_STREAM, 12, sf, features);
-            }
+           } else if (List.of("hc31", "hc32", "hc33", "hc31op0", "hc32op0", "hc33op0").contains(code) && (type == 3 || type == 4)) {
+                addWaterwayLine(FieldValues.CLASS_DITCH, 12, sf, features);
+           } else if (!code.equals("fhc3")) {
+                addWaterwayLine(FieldValues.CLASS_STREAM, 11, sf, features);
+           }
         }
     }
 
