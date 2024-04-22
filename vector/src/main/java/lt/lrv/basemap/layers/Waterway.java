@@ -11,8 +11,8 @@ import lt.lrv.basemap.constants.Source;
 import lt.lrv.basemap.openmaptiles.OpenMapTilesSchema;
 import lt.lrv.basemap.utils.LanguageUtils;
 
+import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.regex.Pattern;
 
 import static com.onthegomap.planetiler.util.LanguageUtils.nullIfEmpty;
@@ -22,6 +22,9 @@ public class Waterway implements OpenMapTilesSchema.Waterway, ForwardingProfile.
     // We have rivers with names S-3, S-8. This regex filters out names ending with - and number
     static final Pattern PATTERN_NAMES_IGNORE = Pattern.compile("-\\d+$");
 
+    // fhc1 and fhc3 are ignored to not overlap with lakes
+    static final List<String> IGNORED_CODES = Arrays.asList("fhc1", "fhc3");
+
     static final ZoomFunction.MeterToPixelThresholds MIN_PIXEL_LENGTHS = ZoomFunction.meterThresholds()
             .put(8, 1_000)
             .put(9, 500)
@@ -30,20 +33,24 @@ public class Waterway implements OpenMapTilesSchema.Waterway, ForwardingProfile.
 
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
-        if (sf.getSource().equals(Source.GRPK) && sf.getSourceLayer().equals(Layer.GRPK_HIDRO_L) && sf.canBeLine()) {
+        if (sf.getSource().equals(Source.GRPK) &&
+                sf.getSourceLayer().equals(Layer.GRPK_HIDRO_L) &&
+                sf.canBeLine() &&
+                !IGNORED_CODES.contains(sf.getString("GKODAS"))
+        ) {
             var type = (int) sf.getLong("TIPAS");
             var code = sf.getString("GKODAS");
             var gkey = nullIfEmpty(sf.getString("GRAKTAS"));
 
-           if (List.of("hc1", "hc3", "hc33", "hc32", "hc31", "hc1op0", "hc3op0", "hc33op0", "hc32op0", "hc31op0", "op01").contains(code) && type == 1 && gkey != null) {
+            if (List.of("hc1", "hc3", "hc33", "hc32", "hc31", "hc1op0", "hc3op0", "hc33op0", "hc32op0", "hc31op0", "op01").contains(code) && type == 1 && gkey != null) {
                 addWaterwayLine(FieldValues.CLASS_RIVER, 9, sf, features);
-           } else if (List.of("hc1", "hc3", "hc33", "hc32", "hc31", "hc1op0", "hc3op0", "hc33op0", "hc32op0", "hc31op0", "op01").contains(code) && type == 2 && gkey != null) {
+            } else if (List.of("hc1", "hc3", "hc33", "hc32", "hc31", "hc1op0", "hc3op0", "hc33op0", "hc32op0", "hc31op0", "op01").contains(code) && type == 2 && gkey != null) {
                 addWaterwayLine(FieldValues.CLASS_CANAL, 9, sf, features);
-           } else if (List.of("hc31", "hc32", "hc33", "hc31op0", "hc32op0", "hc33op0").contains(code) && (type == 3 || type == 4)) {
+            } else if (List.of("hc31", "hc32", "hc33", "hc31op0", "hc32op0", "hc33op0").contains(code) && (type == 3 || type == 4)) {
                 addWaterwayLine(FieldValues.CLASS_DITCH, 12, sf, features);
-           } else if (!code.equals("fhc3")) {
+            } else {
                 addWaterwayLine(FieldValues.CLASS_STREAM, 11, sf, features);
-           }
+            }
         }
     }
 
