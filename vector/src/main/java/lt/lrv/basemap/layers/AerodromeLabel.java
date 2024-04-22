@@ -38,7 +38,7 @@ public class AerodromeLabel implements OpenMapTilesSchema.AerodromeLabel {
             var clazz = isInternational ? "international" : "regional";
 
 
-            features.centroid(this.name())
+            features.pointOnSurface(this.name())
                     .setBufferPixels(BUFFER_SIZE)
                     .setMinZoom(isInternational ? 8 : 10)
                     .putAttrs(LanguageUtils.getNames(sf.tags()))

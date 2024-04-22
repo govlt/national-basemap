@@ -49,9 +49,8 @@ public class Poi implements OpenMapTilesSchema.Poi {
     }
 
     void addFeature(String clazz, int rank, SourceFeature sf, FeatureCollector features) {
-        var feature = sf.isPoint() ? features.point(this.name()) : features.centroidIfConvex(this.name());
-
-        feature.setBufferPixels(BUFFER_SIZE)
+        features.pointOnSurface(this.name())
+                .setBufferPixels(BUFFER_SIZE)
                 .putAttrs(LanguageUtils.getNames(sf.tags()))
                 .setAttr(Fields.CLASS, clazz)
                 .setAttr(Fields.RANK, rank)
