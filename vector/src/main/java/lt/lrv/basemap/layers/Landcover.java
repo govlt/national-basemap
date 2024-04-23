@@ -55,7 +55,7 @@ public class Landcover implements OpenMapTilesSchema.Landcover, ForwardingProfil
     @Override
     public List<VectorTile.Feature> postProcess(int zoom, List<VectorTile.Feature> items) throws GeometryException {
         if (zoom >= 14) {
-            return FeatureMerge.mergeMultiPolygon(items);
+            return FeatureMerge.mergeOverlappingPolygons(items, 0);
         }
 
         return FeatureMerge.mergeNearbyPolygons(items, 3.125, 3.125, 0.5, 0.5);
