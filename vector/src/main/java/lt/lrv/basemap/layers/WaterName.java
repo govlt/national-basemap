@@ -12,8 +12,9 @@ import lt.lrv.basemap.constants.Source;
 import lt.lrv.basemap.openmaptiles.OpenMapTilesSchema;
 import lt.lrv.basemap.utils.LanguageUtils;
 import org.geotools.process.geometry.CenterLine;
-
 import java.util.List;
+import static java.lang.Math.toIntExact;
+
 
 public class WaterName implements OpenMapTilesSchema.WaterName, ForwardingProfile.FeaturePostProcessor {
 
@@ -24,9 +25,18 @@ public class WaterName implements OpenMapTilesSchema.WaterName, ForwardingProfil
                 sf.canBePolygon() &&
                 !sf.getString("VARDAS", "").isBlank()) {
             var code = sf.getString("GKODAS");
+            var area = sf.getLong("SHAPE_Area");
 
             switch (code) {
-                case "hd3", "hd4", "hd9" -> addWaterCenterLine(FieldValues.CLASS_LAKE, 12, sf, features);
+                case "hd3", "hd4", "hd9" -> {
+                    if (area >= 5_000_000) {
+                        addWaterCenterLine(FieldValues.CLASS_LAKE, 12, sf, features);
+                    } else if (area >= 500_000) {
+                        addWaterCenterLine(FieldValues.CLASS_LAKE, 13, sf, features);
+                    } else {
+                        addWaterCenterLine(FieldValues.CLASS_LAKE, 14, sf, features);
+                    }
+                }
                 case "hd5" -> addWaterCenterLine(FieldValues.CLASS_OCEAN, 6, sf, features);
             }
         }
@@ -35,6 +45,7 @@ public class WaterName implements OpenMapTilesSchema.WaterName, ForwardingProfil
     void addWaterCenterLine(String clazz, int minZoom, SourceFeature sf, FeatureCollector features) {
         try {
             var geom = CenterLine.getCenterLine(sf.polygon(), 1);
+            var area = toIntExact(sf.getLong("SHAPE_Area") / 1000);
 
             features.geometry(this.name(), geom)
                     .setBufferPixels(BUFFER_SIZE)
@@ -42,6 +53,7 @@ public class WaterName implements OpenMapTilesSchema.WaterName, ForwardingProfil
                     .putAttrs(LanguageUtils.getNames(sf.tags()))
                     .setMinPixelSize(0.0)
                     .setPixelTolerance(0.0)
+                    .setSortKeyDescending(area)
                     .setMinZoom(minZoom);
 
         } catch (GeometryException e) {
