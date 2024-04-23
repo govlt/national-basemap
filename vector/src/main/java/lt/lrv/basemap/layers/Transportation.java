@@ -94,7 +94,7 @@ public class Transportation implements OpenMapTilesSchema.Transportation, Forwar
     @Override
     public List<VectorTile.Feature> postProcess(int zoom, List<VectorTile.Feature> items) {
         if (zoom >= 14) {
-            return items;
+            return FeatureMerge.mergeMultiLineString(items);
         }
 
         return FeatureMerge.mergeLineStrings(
