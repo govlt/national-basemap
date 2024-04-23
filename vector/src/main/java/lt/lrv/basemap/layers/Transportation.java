@@ -22,48 +22,43 @@ public class Transportation implements OpenMapTilesSchema.Transportation, Forwar
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
         if (sf.getSource().equals(Source.GRPK) && sf.canBeLine()) {
-            if (sf.getSourceLayer().equals(Layers.GRPK_KELIAI)) {
-                var tipas = sf.getLong("TIPAS");
+            switch (sf.getSourceLayer()) {
+                case Layers.GRPK_KELIAI -> processRoadFeature(sf, features);
+                case Layers.GRPK_GELEZINK -> processRailFeature(sf, features);
+            }
+        }
+    }
 
-                if (tipas == 1) {
-                    addTransportationFeature(FieldValues.CLASS_MOTORWAY, null, 2, sf, features);
-                } else if (tipas == 5) {
-                    addTransportationFeature(FieldValues.CLASS_TRUNK, null, 4, sf, features);
-                } else if (tipas == 2) {
-                    addTransportationFeature(FieldValues.CLASS_PRIMARY, null, 4, sf, features);
-                } else if (tipas == 3) {
-                    addTransportationFeature(FieldValues.CLASS_SECONDARY, null, 8, sf, features);
-                } else if (tipas == 4) {
-                    addTransportationFeature(FieldValues.CLASS_TERTIARY, null, 8, sf, features);
-                } else if (tipas == 6 || tipas == 8) {
-                    addTransportationFeature(FieldValues.CLASS_MINOR, null, 12, sf, features);
-                } else if (tipas == 7 || tipas == 9) {
-                    addTransportationFeature(FieldValues.CLASS_SERVICE, null, 13, sf, features);
-                } else if (tipas == 10 || tipas == 11) {
-                    addTransportationFeature(FieldValues.CLASS_TRACK, null, 13, sf, features);
-                } else if (tipas == 13) {
-                    addTransportationFeature(FieldValues.CLASS_PATH, null, 14, sf, features);
-                } else if (tipas == 14) {
-                    addTransportationFeature(FieldValues.CLASS_FERRY, null, 13, sf, features);
+    void processRoadFeature(SourceFeature sf, FeatureCollector features) {
+        var type = (int) sf.getLong("TIPAS");
+
+        switch (type) {
+            case 1 -> addTransportationFeature(FieldValues.CLASS_MOTORWAY, null, 2, sf, features);
+            case 5 -> addTransportationFeature(FieldValues.CLASS_TRUNK, null, 4, sf, features);
+            case 2 -> addTransportationFeature(FieldValues.CLASS_PRIMARY, null, 4, sf, features);
+            case 3 -> addTransportationFeature(FieldValues.CLASS_SECONDARY, null, 8, sf, features);
+            case 4 -> addTransportationFeature(FieldValues.CLASS_TERTIARY, null, 8, sf, features);
+            case 6, 8 -> addTransportationFeature(FieldValues.CLASS_MINOR, null, 12, sf, features);
+            case 7, 9 -> addTransportationFeature(FieldValues.CLASS_SERVICE, null, 13, sf, features);
+            case 10, 11 -> addTransportationFeature(FieldValues.CLASS_TRACK, null, 13, sf, features);
+            case 13 -> addTransportationFeature(FieldValues.CLASS_PATH, null, 14, sf, features);
+            case 14 -> addTransportationFeature(FieldValues.CLASS_FERRY, null, 13, sf, features);
+            default -> addTransportationFeature(null, null, 14, sf, features);
+        }
+    }
+
+    void processRailFeature(SourceFeature sf, FeatureCollector features) {
+        var code = sf.getString("GKODAS");
+        var minZoom = sf.getLong("TIPAS") == 1 ? 8 : 11;
+
+        switch (code) {
+            case "gz1", "gz2", "gz1gz2", "gz10" ->
+                    addTransportationFeature(CLASS_RAIL, FieldValues.SUBCLASS_RAIL, minZoom, sf, features);
+            case "gz4" -> {
+                if ("funik.".equals(sf.getString("INFO"))) {
+                    addTransportationFeature(CLASS_RAIL, FieldValues.SUBCLASS_FUNICULAR, minZoom, sf, features);
                 } else {
-                    // TODO: Probably this should be removed and remapped to other types.
-                    //  OpenVectorTiles doesn't seem to support this value
-                    addTransportationFeature("unclassified", null, 14, sf, features);
-                }
-            } else if (sf.getSourceLayer().equals(Layers.GRPK_GELEZINK)) {
-                var gkodas = sf.getString("GKODAS");
-                var minZoom = sf.getLong("TIPAS") == 1 ? 8 : 11;
-
-                switch (gkodas) {
-                    case "gz1", "gz2", "gz1gz2", "gz10" ->
-                            addTransportationFeature(CLASS_RAIL, FieldValues.SUBCLASS_RAIL, minZoom, sf, features);
-                    case "gz4" -> {
-                        if ("funik.".equals(sf.getString("INFO"))) {
-                            addTransportationFeature(CLASS_RAIL, FieldValues.SUBCLASS_FUNICULAR, minZoom, sf, features);
-                        } else {
-                            addTransportationFeature(CLASS_RAIL, FieldValues.SUBCLASS_NARROW_GAUGE, minZoom, sf, features);
-                        }
-                    }
+                    addTransportationFeature(CLASS_RAIL, FieldValues.SUBCLASS_NARROW_GAUGE, minZoom, sf, features);
                 }
             }
         }
@@ -99,7 +94,7 @@ public class Transportation implements OpenMapTilesSchema.Transportation, Forwar
     @Override
     public List<VectorTile.Feature> postProcess(int zoom, List<VectorTile.Feature> items) {
         if (zoom >= 14) {
-            return items;
+            return FeatureMerge.mergeMultiLineString(items);
         }
 
         return FeatureMerge.mergeLineStrings(

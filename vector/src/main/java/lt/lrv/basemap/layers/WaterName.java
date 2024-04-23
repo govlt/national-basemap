@@ -2,6 +2,9 @@ package lt.lrv.basemap.layers;
 
 
 import com.onthegomap.planetiler.FeatureCollector;
+import com.onthegomap.planetiler.FeatureMerge;
+import com.onthegomap.planetiler.ForwardingProfile;
+import com.onthegomap.planetiler.VectorTile;
 import com.onthegomap.planetiler.geo.GeometryException;
 import com.onthegomap.planetiler.reader.SourceFeature;
 import lt.lrv.basemap.constants.Layers;
@@ -9,11 +12,11 @@ import lt.lrv.basemap.constants.Source;
 import lt.lrv.basemap.openmaptiles.OpenMapTilesSchema;
 import lt.lrv.basemap.utils.LanguageUtils;
 import org.geotools.process.geometry.CenterLine;
-
-
+import java.util.List;
 import static java.lang.Math.toIntExact;
 
-public class WaterName implements OpenMapTilesSchema.WaterName {
+
+public class WaterName implements OpenMapTilesSchema.WaterName, ForwardingProfile.FeaturePostProcessor {
 
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
@@ -56,5 +59,9 @@ public class WaterName implements OpenMapTilesSchema.WaterName {
         } catch (GeometryException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public List<VectorTile.Feature> postProcess(int zoom, List<VectorTile.Feature> items) {
+        return FeatureMerge.mergeMultiLineString(items);
     }
 }
