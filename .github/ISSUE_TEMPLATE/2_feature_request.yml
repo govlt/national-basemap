@@ -1,5 +1,7 @@
 name: Feature request
 description: Suggest a new idea
+labels:
+  - feature
 body:
   - type: textarea
     attributes:

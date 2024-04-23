@@ -1,6 +1,8 @@
 name: Report a bug
 description: |
   You found a bug in national basemap e.g. certain elements are absent or inaccurately represented.
+labels:
+  - bug
 body:
   - type: textarea
     attributes:
