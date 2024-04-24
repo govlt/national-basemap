@@ -11,7 +11,8 @@
   "sources": {
     "openmaptiles": {
       "type": "vector",
-      "url": "http://localhost:3000/vector"
+      "url": "http://localhost:3000/vector",
+      "attribution": "<a href=\"https://www.geoportal.lt/geoportal/web/georeferencinio-pagrindo-kadastras-grpk\" target=\"_blank\">&copy; Geoportal.lt</a> <a href=\"https://www.registrucentras.lt/p/1187\" target=\"_blank\">&copy; Registrų centras</a> <a href=\"https://openmaptiles.org/schema/\" target=\"_blank\">&copy; OpenMapTiles</a>"
     }
   },
   "glyphs": "http://localhost:3000/font/{fontstack}/{range}",
