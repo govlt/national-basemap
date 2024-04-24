@@ -25,6 +25,7 @@ jobs:
       archive-version: ${{ github.ref_name }}
       style-source-url: https://vector.startupgov.lt/vector
       style-base-url: https://basemap.startupgov.lt
+      pmtiles-url: https://cdn.startupgov.lt/tiles/vector/pmtiles/lithuania.pmtiles
       s3-endpoint: ${{ vars.S3_ENDPOINT }}
     secrets:
       cloudflare-api-token: ${{ secrets.CLOUDFLARE_PAGES_API_TOKEN }}
@@ -42,6 +43,7 @@ jobs:
     with:
       style-source-url: https://dev-vector.startupgov.lt/vector
       style-base-url: https://${{ github.head_ref || github.ref_name }}.national-basemap.pages.dev
+      pmtiles-url: https://dev-cdn.startupgov.lt/tiles/vector/pmtiles/lithuania.pmtiles
       s3-endpoint: ${{ vars.S3_DEVELOPMENT_ENDPOINT }}
     secrets:
       cloudflare-api-token: ${{ secrets.CLOUDFLARE_PAGES_API_TOKEN }}
