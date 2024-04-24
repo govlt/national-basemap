@@ -15,6 +15,10 @@ on:
         description: Required input to set S3 endpoint
         type: string
         required: true
+      pmtiles-url:
+        description: Required input to set PMTiles url
+        type: string
+        required: true
       archive-version:
         description: Optional input to set PMTiles archive version
         type: string
@@ -134,11 +138,20 @@ jobs:
           LOCALHOST_URL: http://localhost:3000/sprite
           URL: ${{ inputs.style-base-url }}/vector/sprite
 
+      - name: Create PMTiles styles
+        run: find vector/styles -type f -name "style.json" -exec sh -c 'cp "$1" "$(dirname "$1")/style-pmtiles.json"' _ {} \;
+
       - name: Replace style urls for docker
         run: find vector/styles -type f -name "style.json" -print0 | xargs -0 sed -i -e 's|${{ env.LOCALHOST_URL }}|${{ env.URL }}|g'
         env:
           LOCALHOST_URL: http://localhost:3000/vector
           URL: ${{ inputs.style-source-url }}
+
+      - name: Replace PMTiles style urls with S3 PMTiles source
+        run: find vector/styles -type f -name "style-pmtiles.json" -print0 | xargs -0 sed -i -e 's|${{ env.LOCALHOST_URL }}|${{ env.URL }}|g'
+        env:
+          LOCALHOST_URL: http://localhost:3000/vector
+          URL: pmtiles://${{ inputs.pmtiles-url }}
 
       - name: Prepare styles output
         run: |
@@ -149,6 +162,7 @@ jobs:
             mkdir -p output/styles/"$style"
           
             cp -r vector/styles/"$style"/style.json output/styles/"$style"/style.json
+            cp -r vector/styles/"$style"/style-pmtiles.json output/styles/"$style"/style-pmtiles.json
             cp -r vector/styles/"$style"/glyphs/. output/font
           
             spreet --unique --minify-index-file vector/styles/"$style"/sprites output/sprite/"$style"
