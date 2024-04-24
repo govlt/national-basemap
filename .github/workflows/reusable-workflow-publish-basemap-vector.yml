@@ -162,6 +162,7 @@ jobs:
             mkdir -p output/styles/"$style"
           
             cp -r vector/styles/"$style"/style.json output/styles/"$style"/style.json
+            cp -r vector/styles/"$style"/style-pmtiles.json output/styles/"$style"/style-pmtiles.json
             cp -r vector/styles/"$style"/glyphs/. output/font
           
             spreet --unique --minify-index-file vector/styles/"$style"/sprites output/sprite/"$style"
