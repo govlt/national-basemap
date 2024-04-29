@@ -15,6 +15,7 @@ import java.util.List;
 public class ForestCompartment implements Layer, ForwardingProfile.FeaturePostProcessor {
 
     static final double BUFFER_SIZE = 4.0;
+
     final PlanetilerConfig config;
 
     public ForestCompartment(PlanetilerConfig config) {
@@ -25,7 +26,8 @@ public class ForestCompartment implements Layer, ForwardingProfile.FeaturePostPr
     public void processFeature(SourceFeature sf, FeatureCollector features) {
         if (sf.getSource().equals(Source.GRPK) &&
                 sf.getSourceLayer().equals(Layers.GRPK_MISKAS_L) &&
-                sf.canBeLine()
+                sf.canBeLine() &&
+                "lp3".equals(sf.getTag("GKODAS"))
         ) {
             features.line(this.name())
                     .setBufferPixels(BUFFER_SIZE)
