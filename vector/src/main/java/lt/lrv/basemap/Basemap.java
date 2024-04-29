@@ -47,13 +47,15 @@ public class Basemap extends ForwardingProfile {
     }
 
     public Basemap(Planetiler runner) {
+        var config = runner.config();
+
         var handlers = new SourceProcessors[]{
                 new SourceProcessors(
                         Source.GRPK,
                         new Layer[]{
                                 new AerodromeLabel(),
                                 new Aeroway(),
-                                new Boundary(),
+                                new Boundary(config),
                                 new Building(),
                                 new Landcover(),
                                 new Landuse(),
