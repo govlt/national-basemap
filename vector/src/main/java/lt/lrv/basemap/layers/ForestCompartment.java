@@ -31,6 +31,8 @@ public class ForestCompartment implements Layer, ForwardingProfile.FeaturePostPr
         ) {
             features.line(this.name())
                     .setBufferPixels(BUFFER_SIZE)
+                    .setMinPixelSize(0)
+                    .setPixelTolerance(0)
                     .setMinZoom(13);
         }
     }
@@ -40,7 +42,7 @@ public class ForestCompartment implements Layer, ForwardingProfile.FeaturePostPr
         double minLength = config.minFeatureSize(zoom);
         double tolerance = config.tolerance(zoom);
 
-        return FeatureMerge.mergeLineStrings(items, attrs -> minLength, tolerance, BUFFER_SIZE);
+        return FeatureMerge.mergeLineStrings(items, attrs -> minLength, tolerance, BUFFER_SIZE, true);
     }
 
     @Override
