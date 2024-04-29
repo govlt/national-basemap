@@ -16,6 +16,7 @@ public class Basemap extends ForwardingProfile {
     static final String[] GRPK_LAYERS = {
             Layers.GRPK_GELEZINK,
             Layers.GRPK_HIDRO_L,
+            Layers.GRPK_MISKAS_L,
             Layers.GRPK_KELIAI,
             Layers.GRPK_PASTAT,
             Layers.GRPK_PLOTAI_PREFIX,
@@ -28,7 +29,7 @@ public class Basemap extends ForwardingProfile {
         var grpkGlobPattern = "{" + String.join(",", GRPK_LAYERS) + "}*.shp";
 
         Planetiler.create(Arguments.fromConfigFile(Path.of("config.properties")))
-                .setProfile(new Basemap())
+                .setProfile(Basemap::new)
                 .addShapefileGlobSource(
                         null,
                         Source.GRPK,
@@ -46,7 +47,9 @@ public class Basemap extends ForwardingProfile {
 
     }
 
-    public Basemap() {
+    public Basemap(Planetiler runner) {
+        var config = runner.config();
+
         var handlers = new SourceProcessors[]{
                 new SourceProcessors(
                         Source.GRPK,
@@ -58,6 +61,7 @@ public class Basemap extends ForwardingProfile {
                                 new Landcover(),
                                 new Landuse(),
                                 new MountainPeak(),
+                                new ForestCompartment(config),
                                 new Park(),
                                 new Place(),
                                 new Poi(),
