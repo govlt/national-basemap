@@ -28,7 +28,7 @@ public class Basemap extends ForwardingProfile {
         var grpkGlobPattern = "{" + String.join(",", GRPK_LAYERS) + "}*.shp";
 
         Planetiler.create(Arguments.fromConfigFile(Path.of("config.properties")))
-                .setProfile(new Basemap())
+                .setProfile(Basemap::new)
                 .addShapefileGlobSource(
                         null,
                         Source.GRPK,
@@ -46,7 +46,7 @@ public class Basemap extends ForwardingProfile {
 
     }
 
-    public Basemap() {
+    public Basemap(Planetiler runner) {
         var handlers = new SourceProcessors[]{
                 new SourceProcessors(
                         Source.GRPK,
