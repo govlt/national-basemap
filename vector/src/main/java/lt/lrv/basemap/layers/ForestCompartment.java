@@ -42,7 +42,7 @@ public class ForestCompartment implements Layer, ForwardingProfile.FeaturePostPr
         double minLength = config.minFeatureSize(zoom);
         double tolerance = config.tolerance(zoom);
 
-        return FeatureMerge.mergeLineStrings(items, attrs -> minLength, tolerance, BUFFER_SIZE, true);
+        return FeatureMerge.mergeLineStrings(items, minLength, tolerance, BUFFER_SIZE);
     }
 
     @Override
