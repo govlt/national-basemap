@@ -14,6 +14,8 @@ import java.nio.file.Path;
 public class Basemap extends ForwardingProfile {
     // For local development in order to speed up build it's recommended to comment out some GRPK layers
     static final String[] GRPK_LAYERS = {
+            Layers.GRPK_ELEKTR_L,
+            Layers.GRPK_ELEKTR_T,
             Layers.GRPK_GELEZINK,
             Layers.GRPK_HIDRO_L,
             Layers.GRPK_KELIAI,
@@ -47,6 +49,8 @@ public class Basemap extends ForwardingProfile {
     }
 
     public Basemap(Planetiler runner) {
+        var config = runner.config();
+
         var handlers = new SourceProcessors[]{
                 new SourceProcessors(
                         Source.GRPK,
@@ -59,6 +63,7 @@ public class Basemap extends ForwardingProfile {
                                 new Landuse(),
                                 new MountainPeak(),
                                 new Park(),
+                                new Power(config),
                                 new Place(),
                                 new Poi(),
                                 new Transportation(),
