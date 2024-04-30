@@ -47,6 +47,6 @@ public class ForestCompartment implements Layer, ForwardingProfile.FeaturePostPr
 
     @Override
     public String name() {
-        return "forest-compartment";
+        return "forest_compartment";
     }
 }
