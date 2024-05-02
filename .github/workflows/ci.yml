@@ -108,4 +108,4 @@ jobs:
           filePath: comment-body.txt
 
       - name: Add summary
-        run: cat comment-body.txt >> $GITHUB_STEP_SUMMARY
+        run: cat comment-body.txt >> "$GITHUB_STEP_SUMMARY"
