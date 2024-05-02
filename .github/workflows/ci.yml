@@ -93,11 +93,17 @@ jobs:
       - name: Extract only required statistics
         run: sed -n '/Tile stats/,$p' logs-planetiler-basemap-vector.txt | tr -cd '[:print:]\n\r' > tile-stats.txt
 
+      - name: Prepare comment body
+        run: |
+          cat << EOF > comment-body.txt
+          \`\`\`
+          $(cat tile-stats.txt)
+          \`\`\`
+          EOF
+
       - name: Comment pull request
         uses: thollander/actions-comment-pull-request@v2
         with:
           comment_tag: tile-stats
-          message: |
-            \`\`\`
-            $(cat tile-stats.txt)
-            \`\`\`
+          filePath: comment-body.txt
+
