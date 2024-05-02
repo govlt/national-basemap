@@ -75,7 +75,7 @@ jobs:
           artifact-retention-days: ${{ github.ref == 'refs/heads/main' && 30 || 7 }}
 
   pull-request-comment-planetiler-statistics:
-    name: Pull request planetiler statistics
+    name: Add Planetiler statistics to pull request
     runs-on: ubuntu-latest
     timeout-minutes: 5
     if: github.event_name == 'pull_request'
@@ -91,10 +91,13 @@ jobs:
           merge-multiple: true
 
       - name: Extract only required statistics
-        run: sed -n '/Tile stats/,$p' logs-planetiler-basemap-vector.txt > tile-stats.txt
+        run: sed -n '/Tile stats/,$p' logs-planetiler-basemap-vector.txt | tr -cd '[:print:]\n\r' > tile-stats.txt
 
       - name: Comment pull request
         uses: thollander/actions-comment-pull-request@v2
         with:
-          filePath: tile-stats.txt
           comment_tag: tile-stats
+          message: |
+            \`\`\`
+            $(cat tile-stats.txt)
+            \`\`\`
