@@ -112,7 +112,6 @@ jobs:
     uses: ./.github/workflows/reusable-workflow-publish-page.yml
     with:
       stable: ${{ inputs.stable }}
-      archive-version: ${{ inputs.archive-version }}
       style-source-url: ${{ inputs.style-source-url }}
       style-base-url: ${{ inputs.style-base-url }}
       pmtiles-url: ${{ inputs.pmtiles-url }}

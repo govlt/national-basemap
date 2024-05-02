@@ -15,10 +15,6 @@ on:
         description: Required input to set PMTiles url
         type: string
         required: true
-      archive-version:
-        description: Optional input to set PMTiles archive version
-        type: string
-        default: 0.0.0
       stable:
         description: Optional input to set if publish is stable
         type: boolean
