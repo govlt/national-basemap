@@ -290,6 +290,18 @@
       }
     },
     {
+      "id": "forest-compartment",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "forest_compartment",
+      "paint": {
+        "line-color": "#4D8033",
+        "line-dasharray": [4, 4],
+        "line-width": 0.6,
+        "line-opacity": 0.5
+      }
+    },
+    {
       "id": "waterway_tunnel",
       "type": "line",
       "source": "openmaptiles",

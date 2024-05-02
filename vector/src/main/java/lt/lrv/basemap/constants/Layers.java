@@ -3,6 +3,7 @@ package lt.lrv.basemap.constants;
 public class Layers {
     public static final String GRPK_GELEZINK = "GELEZINK";
     public static final String GRPK_HIDRO_L = "HIDRO_L";
+    public static final String GRPK_MISKAS_L = "MISKAS_L";
     public static final String GRPK_KELIAI = "KELIAI";
     public static final String GRPK_PASTAT = "PASTAT";
 
