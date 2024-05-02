@@ -3,20 +3,8 @@ name: "Reusable workflow: publish basemap vector"
 on:
   workflow_call:
     inputs:
-      style-source-url:
-        description: Required input to set style source url
-        type: string
-        required: true
-      style-base-url:
-        description: Required input to set style base url for serving glyphs and sprites
-        type: string
-        required: true
       s3-endpoint:
         description: Required input to set S3 endpoint
-        type: string
-        required: true
-      pmtiles-url:
-        description: Required input to set PMTiles url
         type: string
         required: true
       archive-version:
@@ -29,12 +17,6 @@ on:
         default: false
 
     secrets:
-      cloudflare-api-token:
-        description: Cloudflare API Token
-        required: true
-      cloudflare-account-id:
-        description: Cloudflare Account ID
-        required: true
       s3-access-key-id:
         description: S3 access key id
         required: true
@@ -103,18 +85,3 @@ jobs:
           push: true
           cache-from: ''
           cache-to: ''
-
-  publish-page:
-    name: Generate page
-    permissions:
-      contents: read
-      deployments: write
-    uses: ./.github/workflows/reusable-workflow-publish-page.yml
-    with:
-      stable: ${{ inputs.stable }}
-      style-source-url: ${{ inputs.style-source-url }}
-      style-base-url: ${{ inputs.style-base-url }}
-      pmtiles-url: ${{ inputs.pmtiles-url }}
-    secrets:
-      cloudflare-api-token: ${{ secrets.cloudflare-api-token }}
-      cloudflare-account-id: ${{ secrets.cloudflare-account-id }}
