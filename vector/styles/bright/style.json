@@ -3996,7 +3996,8 @@
         "symbol-avoid-edges": false,
         "text-allow-overlap": false,
         "text-ignore-placement": false
-      }
+      },
+      "paint": {"text-color": "#786055"}
     },
     {
       "id": "waterway-name",
