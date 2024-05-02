@@ -33,8 +33,8 @@ on:
         required: true
 
 jobs:
-  generate-basemap-page:
-    name: Build and upload page
+  generate-basemap-demo-page:
+    name: Build and upload demo page
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
@@ -143,7 +143,7 @@ jobs:
       deployments: write
     needs:
       - generate-basemap-vector-styles
-      - generate-basemap-page
+      - generate-basemap-demo-page
     environment:
       name: basemap-vector
     steps:
