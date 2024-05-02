@@ -3970,13 +3970,17 @@
       "type": "symbol",
       "source": "openmaptiles",
       "source-layer": "housenumber",
-      "minzoom": 17,
+      "minzoom": 16,
       "layout": {
         "text-font": [
           "Noto Sans Regular"
         ],
         "text-size": {
           "stops": [
+            [
+              16,
+              7
+            ],
             [
               17,
               9
