@@ -2357,6 +2357,40 @@
         "text-halo-color": "rgba(236,236,234,0.7)",
         "text-halo-width": 1.4
       }
+    },
+    {
+      "id": "housenumber",
+      "type": "symbol",
+      "source": "openmaptiles",
+      "source-layer": "housenumber",
+      "minzoom": 16,
+      "layout": {
+        "text-font": [
+          "Metropolis Regular",
+          "Noto Sans Regular"
+        ],
+        "text-size": {
+          "stops": [
+            [
+              16,
+              7
+            ],
+            [
+              17,
+              9
+            ],
+            [
+              22,
+              11
+            ]
+          ]
+        },
+        "text-field": "{housenumber}",
+        "text-rotation-alignment": "map",
+        "symbol-avoid-edges": false,
+        "text-allow-overlap": false,
+        "text-ignore-placement": false
+      }
     }
   ],
   "id": "positron"
