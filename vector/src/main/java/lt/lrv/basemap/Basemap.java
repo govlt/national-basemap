@@ -58,7 +58,7 @@ public class Basemap extends ForwardingProfile {
                         new Layer[]{
                                 new AerodromeLabel(),
                                 new Aeroway(),
-                                new Boundary(),
+                                new Boundary(config),
                                 new Building(),
                                 new Landcover(),
                                 new Landuse(),

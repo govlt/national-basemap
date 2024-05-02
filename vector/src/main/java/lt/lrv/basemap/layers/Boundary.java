@@ -4,6 +4,7 @@ import com.onthegomap.planetiler.FeatureCollector;
 import com.onthegomap.planetiler.FeatureMerge;
 import com.onthegomap.planetiler.ForwardingProfile;
 import com.onthegomap.planetiler.VectorTile;
+import com.onthegomap.planetiler.config.PlanetilerConfig;
 import com.onthegomap.planetiler.reader.SourceFeature;
 import lt.lrv.basemap.constants.Layers;
 import lt.lrv.basemap.constants.Source;
@@ -13,6 +14,12 @@ import lt.lrv.basemap.utils.LanguageUtils;
 import java.util.List;
 
 public class Boundary implements OpenMapTilesSchema.Boundary, ForwardingProfile.FeaturePostProcessor {
+
+    final PlanetilerConfig config;
+
+    public Boundary(PlanetilerConfig config) {
+        this.config = config;
+    }
 
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
@@ -36,20 +43,15 @@ public class Boundary implements OpenMapTilesSchema.Boundary, ForwardingProfile.
                 // TODO determine if border is maritime or not
                 .setAttr(Fields.MARITIME, 0)
                 .setMinZoom(minZoom)
+                .setMinPixelSize(0)
+                .setPixelTolerance(0)
                 .putAttrs(LanguageUtils.getNames(sf.tags()));
     }
 
     @Override
     public List<VectorTile.Feature> postProcess(int zoom, List<VectorTile.Feature> items) {
-        if (zoom >= 14) {
-            return items;
-        }
+        var tolerance = zoom < 14 ? config.tolerance(zoom) : 0;
 
-        return FeatureMerge.mergeLineStrings(
-                items,
-                0,
-                0,
-                BUFFER_SIZE
-        );
+        return FeatureMerge.mergeLineStrings(items, 0, tolerance, BUFFER_SIZE);
     }
 }
