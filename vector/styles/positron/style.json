@@ -220,7 +220,8 @@
         "line-dasharray": [4, 4],
         "line-width": 0.6,
         "line-opacity": 0.4
-      }
+      },
+      "minzoom": 14
     },
     {
       "id": "waterway",
