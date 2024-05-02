@@ -87,7 +87,7 @@ jobs:
       - name: Download logs
         uses: actions/download-artifact@v4
         with:
-          name: logs-planetiler-basemap-vector.txt
+          name: logs-planetiler-basemap-vector
           merge-multiple: true
 
       - name: Extract only required statistics
