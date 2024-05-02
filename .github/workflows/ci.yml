@@ -107,3 +107,5 @@ jobs:
           comment_tag: tile-stats
           filePath: comment-body.txt
 
+      - name: Add summary
+        run: cat comment-body.txt >> $GITHUB_STEP_SUMMARY
