@@ -73,3 +73,25 @@ jobs:
         uses: ./.github/actions/basemap-vector-generate-pmtiles
         with:
           artifact-retention-days: ${{ github.ref == 'refs/heads/main' && 30 || 7 }}
+
+  pull-request-comment-planetiler-statistics:
+    name: Pull request planetiler statistics
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    if: github.event_name == 'pull_request'
+    needs: generate-vector-basemap-pmtiles
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Download logs
+        uses: actions/download-artifact@v4
+        with:
+          name: logs-planetiler-basemap-vector.txt
+          merge-multiple: true
+
+      - name: Comment pull request
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          filePath: logs-planetiler-basemap-vector.txt
+          comment_tag: planetiler-statistics
