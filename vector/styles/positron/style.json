@@ -2390,7 +2390,8 @@
         "symbol-avoid-edges": false,
         "text-allow-overlap": false,
         "text-ignore-placement": false
-      }
+      },
+      "paint": {"text-color": "#9E9E9B"}
     }
   ],
   "id": "positron"
