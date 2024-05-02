@@ -211,6 +211,18 @@
       }
     },
     {
+      "id": "forest-compartment",
+      "type": "line",
+      "source": "openmaptiles",
+      "source-layer": "forest_compartment",
+      "paint": {
+        "line-color": "#919491",
+        "line-dasharray": [4, 4],
+        "line-width": 0.6,
+        "line-opacity": 0.4
+      }
+    },
+    {
       "id": "waterway",
       "type": "line",
       "source": "openmaptiles",
