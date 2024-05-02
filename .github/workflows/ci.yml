@@ -67,8 +67,8 @@ jobs:
     uses: ./.github/workflows/reusable-workflow-publish-page.yml
     with:
       style-source-url: https://dev-vector.startupgov.lt/vector
+      style-base-url: https://${{ github.head_ref || github.ref_name }}.national-basemap.pages.dev
       pmtiles-url: https://dev-cdn.startupgov.lt/tiles/vector/pmtiles/lithuania.pmtiles
-      style-base-url: ""
     secrets:
       cloudflare-api-token: ${{ secrets.CLOUDFLARE_PAGES_API_TOKEN }}
       cloudflare-account-id: ${{ secrets.CLOUDFLARE_PAGES_ACCOUNT_ID }}
