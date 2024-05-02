@@ -30,9 +30,9 @@ public class TransportationName implements OpenMapTilesSchema.TransportationName
 
     public static void addFeature(String clazz, String subclass, int transportMinZoom, SourceFeature sf, FeatureCollector features) {
         var name = nullIfEmpty(sf.getString("VARDAS"));
-        var rawRef = Utils.coalesce(nullIfEmpty(sf.getString("ENUMERIS")), nullIfEmpty(sf.getString("NUMERIS")));
+        var ref = nullIfEmpty(sf.getString("NUMERIS"));
 
-        if (Utils.coalesce(name, rawRef) == null) {
+        if (Utils.coalesce(name, ref) == null) {
             return;
         }
 
@@ -44,28 +44,16 @@ public class TransportationName implements OpenMapTilesSchema.TransportationName
                 .setMinPixelSize(0.0)
                 .setPixelTolerance(0.0);
 
-        if (rawRef != null) {
-            // Handle cases like E67/E272 by getting first road number
-            var ref = rawRef.contains("/") ? rawRef.split("/")[0] : rawRef;
-            var minZoom = getRefMinZoom(rawRef);
+        if (ref != null) {
+            var minZoom = ref.startsWith("A") ? 8 : 11;
 
             feature.setAttr(Fields.REF, ref)
                     .setAttr(Fields.REF_LENGTH, ref.length())
-                    .setMinZoom(getRefMinZoom(rawRef))
+                    .setMinZoom(minZoom)
                     .setSortKeyDescending(minZoom);
         } else {
             feature.putAttrs(LanguageUtils.getNames(sf.tags()))
                     .setMinZoom(Math.min(transportMinZoom + 2, 14));
-        }
-    }
-
-    private static int getRefMinZoom(String ref) {
-        if (ref.startsWith("E")) {
-            return 8;
-        } else if (ref.startsWith("A")) {
-            return 9;
-        } else {
-            return 11;
         }
     }
 
