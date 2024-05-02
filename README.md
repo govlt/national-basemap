@@ -11,26 +11,30 @@ Apple Maps, and Mapbox, and is compliant with the OpenMapTiles standard.
    M1 MacBook and ~6 minutes on a free GitHub runner.
 2. **Compact and Efficient**: Unlike traditional raster-based technologies, vector basemap of Lithuania occupies only
    ~350 MB as a single file. Say goodbye to managing millions of image files!
-3. **Instant Style Changes**: Customize your maps on the fly with instant style changes. No more waiting for complete
+3. **Efficient Data Delivery**: The average vector tile size is approximately 20 KB[^1], with a maximum tile size of
+   less than 80 KB. This ensures lightning-fast data delivery over the internet, resulting in smoother and
+   more responsive maps.
+4. **Instant Style Changes**: Customize your maps on the fly with instant style changes. No more waiting for complete
    rebuilds as with raster based maps.
-4. **Precision and Accuracy**: Utilizing data from the Georeferenced Cadastral
+5. **Precision and Accuracy**: Utilizing data from the Georeferenced Cadastral
    Register ([GRPK](https://www.geoportal.lt/geoportal/web/georeferencinio-pagrindo-kadastras-grpk))
    and [address registry](https://www.registrucentras.lt/p/1187), vector basemap offers unparalleled accuracy.
-5. **Infrastructure Flexibility**: Seamlessly integrate vector basemap into your existing infrastructure with just one
+6. **Infrastructure Flexibility**: Seamlessly integrate vector basemap into your existing infrastructure with just one
    style url or self-host it independently. Enjoy the freedom to choose what works best for you.
-6. **Various Self-Hosting Options**: Explore multiple self-hosting options, including hosting a single
+7. **Various Self-Hosting Options**: Explore multiple self-hosting options, including hosting a single
    ~350MB [PMTiles](https://docs.protomaps.com/pmtiles/) file and style files in your S3
    or file storage. Or using our provided docker image based on Martin tile server.
-7. **OpenMapTiles Standard**: We adhere to the [OpenMapTiles](https://openmaptiles.org/about/) standard, allowing
+8. **OpenMapTiles Standard**: We adhere to the [OpenMapTiles](https://openmaptiles.org/about/) standard, allowing
    effortless integration of various
    open-source styles, including unconventional ones like the [Pirate style](https://openmaptiles.org/styles/) 🏴‍☠️
-8. **Efficient Data Delivery**: Vector tiles are designed for compactness and optimization, ensuring lightning-fast data
-   delivery over the internet, making map smoother and more responsive.
 9. **Easy Usage**: With [Pseudo-Mercator](https://en.wikipedia.org/wiki/Web_Mercator_projection) projection (EPSG:3857),
    integration is seamless. Vector basemap aligns effortlessly with popular map services like Google Maps and
    OpenStreetMap.
 10. **Completely Open Source and Free**: Join our community of contributors and users in shaping the future of mapping.
     Everything, from the basemap building process to its usage, is open-source and free of restrictions.
+
+[^1]: 20 KB is gzipped average vector tile size is calculated using weighted average based on OSM traffic. It wouldn't
+be fair to take average of all tiles, because tile sizes of sea are less than 1 KB.
 
 ## Usage
 
