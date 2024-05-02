@@ -3970,13 +3970,17 @@
       "type": "symbol",
       "source": "openmaptiles",
       "source-layer": "housenumber",
-      "minzoom": 17,
+      "minzoom": 16,
       "layout": {
         "text-font": [
           "Noto Sans Regular"
         ],
         "text-size": {
           "stops": [
+            [
+              16,
+              7
+            ],
             [
               17,
               9
@@ -3992,7 +3996,8 @@
         "symbol-avoid-edges": false,
         "text-allow-overlap": false,
         "text-ignore-placement": false
-      }
+      },
+      "paint": {"text-color": "#786055"}
     },
     {
       "id": "waterway-name",
