@@ -25,7 +25,7 @@ runs:
 
     - name: Generate vector basemap PMTiles
       shell: bash
-      run: ./gradlew -q run
+      run: ./gradlew -q run | tee logs-planetiler-basemap-vector.txt
 
     - name: Upload PMTiles artifact
       uses: actions/upload-artifact@v4
@@ -35,3 +35,11 @@ runs:
         if-no-files-found: error
         retention-days: ${{ inputs.artifact-retention-days }}
         compression-level: 0
+
+    - name: Upload PlaneTiler generate logs
+      uses: actions/upload-artifact@v4
+      with:
+        name: logs-planetiler-basemap-vector
+        path: logs-planetiler-basemap-vector.txt
+        if-no-files-found: error
+
