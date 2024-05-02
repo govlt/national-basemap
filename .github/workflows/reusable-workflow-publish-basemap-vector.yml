@@ -74,151 +74,6 @@ jobs:
           source-path: vector/data/output
           destination-path: /tiles/vector/pmtiles
 
-  generate-basemap-demo-site:
-    name: Build and upload demo site
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    permissions:
-      contents: read
-    env:
-      VITE_STYLE_BASE_URL: ${{ inputs.style-base-url }}
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: npm
-          cache-dependency-path: demo/package-lock.json
-
-      - name: Install dependencies
-        working-directory: demo
-        run: npm ci
-
-      - name: Build demo
-        working-directory: demo
-        run: npm run build
-
-      - name: Upload demo artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: demo-site
-          path: demo/build
-
-  generate-basemap-vector-styles:
-    name: Generate and upload styles
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    permissions:
-      contents: read
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Restore Rust cache
-        uses: Swatinem/rust-cache@v2
-
-      - name: Install spreet
-        run: cargo install spreet
-
-      - name: Minify styles
-        run: find vector/styles -name "style.json" -print0 | xargs -0 -I{} sh -c 'jq -c . "{}" > tmp.json && mv tmp.json "{}"'
-
-      - name: Replace glyphs url for styles
-        run: find vector/styles -type f -name "style.json" -print0 | xargs -0 sed -i -e 's|${{ env.LOCALHOST_URL }}|${{ env.URL }}|g'
-        env:
-          LOCALHOST_URL: http://localhost:3000/font/{fontstack}/{range}
-          URL: ${{ inputs.style-base-url }}/vector/font/{fontstack}/{range}.pbf
-
-      - name: Replace glyphs url for styles
-        run: find vector/styles -type f -name "style.json" -print0 | xargs -0 sed -i -e 's|${{ env.LOCALHOST_URL }}|${{ env.URL }}|g'
-        env:
-          LOCALHOST_URL: http://localhost:3000/sprite
-          URL: ${{ inputs.style-base-url }}/vector/sprite
-
-      - name: Create PMTiles styles
-        run: find vector/styles -type f -name "style.json" -exec sh -c 'cp "$1" "$(dirname "$1")/style-pmtiles.json"' _ {} \;
-
-      - name: Replace style urls for docker
-        run: find vector/styles -type f -name "style.json" -print0 | xargs -0 sed -i -e 's|${{ env.LOCALHOST_URL }}|${{ env.URL }}|g'
-        env:
-          LOCALHOST_URL: http://localhost:3000/vector
-          URL: ${{ inputs.style-source-url }}
-
-      - name: Replace PMTiles style urls with S3 PMTiles source
-        run: find vector/styles -type f -name "style-pmtiles.json" -print0 | xargs -0 sed -i -e 's|${{ env.LOCALHOST_URL }}|${{ env.URL }}|g'
-        env:
-          LOCALHOST_URL: http://localhost:3000/vector
-          URL: pmtiles://${{ inputs.pmtiles-url }}
-
-      - name: Prepare styles output
-        run: |
-          mkdir -p output/font output/sprite output/styles
-          
-          styles=("positron" "bright" "openmaptiles")
-          for style in "${styles[@]}"; do
-            mkdir -p output/styles/"$style"
-          
-            cp -r vector/styles/"$style"/style.json output/styles/"$style"/style.json
-            cp -r vector/styles/"$style"/style-pmtiles.json output/styles/"$style"/style-pmtiles.json
-            cp -r vector/styles/"$style"/glyphs/. output/font
-          
-            spreet --unique --minify-index-file vector/styles/"$style"/sprites output/sprite/"$style"
-            spreet --retina --unique --minify-index-file vector/styles/"$style"/sprites output/sprite/"$style"@2x
-          done
-
-      - name: Upload styles artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: vector-basemap-styles
-          path: output
-
-  publish-basemap-vector:
-    name: Publish vector basemap
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    permissions:
-      contents: read
-      deployments: write
-    needs:
-      - generate-basemap-vector-styles
-      - generate-basemap-demo-site
-    environment:
-      name: basemap-vector
-    steps:
-      - name: Download demo site artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: demo-site
-          path: .
-          merge-multiple: true
-
-      - name: Download styles artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: vector-basemap-styles
-          path: vector
-          merge-multiple: true
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: '.'
-
-      - name: Publish to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
-        id: cloudflare
-        with:
-          apiToken: ${{ secrets.cloudflare-api-token }}
-          accountId: ${{ secrets.cloudflare-account-id }}
-          projectName: national-basemap
-          branch: ${{ inputs.stable && 'production' ||  (github.head_ref || github.ref_name) }}
-          directory: .
-          gitHubToken: ${{ github.token }}
-          wranglerVersion: '3'
-
   publish-basemap-vector-docker-image:
     name: Docker image build and push
     runs-on: ubuntu-latest
@@ -248,3 +103,19 @@ jobs:
           push: true
           cache-from: ''
           cache-to: ''
+
+  publish-page:
+    name: Generate page
+    permissions:
+      contents: read
+      deployments: write
+    uses: ./.github/workflows/reusable-workflow-publish-page.yml
+    with:
+      stable: ${{ inputs.stable }}
+      archive-version: ${{ inputs.archive-version }}
+      style-source-url: ${{ inputs.style-source-url }}
+      style-base-url: ${{ inputs.style-base-url }}
+      pmtiles-url: ${{ inputs.pmtiles-url }}
+    secrets:
+      cloudflare-api-token: ${{ secrets.cloudflare-api-token }}
+      cloudflare-account-id: ${{ secrets.cloudflare-account-id }}
