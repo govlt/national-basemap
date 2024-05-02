@@ -60,7 +60,6 @@ jobs:
 
   publish-preivew-page:
     name: Generate preview page
-    if: github.event_name != 'push'
     permissions:
       contents: read
       deployments: write
