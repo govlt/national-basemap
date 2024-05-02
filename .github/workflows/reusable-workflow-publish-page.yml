@@ -161,11 +161,6 @@ jobs:
           path: vector
           merge-multiple: true
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: '.'
-
       - name: Publish to Cloudflare Pages
         uses: cloudflare/pages-action@v1
         id: cloudflare
@@ -177,3 +172,9 @@ jobs:
           directory: .
           gitHubToken: ${{ github.token }}
           wranglerVersion: '3'
+
+      - name: Upload page artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: page
+          path: .
