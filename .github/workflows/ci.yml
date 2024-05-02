@@ -90,8 +90,11 @@ jobs:
           name: logs-planetiler-basemap-vector.txt
           merge-multiple: true
 
+      - name: Extract only required statistics
+        run: sed -n '/Tile stats/,$p' logs-planetiler-basemap-vector.txt > tile-stats.txt
+
       - name: Comment pull request
         uses: thollander/actions-comment-pull-request@v2
         with:
-          filePath: logs-planetiler-basemap-vector.txt
-          comment_tag: planetiler-statistics
+          filePath: tile-stats.txt
+          comment_tag: tile-stats
