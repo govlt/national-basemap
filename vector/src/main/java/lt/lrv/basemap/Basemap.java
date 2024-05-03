@@ -71,7 +71,7 @@ public class Basemap extends ForwardingProfile {
                                 new Transportation(),
                                 new TransportationName(config),
                                 new Water(),
-                                new WaterName(),
+                                new WaterName(config),
                                 new Waterway(),
                         }
                 ),

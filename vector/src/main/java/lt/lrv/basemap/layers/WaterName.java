@@ -5,6 +5,7 @@ import com.onthegomap.planetiler.FeatureCollector;
 import com.onthegomap.planetiler.FeatureMerge;
 import com.onthegomap.planetiler.ForwardingProfile;
 import com.onthegomap.planetiler.VectorTile;
+import com.onthegomap.planetiler.config.PlanetilerConfig;
 import com.onthegomap.planetiler.geo.GeometryException;
 import com.onthegomap.planetiler.reader.SourceFeature;
 import lt.lrv.basemap.constants.Layers;
@@ -12,11 +13,19 @@ import lt.lrv.basemap.constants.Source;
 import lt.lrv.basemap.openmaptiles.OpenMapTilesSchema;
 import lt.lrv.basemap.utils.LanguageUtils;
 import org.geotools.process.geometry.CenterLine;
+
 import java.util.List;
+
 import static java.lang.Math.toIntExact;
 
 
 public class WaterName implements OpenMapTilesSchema.WaterName, ForwardingProfile.FeaturePostProcessor {
+
+    final PlanetilerConfig config;
+
+    public WaterName(PlanetilerConfig config) {
+        this.config = config;
+    }
 
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
@@ -52,16 +61,19 @@ public class WaterName implements OpenMapTilesSchema.WaterName, ForwardingProfil
                     .setAttr(Fields.CLASS, clazz)
                     .putAttrs(LanguageUtils.getNames(sf.tags()))
                     .setMinPixelSize(0.0)
-                    .setPixelTolerance(0.0)
                     .setSortKeyDescending(area)
                     .setMinZoom(minZoom);
-
         } catch (GeometryException e) {
             throw new RuntimeException(e);
         }
     }
 
     public List<VectorTile.Feature> postProcess(int zoom, List<VectorTile.Feature> items) {
-        return FeatureMerge.mergeMultiLineString(items);
+        return FeatureMerge.mergeLineStrings(
+                items,
+                config.minFeatureSize(zoom),
+                config.tolerance(zoom),
+                BUFFER_SIZE
+        );
     }
 }
