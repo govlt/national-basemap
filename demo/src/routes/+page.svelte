@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Control, MapLibre } from 'svelte-maplibre';
+	import { AttributionControl, Control, MapLibre } from 'svelte-maplibre';
 	import maplibregl from 'maplibre-gl';
 	import * as pmtiles from 'pmtiles';
 
@@ -20,8 +20,12 @@
 <MapLibre
 	class="map"
 	standardControls
+	attributionControl={false}
 	hash
 	style="{ styleUrl }">
+	<AttributionControl
+		customAttribution={`<a href="https://github.com/govlt/national-basemap" target="_blank">GitHub</a>`}
+	/>
 	<Control class="flex">
 		<select class="controls-select" bind:value={selected}>
 			<option value="bright">Bright</option>
