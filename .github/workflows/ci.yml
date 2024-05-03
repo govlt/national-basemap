@@ -58,6 +58,20 @@ jobs:
       - name: Run tests
         run: ./gradlew test -i
 
+  publish-preivew-page:
+    name: Generate preview page
+    permissions:
+      contents: read
+      deployments: write
+    uses: ./.github/workflows/reusable-workflow-publish-page.yml
+    with:
+      style-source-url: https://dev-vector.startupgov.lt/vector
+      style-base-url: https://${{ github.head_ref || github.ref_name }}.national-basemap.pages.dev
+      pmtiles-url: https://dev-cdn.startupgov.lt/tiles/vector/pmtiles/lithuania.pmtiles
+    secrets:
+      cloudflare-api-token: ${{ secrets.CLOUDFLARE_PAGES_API_TOKEN }}
+      cloudflare-account-id: ${{ secrets.CLOUDFLARE_PAGES_ACCOUNT_ID }}
+
   generate-vector-basemap-pmtiles:
     name: Generate vector basemap PMTiles
     runs-on: ubuntu-latest
