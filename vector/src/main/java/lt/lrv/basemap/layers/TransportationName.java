@@ -52,8 +52,9 @@ public class TransportationName implements OpenMapTilesSchema.TransportationName
                     .setMinZoom(minZoom)
                     .setSortKeyDescending(minZoom);
         } else {
+            var minZoom = Math.max(12, Math.min(transportMinZoom + 2, 14));
             feature.putAttrs(LanguageUtils.getNames(sf.tags()))
-                    .setMinZoom(Math.min(transportMinZoom + 2, 14));
+                    .setMinZoom(minZoom);
         }
     }
 
