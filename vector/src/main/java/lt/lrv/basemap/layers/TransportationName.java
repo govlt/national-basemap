@@ -11,6 +11,7 @@ import lt.lrv.basemap.openmaptiles.OpenMapTilesSchema;
 import lt.lrv.basemap.utils.LanguageUtils;
 import lt.lrv.basemap.utils.Utils;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 import static com.onthegomap.planetiler.util.LanguageUtils.nullIfEmpty;
@@ -46,14 +47,26 @@ public class TransportationName implements OpenMapTilesSchema.TransportationName
 
         if (ref != null) {
             var minZoom = ref.startsWith("A") ? 8 : 11;
+            var network = getNetwork(ref);
 
             feature.setAttr(Fields.REF, ref)
                     .setAttr(Fields.REF_LENGTH, ref.length())
+                    .setAttr(Fields.NETWORK, network)
                     .setMinZoom(minZoom)
                     .setSortKeyDescending(minZoom);
         } else {
             feature.putAttrs(LanguageUtils.getNames(sf.tags()))
                     .setMinZoom(Math.min(transportMinZoom + 2, 14));
+        }
+    }
+
+    static String getNetwork(@Nonnull String ref) {
+        if (ref.startsWith("A")) {
+            return "lt-motorway";
+        } else if (ref.length() == 3) {
+            return "lt-primary";
+        } else {
+            return "lt-secondary";
         }
     }
 
