@@ -46,13 +46,17 @@ public class TransportationName implements OpenMapTilesSchema.TransportationName
                 .setPixelTolerance(0.0);
 
         if (ref != null) {
-            var minZoom = ref.startsWith("A") ? 8 : 11;
             var network = getNetwork(ref);
+            var minZoom = switch (network) {
+                case NetworkValue.LT_MOTORWAY -> 7;
+                case NetworkValue.LT_PRIMARY -> 9;
+                default -> 11;
+            };
 
             feature.setAttr(Fields.REF, ref)
                     .setAttr(Fields.REF_LENGTH, ref.length())
                     .setAttr(Fields.NETWORK, network)
-                    .setMinZoom(minZoom)
+                    .setMinZoom(Math.max(minZoom, transportMinZoom))
                     .setSortKeyDescending(minZoom);
         } else {
             feature.putAttrs(LanguageUtils.getNames(sf.tags()))
@@ -62,11 +66,11 @@ public class TransportationName implements OpenMapTilesSchema.TransportationName
 
     static String getNetwork(@Nonnull String ref) {
         if (ref.startsWith("A")) {
-            return "lt-motorway";
+            return NetworkValue.LT_MOTORWAY;
         } else if (ref.length() == 3) {
-            return "lt-primary";
+            return NetworkValue.LT_PRIMARY;
         } else {
-            return "lt-secondary";
+            return NetworkValue.LT_SECONDARY;
         }
     }
 
@@ -78,5 +82,11 @@ public class TransportationName implements OpenMapTilesSchema.TransportationName
                 config.tolerance(zoom),
                 BUFFER_SIZE
         );
+    }
+
+    static final class NetworkValue {
+        static final String LT_MOTORWAY = "lt-motorway";
+        static final String LT_PRIMARY = "lt-primary";
+        static final String LT_SECONDARY = "lt-secondary";
     }
 }
