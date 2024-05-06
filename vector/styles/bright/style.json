@@ -4406,7 +4406,9 @@
         "text-rotation-alignment": "viewport",
         "text-size": 10
       },
-      "paint": {}
+      "paint": {
+        "text-color": "rgba(46, 46, 46, 1)"
+      }
     },
     {
       "id": "highway-shield-lt-motorway",
@@ -4516,7 +4518,7 @@
         "text-size": 10
       },
       "paint": {
-        "text-color": "rgba(0, 0, 0, 1)"
+        "text-color": "rgba(46, 46, 46, 1)"
       }
     },
     {
