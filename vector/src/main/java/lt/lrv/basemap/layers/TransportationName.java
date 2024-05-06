@@ -47,16 +47,15 @@ public class TransportationName implements OpenMapTilesSchema.TransportationName
 
         if (ref != null) {
             var network = getNetwork(ref);
-
             var minZoom = switch (network) {
-                case LT_MOTORWAY -> 7;
-                case LT_PRIMARY -> 9;
-                case LT_SECONDARY -> 11;
+                case NetworkValue.LT_MOTORWAY -> 7;
+                case NetworkValue.LT_PRIMARY -> 9;
+                default -> 11;
             };
 
             feature.setAttr(Fields.REF, ref)
                     .setAttr(Fields.REF_LENGTH, ref.length())
-                    .setAttr(Fields.NETWORK, network.toString())
+                    .setAttr(Fields.NETWORK, network)
                     .setMinZoom(Math.max(minZoom, transportMinZoom))
                     .setSortKeyDescending(minZoom);
         } else {
@@ -65,13 +64,13 @@ public class TransportationName implements OpenMapTilesSchema.TransportationName
         }
     }
 
-    static Network getNetwork(@Nonnull String ref) {
+    static String getNetwork(@Nonnull String ref) {
         if (ref.startsWith("A")) {
-            return Network.LT_MOTORWAY;
+            return NetworkValue.LT_MOTORWAY;
         } else if (ref.length() == 3) {
-            return Network.LT_PRIMARY;
+            return NetworkValue.LT_PRIMARY;
         } else {
-            return Network.LT_SECONDARY;
+            return NetworkValue.LT_SECONDARY;
         }
     }
 
@@ -85,20 +84,9 @@ public class TransportationName implements OpenMapTilesSchema.TransportationName
         );
     }
 
-    private enum Network {
-        LT_MOTORWAY("lt-motorway"),
-        LT_PRIMARY("lt-primary"),
-        LT_SECONDARY("lt-secondary");
-
-        private final String networkName;
-
-        Network(String networkName) {
-            this.networkName = networkName;
-        }
-
-        @Override
-        public String toString() {
-            return networkName;
-        }
+    static final class NetworkValue {
+        static final String LT_MOTORWAY = "lt-motorway";
+        static final String LT_PRIMARY = "lt-primary";
+        static final String LT_SECONDARY = "lt-secondary";
     }
 }
