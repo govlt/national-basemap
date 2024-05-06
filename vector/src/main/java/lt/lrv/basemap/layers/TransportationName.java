@@ -49,8 +49,8 @@ public class TransportationName implements OpenMapTilesSchema.TransportationName
             var network = getNetwork(ref);
 
             var minZoom = switch (network) {
-                case LT_MOTORWAY -> 8;
-                case LT_PRIMARY -> 10;
+                case LT_MOTORWAY -> 7;
+                case LT_PRIMARY -> 9;
                 case LT_SECONDARY -> 11;
             };
 
