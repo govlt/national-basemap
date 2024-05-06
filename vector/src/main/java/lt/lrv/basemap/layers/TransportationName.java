@@ -46,13 +46,18 @@ public class TransportationName implements OpenMapTilesSchema.TransportationName
                 .setPixelTolerance(0.0);
 
         if (ref != null) {
-            var minZoom = ref.startsWith("A") ? 8 : 11;
             var network = getNetwork(ref);
+
+            var minZoom = switch (network) {
+                case LT_MOTORWAY -> 8;
+                case LT_PRIMARY -> 10;
+                case LT_SECONDARY -> 11;
+            };
 
             feature.setAttr(Fields.REF, ref)
                     .setAttr(Fields.REF_LENGTH, ref.length())
-                    .setAttr(Fields.NETWORK, network)
-                    .setMinZoom(minZoom)
+                    .setAttr(Fields.NETWORK, network.toString())
+                    .setMinZoom(Math.max(minZoom, transportMinZoom))
                     .setSortKeyDescending(minZoom);
         } else {
             feature.putAttrs(LanguageUtils.getNames(sf.tags()))
@@ -60,13 +65,13 @@ public class TransportationName implements OpenMapTilesSchema.TransportationName
         }
     }
 
-    static String getNetwork(@Nonnull String ref) {
+    static Network getNetwork(@Nonnull String ref) {
         if (ref.startsWith("A")) {
-            return "lt-motorway";
+            return Network.LT_MOTORWAY;
         } else if (ref.length() == 3) {
-            return "lt-primary";
+            return Network.LT_PRIMARY;
         } else {
-            return "lt-secondary";
+            return Network.LT_SECONDARY;
         }
     }
 
@@ -78,5 +83,22 @@ public class TransportationName implements OpenMapTilesSchema.TransportationName
                 config.tolerance(zoom),
                 BUFFER_SIZE
         );
+    }
+
+    private enum Network {
+        LT_MOTORWAY("lt-motorway"),
+        LT_PRIMARY("lt-primary"),
+        LT_SECONDARY("lt-secondary");
+
+        private final String networkName;
+
+        Network(String networkName) {
+            this.networkName = networkName;
+        }
+
+        @Override
+        public String toString() {
+            return networkName;
+        }
     }
 }
