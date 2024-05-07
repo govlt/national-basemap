@@ -50,7 +50,7 @@ jobs:
           
           wget "http://localhost:8080/lithuania/metadata" -P "tiles"
           
-          tail -n +2 zxy.tsv | parallel -j 4 --colsep '\t' wget "http://localhost:8080/lithuania/{1}/{2}/{3}.mvt" -P "tiles/{1}/{2}" -q
+          tail -n +2 zxy.tsv | parallel -j 4 --colsep '\t' wget "http://localhost:8080/lithuania/{1}/{2}/{3}.mvt" -O "tiles/{1}/{2}/{3}.pbf" -q
 
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v3
