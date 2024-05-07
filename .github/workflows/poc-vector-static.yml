@@ -50,7 +50,7 @@ jobs:
           
           curl http://localhost:8080/lithuania/metadata --create-dirs -o "tiles/metadata.json" -s
           
-          tail -n +2 zxy.tsv | parallel -j 4 --colsep '\t' curl "http://localhost:8080/lithuania/{1}/{2}/{3}.mvt" --create-dirs -s -o "tiles/{1}/{2}/{3}.pbf.gz"
+          tail -n +2 zxy.tsv | parallel -j 4 --colsep '\t' curl "http://localhost:8080/lithuania/{1}/{2}/{3}.mvt" --create-dirs -s -o "tiles/{1}/{2}/{3}.pbf" --compressed
 
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v3
