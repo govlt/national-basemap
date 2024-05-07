@@ -14,17 +14,17 @@ import java.nio.file.Path;
 public class Basemap extends ForwardingProfile {
     // For local development in order to speed up build it's recommended to comment out some GRPK layers
     static final String[] GRPK_LAYERS = {
-            Layers.GRPK_ELEKTR_L,
-            Layers.GRPK_ELEKTR_T,
-            Layers.GRPK_GELEZINK,
-            Layers.GRPK_HIDRO_L,
-            Layers.GRPK_MISKAS_L,
-            Layers.GRPK_KELIAI,
-            Layers.GRPK_PASTAT,
-            Layers.GRPK_PLOTAI_PREFIX,
+//            Layers.GRPK_ELEKTR_L,
+//            Layers.GRPK_ELEKTR_T,
+//            Layers.GRPK_GELEZINK,
+//            Layers.GRPK_HIDRO_L,
+//            Layers.GRPK_MISKAS_L,
+//            Layers.GRPK_KELIAI,
+//            Layers.GRPK_PASTAT,
+//            Layers.GRPK_PLOTAI_PREFIX,
             Layers.GRPK_RIBOS,
-            Layers.GRPK_VIETOV_P,
-            Layers.GRPK_VIETOV_T,
+//            Layers.GRPK_VIETOV_P,
+//            Layers.GRPK_VIETOV_T,
     };
 
     public static void main(String[] args) throws Exception {
@@ -56,29 +56,29 @@ public class Basemap extends ForwardingProfile {
                 new SourceProcessors(
                         Source.GRPK,
                         new Layer[]{
-                                new AerodromeLabel(),
-                                new Aeroway(),
+//                                new AerodromeLabel(),
+//                                new Aeroway(),
                                 new Boundary(config),
-                                new Building(),
-                                new Landcover(),
-                                new Landuse(),
-                                new MountainPeak(),
-                                new ForestCompartment(config),
-                                new Park(),
-                                new Power(config),
-                                new Place(),
-                                new Poi(),
-                                new Transportation(),
-                                new TransportationName(config),
-                                new Water(),
-                                new WaterName(config),
-                                new Waterway(),
+//                                new Building(),
+//                                new Landcover(),
+//                                new Landuse(),
+//                                new MountainPeak(),
+//                                new ForestCompartment(config),
+//                                new Park(),
+//                                new Power(config),
+//                                new Place(),
+//                                new Poi(),
+//                                new Transportation(),
+//                                new TransportationName(config),
+//                                new Water(),
+//                                new WaterName(config),
+//                                new Waterway(),
                         }
                 ),
                 new SourceProcessors(
                         Source.AR,
                         new Layer[]{
-                                new HouseNumber()
+//                                new HouseNumber()
                         }
                 )
         };
