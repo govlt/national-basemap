@@ -14,6 +14,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Install PMTiles CLI
+        run: |
+          wget https://github.com/protomaps/go-pmtiles/releases/download/v1.19.1/go-pmtiles_1.19.1_Linux_x86_64.tar.gz && \
+          tar -xzf go-pmtiles_1.19.1_Linux_x86_64.tar.gz && \
+          rm go-pmtiles_1.19.1_Linux_x86_64.tar.gz && \
+          mv pmtiles /usr/local/bin
+      - run: pmtiles version
+
       - name: Generate vector basemap PMTiles
         uses: ./.github/actions/basemap-vector-generate-pmtiles
         with:
@@ -28,15 +36,33 @@ jobs:
     permissions:
       contents: read
     steps:
+      - name: Install PMTiles CLI
+        run: |
+          wget https://github.com/protomaps/go-pmtiles/releases/download/v1.19.1/go-pmtiles_1.19.1_Linux_x86_64.tar.gz && \
+          tar -xzf go-pmtiles_1.19.1_Linux_x86_64.tar.gz && \
+          rm go-pmtiles_1.19.1_Linux_x86_64.tar.gz && \
+          mv pmtiles /usr/local/bin
+
       - uses: actions/download-artifact@v4
         with:
           name: vector-basemap-pmtiles
           merge-multiple: true
 
+      - name: Get all zxy combinations
+        run: gunzip -c lithuania.pmtiles.layerstats.tsv.gz | awk -F'\t' '{print $1 "\t" $2 "\t" $3}' | uniq > zxyz.tsv
+
+
       - name: Generate mvt pbfs
-        run: ogr2ogr -f MVT tiles lithuania.pmtiles -dsco MAXZOOM=14 -oo CLIP=NO
-        env:
-          GDAL_NUM_THREADS: ALL_CPUS
+        run: |
+          # Read the TSV file line by line by skipping header
+          tail -n +2 zxy.tsv  | while IFS=$'\t' read -r z x y; do
+              directory="tiles/$z/$x"
+              mkdir -p "$directory"
+
+              pmtiles tile lithuania.pmtiles "$z" "$x" "$y" 1> "$directory/$y.pbf" &
+          done
+
+          wait
 
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v3
