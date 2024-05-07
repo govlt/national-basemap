@@ -44,7 +44,9 @@ jobs:
 
       - name: Generate mvt pbfs
         run: |
-          pmtiles serve .
+          nohup pmtiles serve . &
+          
+          sleep 3
           
           wget "http://localhost:8080/lithuania/metadata" -P "tiles"
           
