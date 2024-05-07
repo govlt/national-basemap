@@ -49,7 +49,7 @@ jobs:
           merge-multiple: true
 
       - name: Get all zxy combinations
-        run: gunzip -c lithuania.pmtiles.layerstats.tsv.gz | awk -F'\t' '{print $1 "\t" $2 "\t" $3}' | uniq > zxyz.tsv
+        run: gunzip -c lithuania.pmtiles.layerstats.tsv.gz | awk -F'\t' '{print $1 "\t" $2 "\t" $3}' | uniq > zxy.tsv
 
 
       - name: Generate mvt pbfs
