@@ -16,22 +16,21 @@ jobs:
     permissions:
       contents: read
     steps:
-#      - uses: actions/download-artifact@v4
-#        with:
-#          name: vector-basemap-pmtiles
-#          merge-multiple: true
+      #      - uses: actions/download-artifact@v4
+      #        with:
+      #          name: vector-basemap-pmtiles
+      #          merge-multiple: true
 
       - run: wget https://cdn.startupgov.lt/tiles/vector/pmtiles/lithuania.pmtiles.layerstats.tsv.gz
 
       - name: Get all zxy combinations
         run: gunzip -c lithuania.pmtiles.layerstats.tsv.gz | awk -F'\t' '{print $1 "\t" $2 "\t" $3}' | uniq > zxy.tsv
 
+      - name: Generate tiles.json
+        run: curl http://martin:3000/vector --create-dirs -o "tiles/tiles.json" --compressed -s
+
       - name: Generate mvt pbfs
-        run: |
-          
-          curl http://martin:3000/vector --create-dirs -o "tiles/tiles.json" --compressed -s
-          
-          tail -n +2 zxy.tsv | parallel -j 4 --colsep '\t' curl "http://martin:3000/vector/{1}/{2}/{3}" --create-dirs -s -o "tiles/{1}/{2}/{3}.pbf" --compressed
+        run: tail -n +2 zxy.tsv | parallel -j 4 --colsep '\t' curl "http://martin:3000/vector/{1}/{2}/{3}" --create-dirs -s -o "tiles/{1}/{2}/{3}.pbf" --compressed
 
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v3
