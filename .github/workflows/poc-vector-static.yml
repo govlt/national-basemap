@@ -55,6 +55,38 @@ jobs:
         with:
           path: tiles
 
+  publish-basemap-vector-static-docker-image:
+    name: Vector static docker image build and push
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: generate-vector-mvt-pbfs
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: github-pages
+          path: vector/docker/static/tiles
+          merge-multiple: true
+
+      - name: Build & tag docker image
+        uses: AplinkosMinisterija/reusable-workflows/.github/actions/docker-build-tag-push@main
+        with:
+          docker-image: ghcr.io/govlt/national-basemap-vector-static
+          docker-context: .
+          file: vector/docker/static/Dockerfile
+#          environment: ${{ inputs.stable && 'stable' ||  'preview' }}
+          environment: preview
+          no-cache: true
+          push: true
+          cache-from: ''
+          cache-to: ''
+
+
   publish-vector-mvt-pbfs:
     name: Publish vector basemap MVT pbfs
     runs-on: ubuntu-latest

@@ -1,0 +1,24 @@
+{
+	auto_https off
+
+	servers {
+		trusted_proxies static private_ranges
+	}
+}
+
+:80 {
+	root * /srv
+
+	header {
+		-Server
+	}
+
+	@pbf path *.pbf
+	header @pbf {
+		Content-Type application/x-protobuf
+	}
+
+	file_server {
+	    index tile.json
+	}
+}
