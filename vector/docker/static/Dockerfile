@@ -6,4 +6,4 @@ EXPOSE 80
 COPY ./caddy/Caddyfile /etc/caddy/Caddyfile
 
 # Copy built files from the build stage
-COPY ./tiles ./tile.json /srv/
+COPY ./tiles /srv/
