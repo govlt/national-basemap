@@ -36,7 +36,7 @@ jobs:
           TILES: https://vector-static.startupgov.lt/{z}/{x}/{y}.pbf
 
       - name: Generate mvt pbfs
-        run: tail -n +2 zxy.tsv | parallel -j 10 --colsep '\t' curl "http://localhost:3000/vector/{1}/{2}/{3}" --create-dirs -s -S -o "tiles/{1}/{2}/{3}.pbf" --compressed
+        run: tail -n +2 zxy.tsv | parallel --colsep '\t' curl "http://localhost:3000/vector/{1}/{2}/{3}" --create-dirs -s -S -o "tiles/{1}/{2}/{3}.pbf" --compressed
 
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v3
