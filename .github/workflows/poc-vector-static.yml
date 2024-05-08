@@ -42,7 +42,7 @@ jobs:
         run: zip -r tiles.zip tiles
 
       - name: Upload to S3
-        uses: ./.github/actions/rclone-sync
+        uses: govlt/national-basemap/.github/actions/rclone-sync@main
         with:
           s3-endpoint: ${{ vars.S3_ENDPOINT }}
           s3-access-key-id: ${{ secrets.S3_ACCESS_KEY_ID }}
