@@ -17,7 +17,9 @@ public class Building implements OpenMapTilesSchema.Building, ForwardingProfile.
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
         if (sf.getSource().equals(Source.GRPK) && sf.getSourceLayer().equals(Layers.GRPK_PASTAT) && sf.canBePolygon()) {
-            features.polygon(this.name()).setBufferPixels(BUFFER_SIZE).setMinZoom(11);
+            features.polygon(this.name())
+                    .setBufferPixels(BUFFER_SIZE)
+                    .setMinZoom(13);
         }
     }
 

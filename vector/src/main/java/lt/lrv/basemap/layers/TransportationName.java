@@ -11,6 +11,7 @@ import lt.lrv.basemap.openmaptiles.OpenMapTilesSchema;
 import lt.lrv.basemap.utils.LanguageUtils;
 import lt.lrv.basemap.utils.Utils;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 import static com.onthegomap.planetiler.util.LanguageUtils.nullIfEmpty;
@@ -45,15 +46,32 @@ public class TransportationName implements OpenMapTilesSchema.TransportationName
                 .setPixelTolerance(0.0);
 
         if (ref != null) {
-            var minZoom = ref.startsWith("A") ? 8 : 11;
+            var network = getNetwork(ref);
+            var minZoom = switch (network) {
+                case NetworkValue.LT_MOTORWAY -> 7;
+                case NetworkValue.LT_PRIMARY -> 9;
+                default -> 11;
+            };
 
             feature.setAttr(Fields.REF, ref)
                     .setAttr(Fields.REF_LENGTH, ref.length())
-                    .setMinZoom(minZoom)
+                    .setAttr(Fields.NETWORK, network)
+                    .setMinZoom(Math.max(minZoom, transportMinZoom))
                     .setSortKeyDescending(minZoom);
         } else {
+            var minZoom = Math.max(12, Math.min(transportMinZoom + 2, 14));
             feature.putAttrs(LanguageUtils.getNames(sf.tags()))
-                    .setMinZoom(Math.min(transportMinZoom + 2, 14));
+                    .setMinZoom(minZoom);
+        }
+    }
+
+    static String getNetwork(@Nonnull String ref) {
+        if (ref.startsWith("A")) {
+            return NetworkValue.LT_MOTORWAY;
+        } else if (ref.length() == 3) {
+            return NetworkValue.LT_PRIMARY;
+        } else {
+            return NetworkValue.LT_SECONDARY;
         }
     }
 
@@ -65,5 +83,11 @@ public class TransportationName implements OpenMapTilesSchema.TransportationName
                 config.tolerance(zoom),
                 BUFFER_SIZE
         );
+    }
+
+    static final class NetworkValue {
+        static final String LT_MOTORWAY = "lt-motorway";
+        static final String LT_PRIMARY = "lt-primary";
+        static final String LT_SECONDARY = "lt-secondary";
     }
 }
