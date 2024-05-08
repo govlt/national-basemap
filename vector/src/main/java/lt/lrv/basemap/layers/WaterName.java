@@ -39,7 +39,7 @@ public class WaterName implements OpenMapTilesSchema.WaterName, ForwardingProfil
             switch (code) {
                 case "hd3", "hd4", "hd9" -> {
                     if (area >= 5_000_000) {
-                        addWaterCenterLine(FieldValues.CLASS_LAKE, 12, sf, features);
+                        addWaterCenterLine(FieldValues.CLASS_LAKE, 11, sf, features);
                     } else if (area >= 500_000) {
                         addWaterCenterLine(FieldValues.CLASS_LAKE, 13, sf, features);
                     } else {
@@ -69,10 +69,12 @@ public class WaterName implements OpenMapTilesSchema.WaterName, ForwardingProfil
     }
 
     public List<VectorTile.Feature> postProcess(int zoom, List<VectorTile.Feature> items) {
+        var tolerance = zoom < 14 ? 1 : config.tolerance(zoom);
+
         return FeatureMerge.mergeLineStrings(
                 items,
                 config.minFeatureSize(zoom),
-                config.tolerance(zoom),
+                tolerance,
                 BUFFER_SIZE
         );
     }
