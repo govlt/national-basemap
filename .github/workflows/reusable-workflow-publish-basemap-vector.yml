@@ -170,7 +170,7 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          name: github-pages
+          name: pbf-tiles
           path: vector/docker/static/tiles
           merge-multiple: true
 
