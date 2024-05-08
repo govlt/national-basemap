@@ -35,8 +35,20 @@ jobs:
         env:
           TILES: https://vector-static.startupgov.lt/{z}/{x}/{y}.pbf
 
-      - name: Generate mvt pbfs
+      - name: Generate MVT pbfs
         run: tail -n +2 zxy.tsv | parallel --colsep '\t' curl "http://localhost:3000/vector/{1}/{2}/{3}" --create-dirs -s -S -o "tiles/{1}/{2}/{3}.pbf" --compressed
+
+      - name: Create tiles archive
+        run: zip -r tiles.zip tiles
+
+      - name: Upload to S3
+        uses: ./.github/actions/rclone-sync
+        with:
+          s3-endpoint: ${{ vars.S3_ENDPOINT }}
+          s3-access-key-id: ${{ secrets.S3_ACCESS_KEY_ID }}
+          s3-secret-access-key: ${{ secrets.S3_SECRET_ACCESS_KEY }}
+          source-path: tiles.zip
+          destination-path: /tiles/vector/tiles
 
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v3
