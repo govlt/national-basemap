@@ -3728,22 +3728,15 @@
       "type": "symbol",
       "source": "openmaptiles",
       "source-layer": "water_name",
-      "filter": [
-        "==",
-        "$type",
-        "LineString"
-      ],
+      "filter": ["all"],
       "layout": {
-        "symbol-placement": "line",
-        "symbol-spacing": 350,
+        "symbol-placement": "line-center",
         "text-field": "{name:latin}\n{name:nonlatin}",
-        "text-font": [
-          "Noto Sans Italic"
-        ],
-        "text-letter-spacing": 0.2,
-        "text-max-width": 5,
-        "text-rotation-alignment": "map",
-        "text-size": 14
+        "text-font": ["Noto Sans Italic"],
+        "text-size": 14,
+        "text-max-angle": 80,
+        "visibility": "visible",
+        "text-letter-spacing": 0.2
       },
       "paint": {
         "text-color": "#74aee9",
