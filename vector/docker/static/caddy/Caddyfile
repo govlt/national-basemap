@@ -17,6 +17,8 @@ handle /health {
 	respond "OK"
 }
 
+rewrite /vector tile.json
+
 @pbf path *.pbf
 header @pbf {
 	>Content-Type application/x-protobuf

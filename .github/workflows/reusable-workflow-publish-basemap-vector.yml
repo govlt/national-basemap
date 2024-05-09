@@ -113,10 +113,10 @@ jobs:
         run: gunzip -c lithuania.pmtiles.layerstats.tsv.gz | awk -F'\t' '{print $1 "\t" $2 "\t" $3}' | uniq > zxy.tsv
 
       - name: Generate tiles.json
-        run: curl http://localhost:3000/vector --create-dirs -o "tiles/tiles.json" --compressed -s -S
+        run: curl http://localhost:3000/vector --create-dirs -o "tiles/tile.json" --compressed -s -S
 
       - name: Change tiles url
-        run: jq '.tiles = ["'"${TILES}"'"]' tiles.json > tiles.json.tmp && mv tiles.json.tmp tiles.json
+        run: jq '.tiles = ["'"${TILES}"'"]' tile.json > tile.json.tmp && mv tile.json.tmp tile.json
         working-directory: tiles
         env:
           TILES: http://localhost:80/{z}/{x}/{y}.pbf
