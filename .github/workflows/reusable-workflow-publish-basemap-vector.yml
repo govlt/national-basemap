@@ -116,7 +116,7 @@ jobs:
         run: curl http://localhost:3000/vector --create-dirs -o "tiles/tiles.json" --compressed -s -S
 
       - name: Change tiles url
-        run: jq '.tiles = ["${TILES}"]' tiles.json > tiles.json.tmp && mv tiles.json.tmp tiles.json
+        run: jq '.tiles = ["'"${TILES}"'"]' tiles.json > tiles.json.tmp && mv tiles.json.tmp tiles.json
         working-directory: tiles
         env:
           TILES: http://localhost:80/{z}/{x}/{y}.pbf
