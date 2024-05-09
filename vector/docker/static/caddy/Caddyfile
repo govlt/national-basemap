@@ -10,6 +10,13 @@
 
 root * /srv
 
+handle /health {
+	skip_log
+	@goingDown vars {http.shutting_down} true
+	respond @goingDown "Bye-bye in {http.time_until_shutdown}" 503
+	respond "OK"
+}
+
 @pbf path *.pbf
 header @pbf {
 	>Content-Type application/x-protobuf
