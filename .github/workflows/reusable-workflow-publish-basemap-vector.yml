@@ -119,7 +119,7 @@ jobs:
         run: jq '.tiles = ["${TILES}"]' tiles.json > tiles.json.tmp && mv tiles.json.tmp tiles.json
         working-directory: tiles
         env:
-          TILES: https://vector-static.startupgov.lt/{z}/{x}/{y}.pbf
+          TILES: http://localhost:80/{z}/{x}/{y}.pbf
 
       - name: Generate pbfs
         run: tail -n +2 zxy.tsv | parallel --colsep '\t' curl "http://localhost:3000/vector/{1}/{2}/{3}" --create-dirs -s -S -o "tiles/{1}/{2}/{3}.pbf" --compressed
