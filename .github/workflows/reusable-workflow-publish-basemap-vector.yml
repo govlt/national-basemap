@@ -125,7 +125,7 @@ jobs:
         run: tail -n +2 zxy.tsv | parallel --colsep '\t' curl "http://localhost:3000/vector/{1}/{2}/{3}" --create-dirs -s -S -o "tiles/{1}/{2}/{3}.pbf" --compressed
 
       - name: Upload Artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           path: tiles
           name: pbf-tiles
