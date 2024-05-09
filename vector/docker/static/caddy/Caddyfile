@@ -6,19 +6,21 @@
 	}
 }
 
-:80 {
-	root * /srv
+:80
 
-	header {
-		-Server
-	}
+root * /srv
 
-	@pbf path *.pbf
-	header @pbf {
-		Content-Type application/x-protobuf
-	}
+@pbf path *.pbf
+header @pbf {
+	>Content-Type application/x-protobuf
+}
 
-	file_server browse {
-	    index tile.json
-	}
+file_server browse {
+	index tile.json
+}
+
+header -Server
+
+handle_errors {
+	header -Server
 }
