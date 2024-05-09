@@ -18,7 +18,7 @@
 		Content-Type application/x-protobuf
 	}
 
-	file_server {
+	file_server browse {
 	    index tile.json
 	}
 }
