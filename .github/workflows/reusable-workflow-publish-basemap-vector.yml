@@ -104,6 +104,9 @@ jobs:
         ports:
           - 3000:3000
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - uses: actions/download-artifact@v4
         with:
           name: vector-basemap-pmtiles
@@ -123,6 +126,16 @@ jobs:
 
       - name: Generate pbfs
         run: tail -n +2 zxy.tsv | parallel --colsep '\t' curl "http://localhost:3000/vector/{1}/{2}/{3}" --create-dirs -s -S -o "tiles/{1}/{2}/{3}.pbf" --compressed
+
+      - name: Generate glyphs
+        uses: ./.github/actions/build-pbf-glyphs
+        with:
+          output-directory: tiles/font
+
+      - name: Generate sprites
+        uses: ./.github/actions/build-sprites
+        with:
+          output-directory: tiles/sprite
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
