@@ -22,7 +22,7 @@ jobs:
     concurrency: basemap-production-page
     with:
       stable: true
-      style-source-url: https://vector.startupgov.lt/vector
+      style-source-url: https://vector.startupgov.lt/tile.json
       style-base-url: https://basemap.startupgov.lt
       pmtiles-url: https://cdn.startupgov.lt/tiles/vector/pmtiles/lithuania.pmtiles
     secrets:
