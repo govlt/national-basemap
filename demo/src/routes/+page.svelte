@@ -10,10 +10,12 @@
 
 	const styles = {
 		'bright': 'vector/styles/bright/style.json',
-		'bright-pmtiles': 'vector/styles/bright/style-pmtiles.json'
+		'bright-pmtiles': 'vector/styles/bright/style-pmtiles.json',
+		'positron': 'vector/styles/positron/style.json',
+		'positron-pmtiles': 'vector/styles/positron/style-pmtiles.json',
 	};
 
-	let selected: 'bright' | 'bright-pmtiles' = 'bright';
+	let selected: 'bright' | 'bright-pmtiles' | 'positron' | 'positron-pmtiles' = 'bright';
 	$: styleUrl = new URL(styles[selected], baseUrl).href;
 </script>
 
@@ -30,6 +32,8 @@
 		<select class="controls-select" bind:value={selected}>
 			<option value="bright">Bright</option>
 			<option value="bright-pmtiles">Bright (PMTiles)</option>
+			<option value="positron">Positron</option>
+			<option value="positron-pmtiles">Positron (PMTiles)</option>
 		</select>
 	</Control>
 </MapLibre>
