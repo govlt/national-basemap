@@ -98,12 +98,11 @@ the [PMTiles in the browser](https://docs.protomaps.com/pmtiles/maplibre) docume
 
 You have the option to host the vector basemap on your own infrastructure.
 
-### Vector Tile Server
+### Vector Tiles
 
 Utilize the provided Docker
 image [national-basemap-vector](https://github.com/govlt/national-basemap/pkgs/container/national-basemap-vector),
-which includes a vector tile server based on [Martin Tile Server](https://maplibre.org/martin/).
-This Docker image embeds PMTiles archive, fonts, and sprites inside it, enabling it to serve vector tiles on-the-fly.
+which includes vector tiles, fonts, and sprites, enabling it to serve vector tiles on-the-fly.
 
 Here's an example of its usage with Docker Compose:
 
@@ -113,10 +112,13 @@ services:
     image: ghcr.io/govlt/national-basemap-vector:stable
     pull_policy: always
     restart: unless-stopped
+    environment:
+      # Change to your host
+      HOST: https://vector.startupgov.lt
     ports:
-      - "3000:3000"
+        - "80:80"
     healthcheck:
-      test: [ "CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3000/health || exit 1" ]
+      test: [ "CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:80/health || exit 1" ]
       interval: 5s
       timeout: 3s
       start_period: 5s
