@@ -24,7 +24,7 @@ header @pbf {
 	>Content-Type application/x-protobuf
 }
 
-file_server browse {
+file_server {
 	index tile.json
 }
 
