@@ -104,6 +104,9 @@ jobs:
         ports:
           - 3000:3000
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - uses: actions/download-artifact@v4
         with:
           name: vector-basemap-pmtiles
@@ -116,13 +119,23 @@ jobs:
         run: curl http://localhost:3000/vector --create-dirs -o "tiles/tile.json" --compressed -s -S
 
       - name: Change tiles url
-        run: jq '.tiles = ["'"${TILES}"'"]' tile.json > tile.json.tmp && mv tile.json.tmp tile.json
+        run: jq --compact-output '.tiles = ["'"${TILES}"'"]' tile.json > tile.json.tmp && mv tile.json.tmp tile.json
         working-directory: tiles
         env:
           TILES: http://localhost:80/{z}/{x}/{y}.pbf
 
       - name: Generate pbfs
         run: tail -n +2 zxy.tsv | parallel --colsep '\t' curl "http://localhost:3000/vector/{1}/{2}/{3}" --create-dirs -s -S -o "tiles/{1}/{2}/{3}.pbf" --compressed
+
+      - name: Generate glyphs
+        uses: ./.github/actions/build-pbf-glyphs
+        with:
+          output-directory: tiles/font
+
+      - name: Generate sprites
+        uses: ./.github/actions/build-sprites
+        with:
+          output-directory: tiles/sprite
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
@@ -157,7 +170,7 @@ jobs:
           destination-path: /tiles/vector/pbf
 
   publish-basemap-vector-docker-image:
-    name: Vector static docker image build and push
+    name: Vector docker image build and push
     runs-on: ubuntu-latest
     timeout-minutes: 30
     needs: generate-basemap-vector-pbf-tiles

@@ -1,0 +1,31 @@
+name: Build sprites
+description: Build sprites
+
+inputs:
+  output-directory:
+    description: Required input set output directory
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Restore Rust cache
+      uses: Swatinem/rust-cache@v2
+      with:
+        prefix-key: sprites
+
+    - name: Install spreet
+      run: cargo install spreet
+      shell: bash
+
+    - name: Build sprites
+      shell: bash
+      run: |
+        styles=("positron" "bright" "openmaptiles")
+        for style in "${styles[@]}"; do
+          mkdir -p ${{ inputs.output-directory }}/"$style"
+        
+          spreet --unique --minify-index-file vector/styles/"$style"/sprites ${{ inputs.output-directory }}/"$style"
+          spreet --retina --unique --minify-index-file vector/styles/"$style"/sprites ${{ inputs.output-directory }}/"$style"@2x
+        done
+

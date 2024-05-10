@@ -1,0 +1,23 @@
+name: Build pbf glyphs
+description: Build pbf glyphs
+
+inputs:
+  output-directory:
+    description: Required input set output directory
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Restore Rust cache
+      uses: Swatinem/rust-cache@v2
+      with:
+        prefix-key: pbf-glyphs
+
+    - name: Install build_pbf_glyphs
+      run: cargo install build_pbf_glyphs
+      shell: bash
+
+    - name: Build PBF glyphs
+      run: mkdir -p ${{ inputs.output-directory }} && build_pbf_glyphs vector/styles/fonts ${{ inputs.output-directory }}
+      shell: bash

@@ -4,7 +4,7 @@ WORKDIR /opt/vector
 
 COPY docker/martin/config.yaml config.yaml
 
-COPY styles/openmaptiles/fonts styles/positron/fonts styles/bright/fonts  fonts/
+COPY styles/fonts  fonts/
 
 COPY styles/openmaptiles/sprites styles/openmaptiles/sprites
 COPY styles/positron/sprites styles/positron/sprites

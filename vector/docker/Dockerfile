@@ -27,7 +27,7 @@ WORKDIR /opt/vector
 COPY --chown=$USER:$USER vector/docker/martin/config.yaml config.yaml
 
 # Fonts
-COPY --chown=$USER:$USER vector/styles/openmaptiles/fonts vector/styles/positron/fonts vector/styles/bright/fonts  fonts/
+COPY --chown=$USER:$USER vector/styles/fonts  fonts/
 
 # Sprites
 COPY --chown=$USER:$USER vector/styles/openmaptiles/sprites styles/openmaptiles/sprites

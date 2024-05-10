@@ -72,12 +72,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Restore Rust cache
-        uses: Swatinem/rust-cache@v2
-
-      - name: Install spreet
-        run: cargo install spreet
-
       - name: Minify styles
         run: find vector/styles -name "style.json" -print0 | xargs -0 -I{} sh -c 'jq -c . "{}" > tmp.json && mv tmp.json "{}"'
 
@@ -118,11 +112,17 @@ jobs:
           
             cp -r vector/styles/"$style"/style.json output/styles/"$style"/style.json
             cp -r vector/styles/"$style"/style-pmtiles.json output/styles/"$style"/style-pmtiles.json
-            cp -r vector/styles/"$style"/glyphs/. output/font
-          
-            spreet --unique --minify-index-file vector/styles/"$style"/sprites output/sprite/"$style"
-            spreet --retina --unique --minify-index-file vector/styles/"$style"/sprites output/sprite/"$style"@2x
           done
+
+      - name: Generate glyphs
+        uses: ./.github/actions/build-pbf-glyphs
+        with:
+          output-directory: output/font
+
+      - name: Generate sprites
+        uses: ./.github/actions/build-sprites
+        with:
+          output-directory: output/sprite
 
       - name: Upload styles artifact
         uses: actions/upload-artifact@v4
