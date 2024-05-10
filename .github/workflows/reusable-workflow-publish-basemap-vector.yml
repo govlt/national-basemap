@@ -56,13 +56,15 @@ jobs:
           source-path: vector/data/output
           destination-path: /tiles/vector/pmtiles
 
-  publish-basemap-vector-docker-image:
-    name: Docker image build and push
+  publish-basemap-vector-martin-docker-image:
+    name: Martin docker image build and push
     runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:
       contents: read
       packages: write
+    outputs:
+      digest: ${{ steps.docker.outputs.digest }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -76,10 +78,108 @@ jobs:
 
       - name: Build & tag docker image
         uses: AplinkosMinisterija/reusable-workflows/.github/actions/docker-build-tag-push@main
+        id: docker
         with:
-          docker-image: ghcr.io/govlt/national-basemap-vector
+          docker-image: ghcr.io/govlt/national-basemap-vector-martin
           docker-context: .
           file: vector/docker/Dockerfile
+          environment: ${{ inputs.stable && 'stable' ||  'preview' }}
+          no-cache: true
+          push: true
+          cache-from: ''
+          cache-to: ''
+
+  generate-basemap-vector-pbf-tiles:
+    name: Generate vector basemap pbf tiles
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    needs:
+      - publish-basemap-vector-martin-docker-image
+      - generate-basemap-vector-pmtiles
+    services:
+      martin:
+        image: ghcr.io/govlt/national-basemap-vector-martin@${{ needs.publish-basemap-vector-martin-docker-image.outputs.digest }}
+        ports:
+          - 3000:3000
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: vector-basemap-pmtiles
+          merge-multiple: true
+
+      - name: Get all zxy combinations
+        run: gunzip -c lithuania.pmtiles.layerstats.tsv.gz | awk -F'\t' '{print $1 "\t" $2 "\t" $3}' | uniq > zxy.tsv
+
+      - name: Generate tiles.json
+        run: curl http://localhost:3000/vector --create-dirs -o "tiles/tile.json" --compressed -s -S
+
+      - name: Change tiles url
+        run: jq '.tiles = ["'"${TILES}"'"]' tile.json > tile.json.tmp && mv tile.json.tmp tile.json
+        working-directory: tiles
+        env:
+          TILES: http://localhost:80/{z}/{x}/{y}.pbf
+
+      - name: Generate pbfs
+        run: tail -n +2 zxy.tsv | parallel --colsep '\t' curl "http://localhost:3000/vector/{1}/{2}/{3}" --create-dirs -s -S -o "tiles/{1}/{2}/{3}.pbf" --compressed
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          path: tiles
+          name: pbf-tiles
+
+  s3-upload-basemap-vector-pbf-tiles:
+    name: S3 upload vector basemap pbf tiles
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: generate-basemap-vector-pbf-tiles
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: pbf-tiles
+          path: tiles
+          merge-multiple: true
+
+      - name: Create tiles archive
+        run: zip -r tiles.zip tiles
+
+      - name: Upload to S3
+        uses: govlt/national-basemap/.github/actions/rclone-sync@main
+        with:
+          s3-endpoint: ${{ inputs.s3-endpoint }}
+          s3-access-key-id: ${{ secrets.s3-access-key-id }}
+          s3-secret-access-key: ${{ secrets.s3-secret-access-key }}
+          source-path: tiles.zip
+          destination-path: /tiles/vector/pbf
+
+  publish-basemap-vector-docker-image:
+    name: Vector static docker image build and push
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: generate-basemap-vector-pbf-tiles
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: pbf-tiles
+          path: vector/docker/static/tiles
+          merge-multiple: true
+
+      - name: Build & tag docker image
+        uses: AplinkosMinisterija/reusable-workflows/.github/actions/docker-build-tag-push@main
+        with:
+          docker-image: ghcr.io/govlt/national-basemap-vector
+          docker-context: vector/docker/static
+          file: vector/docker/static/Dockerfile
           environment: ${{ inputs.stable && 'stable' ||  'preview' }}
           no-cache: true
           push: true
