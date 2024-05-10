@@ -56,7 +56,7 @@ jobs:
           source-path: vector/data/output
           destination-path: /tiles/vector/pmtiles
 
-  publish-basemap-vector-docker-image:
+  publish-basemap-vector-martin-docker-image:
     name: Martin docker image build and push
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -80,7 +80,7 @@ jobs:
         uses: AplinkosMinisterija/reusable-workflows/.github/actions/docker-build-tag-push@main
         id: docker
         with:
-          docker-image: ghcr.io/govlt/national-basemap-vector
+          docker-image: ghcr.io/govlt/national-basemap-vector-martin
           docker-context: .
           file: vector/docker/Dockerfile
           environment: ${{ inputs.stable && 'stable' ||  'preview' }}
@@ -96,11 +96,11 @@ jobs:
     permissions:
       contents: read
     needs:
-      - publish-basemap-vector-docker-image
+      - publish-basemap-vector-martin-docker-image
       - generate-basemap-vector-pmtiles
     services:
       martin:
-        image: ghcr.io/govlt/national-basemap-vector@${{ needs.publish-basemap-vector-docker-image.outputs.digest }}
+        image: ghcr.io/govlt/national-basemap-vector-martin@${{ needs.publish-basemap-vector-martin-docker-image.outputs.digest }}
         ports:
           - 3000:3000
     steps:
@@ -156,7 +156,7 @@ jobs:
           source-path: tiles.zip
           destination-path: /tiles/vector/pbf
 
-  publish-basemap-vector-static-docker-image:
+  publish-basemap-vector-docker-image:
     name: Vector static docker image build and push
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -177,7 +177,7 @@ jobs:
       - name: Build & tag docker image
         uses: AplinkosMinisterija/reusable-workflows/.github/actions/docker-build-tag-push@main
         with:
-          docker-image: ghcr.io/govlt/national-basemap-vector-static
+          docker-image: ghcr.io/govlt/national-basemap-vector
           docker-context: vector/docker/static
           file: vector/docker/static/Dockerfile
           environment: ${{ inputs.stable && 'stable' ||  'preview' }}
