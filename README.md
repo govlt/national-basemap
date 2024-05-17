@@ -157,7 +157,7 @@ S3-->Planetiler-->PMTiles["PMTiles archive"]
 PMTiles-->s3-pmtiles["S3\n<a href="https://cdn.startupgov.lt/tiles/vector/pmtiles/lithuania.pmtiles">lithuania.pmtiles</a>"]
 
 PMTiles-->mvt["Mapbox Vector Tiles"]
-mvt-->tiles["S3\n<a href="https://cdn.startupgov.lt/tiles/vector/pbf/tiles.zip">tiles.zip</a>"]
+mvt-->tiles["S3\n<a href="https://cdn.startupgov.lt/tiles/vector/mvt/tiles.zip">tiles.zip</a>"]
 mvt-->docker-image["Docker image\n<a href="https://github.com/govlt/national-basemap/pkgs/container/national-basemap-vector">national-basemap-vector</a>"]
 ```
 

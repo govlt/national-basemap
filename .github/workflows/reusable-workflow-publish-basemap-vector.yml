@@ -89,8 +89,8 @@ jobs:
           cache-from: ''
           cache-to: ''
 
-  generate-basemap-vector-pbf-tiles:
-    name: Generate vector basemap pbf tiles
+  generate-basemap-vector-mvt:
+    name: Generate Mapbox vector tiles
     runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:
@@ -124,7 +124,7 @@ jobs:
         env:
           TILES: http://localhost:80/{z}/{x}/{y}.pbf
 
-      - name: Generate pbfs
+      - name: Generate Mapbox vector tiles
         run: tail -n +2 zxy.tsv | parallel --colsep '\t' curl "http://localhost:3000/vector/{1}/{2}/{3}" --create-dirs -s -S -o "tiles/{1}/{2}/{3}.pbf" --compressed
 
       - name: Generate glyphs
@@ -141,19 +141,19 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           path: tiles
-          name: pbf-tiles
+          name: mvt-tiles
 
-  s3-upload-basemap-vector-pbf-tiles:
-    name: S3 upload vector basemap pbf tiles
+  s3-upload-basemap-vector-mvt:
+    name: S3 upload vector basemap Mapbox vector tiles
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    needs: generate-basemap-vector-pbf-tiles
+    needs: generate-basemap-vector-mvt
     permissions:
       contents: read
     steps:
       - uses: actions/download-artifact@v4
         with:
-          name: pbf-tiles
+          name: mvt-tiles
           path: tiles
           merge-multiple: true
 
@@ -167,13 +167,13 @@ jobs:
           s3-access-key-id: ${{ secrets.s3-access-key-id }}
           s3-secret-access-key: ${{ secrets.s3-secret-access-key }}
           source-path: tiles.zip
-          destination-path: /tiles/vector/pbf
+          destination-path: /tiles/vector/mvt
 
   publish-basemap-vector-docker-image:
     name: Vector docker image build and push
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    needs: generate-basemap-vector-pbf-tiles
+    needs: generate-basemap-vector-mvt
     permissions:
       contents: read
       packages: write
@@ -183,7 +183,7 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          name: pbf-tiles
+          name: mvt-tiles
           path: vector/docker/static/tiles
           merge-multiple: true
 
