@@ -5,10 +5,6 @@ inputs:
   artifact-retention-days:
     description: Optional input set PMTiles artifact retention days
     required: false
-  cache-data-sources:
-    description: Optional input to set if data sources should be cached
-    required: false
-    default: 'true'
 
 runs:
   using: composite
@@ -16,12 +12,21 @@ runs:
     - name: Prepare Java environment
       uses: ./.github/actions/prepare-java-environment
 
+    - name: Generate data sources cache key
+      id: data-source-cache-key
+      shell: bash
+      run: |
+        grpk_etag=$(curl -sI https://cdn.startupgov.lt/tiles/vector/sources/grpk/grpk-espg-4326.shp.zip | grep -i ETag | awk '{print $2}' | tr -d '\r' | tr -d '"')
+        house_numbers_etag=$(curl -sI https://cdn.startupgov.lt/tiles/vector/sources/address-registry/house-numbers-espg-4326.shp.zip | grep -i ETag | awk '{print $2}' | tr -d '\r' | tr -d '"')
+        combined_etag="${grpk_etag}|${house_numbers_etag}"
+        
+        echo "key=vector-basemap-data-sources-${combined_etag}" >> "$GITHUB_OUTPUT"
+
     - name: Cache vector basemap data sources
       uses: actions/cache@v4
-      if: ${{ inputs.cache-data-sources == 'true' }}
       with:
         path: vector/data/sources
-        key: vector-basemap-data-sources
+        key: ${{ steps.data-source-cache-key.outputs.key }}
 
     - name: Generate vector basemap PMTiles
       shell: bash
