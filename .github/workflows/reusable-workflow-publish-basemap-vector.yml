@@ -44,8 +44,6 @@ jobs:
 
       - name: Generate PMTiles
         uses: ./.github/actions/basemap-vector-generate-pmtiles
-        with:
-          cache-data-sources: true
 
       - name: Upload PMTiles to S3
         uses: ./.github/actions/rclone-sync
