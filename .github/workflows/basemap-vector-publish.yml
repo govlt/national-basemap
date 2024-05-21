@@ -13,6 +13,8 @@ permissions:
   contents: read
   packages: write
   deployments: write
+  pages: write
+  id-token: write
 
 jobs:
   publish-production-page:
