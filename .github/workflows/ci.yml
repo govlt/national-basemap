@@ -38,9 +38,8 @@ jobs:
         run: npm install @maplibre/maplibre-gl-style-spec --global
 
       - name: Validate MapLibre GL styles
-        working-directory: vector/styles/geoportal
         run: |
-          for file in *.json; do [[ -f "$file" ]] && echo "Validating file: $file" && gl-style-validate "$file"; done
+          find vector/styles -name "style.json" -type f -exec bash -c 'echo "Validating file: $1" && gl-style-validate "$1"' - {} \;
 
   test-vector-basemap:
     name: Run vector basemap tests
