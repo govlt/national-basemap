@@ -167,15 +167,13 @@ jobs:
           source-path: tiles.zip
           destination-path: /tiles/vector/mvt
 
-  publish-basemap-vector-github-pages:
-    name: Publish to GitHub pages
+  build-basemap-vector-github-pages:
+    name: Build GitHub pages
     runs-on: ubuntu-latest
     timeout-minutes: 30
     needs: generate-basemap-vector-mvt
     permissions:
       contents: read
-      pages: write
-      id-token: write
     steps:
       - uses: actions/download-artifact@v4
         with:
@@ -194,9 +192,19 @@ jobs:
         with:
           path: ./tiles
 
+  publish-basemap-vector-github-pages:
+    name: Publish GitHub pages
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: build-basemap-vector-github-pages
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v3
+        uses: actions/deploy-pages@v4
 
   publish-basemap-vector-docker-image:
     name: Vector docker image build and push
