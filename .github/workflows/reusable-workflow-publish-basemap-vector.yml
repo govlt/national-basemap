@@ -167,6 +167,47 @@ jobs:
           source-path: tiles.zip
           destination-path: /tiles/vector/mvt
 
+  build-basemap-vector-github-pages:
+    name: Build GitHub pages
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: generate-basemap-vector-mvt
+    if: inputs.stable
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: mvt-tiles
+          path: tiles
+          merge-multiple: true
+
+      - name: Change tiles url
+        run: jq --compact-output '.tiles = ["'"${TILES}"'"]' tile.json > tile.json.tmp && mv tile.json.tmp tile.json
+        working-directory: tiles
+        env:
+          TILES: https://vector-github.startupgov.lt/{z}/{x}/{y}.pbf
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./tiles
+
+  publish-basemap-vector-github-pages:
+    name: Publish GitHub pages
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    if: inputs.stable
+    needs: build-basemap-vector-github-pages
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
   publish-basemap-vector-docker-image:
     name: Vector docker image build and push
     runs-on: ubuntu-latest
