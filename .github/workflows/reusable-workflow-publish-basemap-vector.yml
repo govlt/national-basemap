@@ -172,6 +172,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     needs: generate-basemap-vector-mvt
+    if: inputs.stable
     permissions:
       contents: read
     steps:
@@ -196,6 +197,7 @@ jobs:
     name: Publish GitHub pages
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    if: inputs.stable
     needs: build-basemap-vector-github-pages
     permissions:
       contents: read
