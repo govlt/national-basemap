@@ -219,6 +219,17 @@ This will start:
 Note: Docker will watch all required directories, so you don't need to rerun this command once PMTiles are regenerated
 or styles are changed.
 
+## Frequently Asked Questions
+
+### Can the national vector map based on the Web Mercator projection be used with state cadastres and registers?
+
+There is a myth that state cadastre and register maps can only use the LKS-94 coordinate system. However, this is not a
+requirement. Spatial data for cadastres and registers must be collected and managed in the LKS-94 coordinate system.
+
+When it comes to online maps, this is a matter of implementation. For example, the Protected Areas Cadastre online map
+is currently published in Web Mercator, while the data is collected and managed in LKS-94. Therefore, the national
+vector map base can be used for state cadastre and register maps.
+
 ## Contributing
 
 Calling all GIS enthusiasts! Your expertise is invaluable to us. Whether you spot issues or have groundbreaking ideas,
