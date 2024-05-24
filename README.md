@@ -241,4 +241,18 @@ our [contribution guidelines](https://github.com/govlt/.github/blob/main/CONTRIB
 This project is licensed under the [MIT License](./LICENSE), inviting you to explore, adapt, and contribute to our
 mapping adventure!
 
+### Attribution Requirements for Styles
+
+When using the provided styles, please ensure to include the appropriate copyright notices found within the style files.
+For more information about licensing see:
+
+- **Bright**: See [LICENSE.md](https://github.com/openmaptiles/osm-bright-gl-style/blob/master/LICENSE.md)
+- **Positron**: See [LICENSE.md](https://github.com/openmaptiles/positron-gl-style/blob/master/LICENSE.md)
+
+### Data Attribution
+
+If you are using data with your own styles, you may need to attribute OpenMapTiles, as the generated layers are based on
+the OpenMapTiles schema. For more details, visit
+the [OpenMapTiles schema documentation](https://openmaptiles.org/schema/).
+
 Ready to map out Lithuania like never before? Join us on this exciting journey! 🌍✨
