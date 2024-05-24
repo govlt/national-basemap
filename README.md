@@ -98,7 +98,7 @@ the [PMTiles in the browser](https://docs.protomaps.com/pmtiles/maplibre) docume
 
 You have the option to host the vector basemap on your own infrastructure.
 
-### Vector Tiles
+### Docker Vector Tiles
 
 Utilize the provided Docker
 image [national-basemap-vector](https://github.com/govlt/national-basemap/pkgs/container/national-basemap-vector),
@@ -116,7 +116,7 @@ services:
       # Change to your host
       HOST: https://vector.startupgov.lt
     ports:
-        - "80:80"
+      - "80:80"
     healthcheck:
       test: [ "CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:80/health || exit 1" ]
       interval: 5s
@@ -130,6 +130,21 @@ services:
 Periodically download the PMTiles archive from `https://cdn.startupgov.lt/tiles/vector/pmtiles/lithuania.pmtiles` to
 your own S3
 or file storage and utilize it as needed.
+
+### Individual Vector Tile Files
+
+You can host MapBox vector tile files with a zxy directory structure yourself. For example, there are only **51,888**
+individual
+MapBox vector tile files for the entire national basemap of Lithuania!
+
+To get started:
+
+1. Download the [tiles archive](https://cdn.startupgov.lt/tiles/vector/mvt/tiles.zip).
+2. Upload the extracted files to your preferred file storage, such as AWS S3.
+3. Alternatively, use a reverse proxy server like Caddy, Apache, or Nginx to serving static files.
+
+You can also host these tiles on static websites like GitHub Pages, which is a cost-effective option that doesn't
+require a server.
 
 ## Recipes
 
