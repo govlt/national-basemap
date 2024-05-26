@@ -50,15 +50,10 @@ public class Place implements OpenMapTilesSchema.Place {
     }
 
     void addFeature(String clazz, int minZoom, SourceFeature sf, FeatureCollector features) {
+        var admTip = sf.getString("ADM_TIP");
+        var capital = "SOST".equals(admTip) ? 2 : null;
 
-        var adm_tip = sf.getString("ADM_TIP");
-
-        var capital = switch (adm_tip) {
-            case "SOST" -> 2;
-            default -> null;
-        };
-
-        var rank = switch (adm_tip) {
+        var rank = switch (admTip) {
             case "SOST" -> 2;
             case "APSK" -> 4;
             case "SAV" -> 6;
