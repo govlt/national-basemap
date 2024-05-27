@@ -118,7 +118,7 @@ services:
     ports:
       - "80:80"
     healthcheck:
-      test: [ "CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:80/health || exit 1" ]
+      test: [ "CMD-SHELL", "wget --no-verbose --tries=1 --spider http://127.0.0.1:80/health || exit 1" ]
       interval: 5s
       timeout: 3s
       start_period: 5s
