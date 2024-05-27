@@ -214,7 +214,7 @@ This will start:
   and styles;
 - [Martin tile server](https://martin.maplibre.org/) at http://localhost:3000, serving PMTiles, fonts, and sprites.
   Visit http://localhost:3000/catalog for more details;
-- [Maputnik](https://maplibre.org/maputnik/) at http://localhost:8000, used for style editing;
+- [Maputnik](https://maplibre.org/maputnik/) at http://localhost:8888, used for style editing;
 
 Note: Docker will watch all required directories, so you don't need to rerun this command once PMTiles are regenerated
 or styles are changed.
