@@ -12,7 +12,7 @@ public static Map<String, Object> getNames(String name) {
 
     var nameTag = switch (nonBlankName) {
         case "Gedimino pr." -> "Kartografų pr.";
-        case "Gedimino kalnas" -> "GIS kalnas";
+        case "Neris" -> "Šaltibarščių upė";
         case "Vinco Kudirkos aikštė" -> "GIS aišktė";
         default -> nonBlankName;
     };
