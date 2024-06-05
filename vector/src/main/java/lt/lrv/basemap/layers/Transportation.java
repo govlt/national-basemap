@@ -41,6 +41,7 @@ public class Transportation implements OpenMapTilesSchema.Transportation, Forwar
             case 6, 8 -> addTransportationFeature(FieldValues.CLASS_MINOR, null, 12, sf, features);
             case 7, 9 -> addTransportationFeature(FieldValues.CLASS_SERVICE, null, 13, sf, features);
             case 10, 11 -> addTransportationFeature(FieldValues.CLASS_TRACK, null, 13, sf, features);
+            case 15 -> addTransportationFeature(FieldValues.CLASS_PATH, null, 13, sf, features);
             case 13 -> addTransportationFeature(FieldValues.CLASS_PATH, null, 14, sf, features);
             case 14 -> addTransportationFeature(FieldValues.CLASS_FERRY, null, 13, sf, features);
             default -> addTransportationFeature(null, null, 14, sf, features);
