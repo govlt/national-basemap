@@ -49,7 +49,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Validate development Caddyfile
+      - name: Validate Caddyfile
         run: caddy validate --config vector/docker/static/caddy/Caddyfile --adapter caddyfile
 
   test-vector-basemap:
