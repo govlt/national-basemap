@@ -1,4 +1,4 @@
-FROM caddy:2.7
+FROM caddy:2.8
 
 ENV HOST="http://localhost:80"
 
