@@ -41,6 +41,17 @@ jobs:
         run: |
           find vector/styles -name "style.json" -type f -exec bash -c 'echo "Validating file: $1" && gl-style-validate "$1"' - {} \;
 
+  caddyfile-validate:
+    name: Validate Caddy file syntax
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    container: caddy:2.8
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate Caddyfile
+        run: caddy validate --config vector/docker/static/caddy/Caddyfile --adapter caddyfile
+
   test-vector-basemap:
     name: Run vector basemap tests
     runs-on: ubuntu-latest
