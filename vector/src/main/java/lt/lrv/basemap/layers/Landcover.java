@@ -14,7 +14,7 @@ import lt.lrv.basemap.openmaptiles.OpenMapTilesSchema;
 import java.util.List;
 import java.util.Map;
 
-public class Landcover implements OpenMapTilesSchema.Landcover, ForwardingProfile.FeaturePostProcessor {
+public class Landcover implements OpenMapTilesSchema.Landcover, ForwardingProfile.LayerPostProcesser {
 
     public static final ZoomFunction<Number> MIN_PIXEL_SIZE_THRESHOLDS = ZoomFunction.fromMaxZoomThresholds(Map.of(
             13, 8,

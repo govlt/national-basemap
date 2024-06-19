@@ -13,7 +13,7 @@ import lt.lrv.basemap.openmaptiles.OpenMapTilesSchema;
 import java.util.Arrays;
 import java.util.List;
 
-public class Transportation implements OpenMapTilesSchema.Transportation, ForwardingProfile.FeaturePostProcessor {
+public class Transportation implements OpenMapTilesSchema.Transportation, ForwardingProfile.LayerPostProcesser {
 
     static final List<String> PAVED_VALUES = Arrays.asList("A", "C", "G", "Md");
 

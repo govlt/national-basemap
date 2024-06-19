@@ -14,7 +14,7 @@ import lt.lrv.basemap.utils.LanguageUtils;
 import java.util.List;
 
 // Based on https://github.com/openmaptiles/openmaptiles/pull/1235
-public class Power implements Layer, ForwardingProfile.FeaturePostProcessor {
+public class Power implements Layer, ForwardingProfile.LayerPostProcesser {
 
     static final double BUFFER_SIZE = 4.0;
 

@@ -16,7 +16,7 @@ import java.util.List;
 
 import static com.onthegomap.planetiler.util.LanguageUtils.nullIfEmpty;
 
-public class TransportationName implements OpenMapTilesSchema.TransportationName, ForwardingProfile.FeaturePostProcessor {
+public class TransportationName implements OpenMapTilesSchema.TransportationName, ForwardingProfile.LayerPostProcesser {
 
     final PlanetilerConfig config;
 
