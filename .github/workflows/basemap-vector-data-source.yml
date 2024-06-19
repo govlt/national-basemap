@@ -18,6 +18,12 @@ jobs:
       name: basemap-vector-datasource-address-registry
       url: https://cdn.startupgov.lt/tiles/vector/sources/address-registry/house-numbers-espg-4326.shp.zip
     steps:
+      # Needed only for GitHub action for uploading to S3
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github
+
       - name: Download house points data
         run: wget -nv "https://www.registrucentras.lt/aduomenys/?byla=adr_gra_adresai_LT.zip" -O points.zip
 
