@@ -10,7 +10,7 @@ jobs:
     name: Address registry sync and transform
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    container: ghcr.io/osgeo/gdal:ubuntu-full-3.8.5
+    container: ghcr.io/osgeo/gdal:ubuntu-full-3.9.0
     permissions:
       contents: read
     concurrency: basemap-vector-datasource-address-registry
@@ -18,20 +18,23 @@ jobs:
       name: basemap-vector-datasource-address-registry
       url: https://cdn.startupgov.lt/tiles/vector/sources/address-registry/house-numbers-espg-4326.shp.zip
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Download house points data
+        run: wget -nv "https://www.registrucentras.lt/aduomenys/?byla=adr_gra_adresai_LT.zip" -O points.zip
 
-      - name: Prepare Java environment
-        uses: ./.github/actions/prepare-java-environment
+      - name: Unzip house points data
+        run: unzip points.zip
 
-      - name: Sync address registry
-        run: ./gradlew syncAddressRegistry
+      - name: Convert house points to GPKG
+        run: ogr2ogr -f GPKG addresses.gpkg adr_gra_adresai_LT.json -nln points
+
+      - name: Append address information to GPKG
+        run: ogr2ogr -append -f GPKG addresses.gpkg "https://www.registrucentras.lt/aduomenys/?byla=adr_stat_lr.csv" -nln info
 
       - name: Create output directory
         run: mkdir output
 
-      - name: Transform to EPSG:4326
-        run: ogr2ogr -f "ESRI Shapefile" -lco ENCODING=UTF-8 -t_srs EPSG:4326 output/house-numbers-espg-4326.shp.zip vector/housenumbers.geojson
+      - name: Generate houses GPKG in EPSG:4326
+        run: ogr2ogr -f GPKG -t_srs EPSG:4326 -xyRes "0.0000001" -sql "SELECT points.fid, points.geom, points.AOB_KODAS, info.sav_kodas, points.gyv_kodas, points.gat_kodas, info.nr, info.pasto_kodas, info.korpuso_nr FROM points INNER JOIN info USING (AOB_KODAS) ORDER BY AOB_KODAS" output/houses-espg-4326.gpkg.zip addresses.gpkg -nln houses
 
       - name: Upload to S3
         uses: ./.github/actions/rclone-sync
