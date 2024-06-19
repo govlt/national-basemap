@@ -1,6 +1,6 @@
 [versions]
-planetiler = "0.7.0"
-geotools = "29.2"
+planetiler = "0.8.0"
+geotools = "31.2"
 junit = "5.10.1"
 
 [libraries]
