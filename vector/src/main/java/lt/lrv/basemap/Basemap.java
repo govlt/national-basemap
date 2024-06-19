@@ -42,7 +42,7 @@ public class Basemap extends ForwardingProfile {
                 .addGeoPackageSource(
                         Source.AR,
                         Path.of("data", "sources", "houses-espg-4326.gpkg.zip"),
-                        "https://cdn.biip.lt/tiles/vector/sources/address-registry/houses-espg-4326.gpkg.zip"
+                        "https://cdn.startupgov.lt/tiles/vector/sources/address-registry/houses-espg-4326.gpkg.zip"
                 )
                 .overwriteOutput(Path.of("data", "output", "lithuania.pmtiles"))
                 .run();
