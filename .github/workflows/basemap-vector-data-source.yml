@@ -35,7 +35,7 @@ jobs:
       # this step pulls data for each municipality individually.
       - name: Convert each municipality's geojson data to GPKG format
         run: |
-          curl -sf "https://www.registrucentras.lt/aduomenys/?byla=adr_savivaldybes.csvs" | csvcut -d "|" -c "SAV_KODAS" | tail -n +2 | while read code; do
+          curl -sf "https://www.registrucentras.lt/aduomenys/?byla=adr_savivaldybes.csv" | csvcut -d "|" -c "SAV_KODAS" | tail -n +2 | while read -r code; do
             echo "Converting https://www.registrucentras.lt/aduomenys/?byla=adr_gra_$code.json"
           
             ogr2ogr -f GPKG addresses.gpkg "https://www.registrucentras.lt/aduomenys/?byla=adr_gra_$code.json" -nln points
