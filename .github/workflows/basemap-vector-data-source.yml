@@ -31,7 +31,7 @@ jobs:
       url: https://cdn.startupgov.lt/tiles/vector/sources/address-registry/houses-espg-4326.gpkg.zip
     steps:
       - name: Install required packages
-        run: apt-get update && apt-get install -y git csvkit md5sum
+        run: apt-get update && apt-get install -y git csvkit ucommon-utils
 
       # Needed only for GitHub action for uploading to S3
       - name: Checkout repository
@@ -94,7 +94,7 @@ jobs:
       url: https://cdn.startupgov.lt/tiles/vector/sources/grpk/grpk-espg-4326.shp.zip
     steps:
       - name: Install required packages
-        run: apt-get update && apt-get install -y git md5sum
+        run: apt-get update && apt-get install -y git ucommon-utils
 
       # Needed only for GitHub action for uploading to S3
       - name: Checkout repository
