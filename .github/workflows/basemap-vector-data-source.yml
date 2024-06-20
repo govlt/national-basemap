@@ -31,7 +31,7 @@ jobs:
       url: https://cdn.startupgov.lt/tiles/vector/sources/address-registry/houses-espg-4326.gpkg.zip
     steps:
       - name: Install required packages
-        run: apt-get update && apt-get install -y git csvkit ucommon-utils
+        run: apt-get update && apt-get install -y git csvkit
 
       # Needed only for GitHub action for uploading to S3
       - name: Checkout repository
@@ -61,7 +61,7 @@ jobs:
 
       - name: Generate checksum
         working-directory: output
-        run: md5 -r houses-espg-4326.gpkg.zip >> checksums.txt
+        run: md5sum houses-espg-4326.gpkg.zip >> checksums.txt
 
       - name: Upload to S3
         uses: ./.github/actions/rclone-sync
@@ -93,9 +93,6 @@ jobs:
       name: basemap-vector-datasource-grpk
       url: https://cdn.startupgov.lt/tiles/vector/sources/grpk/grpk-espg-4326.shp.zip
     steps:
-      - name: Install required packages
-        run: apt-get update && apt-get install -y git ucommon-utils
-
       # Needed only for GitHub action for uploading to S3
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -116,7 +113,7 @@ jobs:
 
       - name: Generate checksum
         working-directory: output
-        run: md5 -r grpk-espg-4326.shp.zip >> checksums.txt
+        run: md5sum grpk-espg-4326.shp.zip >> checksums.txt
 
       - name: Upload to S3
         uses: ./.github/actions/rclone-sync
