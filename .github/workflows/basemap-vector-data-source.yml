@@ -36,17 +36,22 @@ jobs:
         with:
           sparse-checkout: .github
 
-      - name: Download house points data
-        run: wget -nv "https://www.registrucentras.lt/aduomenys/?byla=adr_gra_adresai_LT.zip" -O points.zip
+      - name: Install csvkit for CSV manipulation
+        run: apt-get update && apt-get install -y csvkit
 
-      - name: Unzip house points data
-        run: unzip points.zip
+      - name: Convert address information to GPKG
+        run: ogr2ogr -f GPKG addresses.gpkg "https://www.registrucentras.lt/aduomenys/?byla=adr_stat_lr.csv" -nln info
 
-      - name: Convert house points to GPKG
-        run: ogr2ogr -f GPKG addresses.gpkg adr_gra_adresai_LT.json -nln points
-
-      - name: Append address information to GPKG
-        run: ogr2ogr -append -f GPKG addresses.gpkg "https://www.registrucentras.lt/aduomenys/?byla=adr_stat_lr.csv" -nln info
+      # The complete geojson data with all municipalities is updated only once a year. However,
+      # when downloaded per municipality, it is updated every month. To ensure we have the latest data,
+      # this step pulls data for each municipality individually.
+      - name: Convert each municipality's geojson data to GPKG format
+        run: |
+          curl -sf "https://www.registrucentras.lt/aduomenys/?byla=adr_savivaldybes.csv" | csvcut -d "|" -c "SAV_KODAS" | tail -n +2 | while read -r code; do
+            echo "Converting https://www.registrucentras.lt/aduomenys/?byla=adr_gra_$code.json"
+          
+            ogr2ogr -append -f GPKG addresses.gpkg "https://www.registrucentras.lt/aduomenys/?byla=adr_gra_$code.json" -nln points
+          done
 
       - name: Create output directory
         run: mkdir output
