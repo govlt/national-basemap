@@ -28,7 +28,7 @@ jobs:
     if: ${{ inputs.source == 'all' || inputs.source == 'address-registry' }}
     environment:
       name: basemap-vector-datasource-address-registry
-      url: https://cdn.startupgov.lt/tiles/vector/sources/address-registry/house-numbers-espg-4326.shp.zip
+      url: https://cdn.startupgov.lt/tiles/vector/sources/address-registry/houses-espg-4326.gpkg.zip
     steps:
       # Needed only for GitHub action for uploading to S3
       - name: Checkout repository
