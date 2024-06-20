@@ -30,14 +30,14 @@ jobs:
       name: basemap-vector-datasource-address-registry
       url: https://cdn.startupgov.lt/tiles/vector/sources/address-registry/houses-espg-4326.gpkg.zip
     steps:
+      - name: Install required packages
+        run: apt-get update && apt-get install -y git csvkit md5
+
       # Needed only for GitHub action for uploading to S3
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           sparse-checkout: .github
-
-      - name: Install csvkit for CSV manipulation
-        run: apt-get update && apt-get install -y csvkit
 
       - name: Convert address information to GPKG
         run: ogr2ogr -f GPKG addresses.gpkg "https://www.registrucentras.lt/aduomenys/?byla=adr_stat_lr.csv" -nln info
@@ -93,6 +93,15 @@ jobs:
       name: basemap-vector-datasource-grpk
       url: https://cdn.startupgov.lt/tiles/vector/sources/grpk/grpk-espg-4326.shp.zip
     steps:
+      - name: Install required packages
+        run: apt-get update && apt-get install -y git md5
+
+      # Needed only for GitHub action for uploading to S3
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github
+
       - name: Download GRPK from GeoPortal
         run: wget -nv https://www.geoportal.lt/download/opendata/GRPK/GRPK_Open_SHP.zip
 
@@ -110,7 +119,7 @@ jobs:
         run: md5 -r grpk-espg-4326.shp.zip >> checksums.txt
 
       - name: Upload to S3
-        uses: govlt/national-basemap/.github/actions/rclone-sync@main
+        uses: ./.github/actions/rclone-sync
         with:
           s3-endpoint: ${{ vars.S3_ENDPOINT }}
           s3-access-key-id: ${{ secrets.S3_ACCESS_KEY_ID }}
