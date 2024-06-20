@@ -38,7 +38,7 @@ jobs:
           curl -sf "https://www.registrucentras.lt/aduomenys/?byla=adr_savivaldybes.csv" | csvcut -d "|" -c "SAV_KODAS" | tail -n +2 | while read -r code; do
             echo "Converting https://www.registrucentras.lt/aduomenys/?byla=adr_gra_$code.json"
           
-            ogr2ogr -f GPKG addresses.gpkg "https://www.registrucentras.lt/aduomenys/?byla=adr_gra_$code.json" -nln points
+            ogr2ogr -append -f GPKG addresses.gpkg "https://www.registrucentras.lt/aduomenys/?byla=adr_gra_$code.json" -nln points
           done
 
       - name: Create output directory
