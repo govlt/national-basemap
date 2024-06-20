@@ -59,6 +59,10 @@ jobs:
       - name: Generate houses GPKG in EPSG:4326
         run: ogr2ogr -f GPKG -t_srs EPSG:4326 -xyRes "0.0000001" -sql "SELECT points.fid, points.geom, points.AOB_KODAS, info.sav_kodas, points.gyv_kodas, points.gat_kodas, info.nr, info.pasto_kodas, info.korpuso_nr FROM points INNER JOIN info USING (AOB_KODAS) ORDER BY AOB_KODAS" output/houses-espg-4326.gpkg.zip addresses.gpkg -nln houses
 
+      - name: Generate checksum
+        working-directory: output
+        run: md5 -r houses-espg-4326.gpkg.zip >> checksums.txt
+
       - name: Upload to S3
         uses: ./.github/actions/rclone-sync
         with:
@@ -100,6 +104,10 @@ jobs:
 
       - name: Transform to EPSG:4326
         run: ogr2ogr -f "ESRI Shapefile" -lco ENCODING=UTF-8 -t_srs EPSG:4326 output/grpk-espg-4326.shp.zip GRPK_Open_SHP
+
+      - name: Generate checksum
+        working-directory: output
+        run: md5 -r grpk-espg-4326.shp.zip >> checksums.txt
 
       - name: Upload to S3
         uses: govlt/national-basemap/.github/actions/rclone-sync@main
