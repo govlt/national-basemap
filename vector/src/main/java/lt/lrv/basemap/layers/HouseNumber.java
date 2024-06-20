@@ -11,7 +11,7 @@ import lt.lrv.basemap.openmaptiles.OpenMapTilesSchema;
 
 import java.util.List;
 
-public class HouseNumber implements OpenMapTilesSchema.Housenumber, ForwardingProfile.FeaturePostProcessor {
+public class HouseNumber implements OpenMapTilesSchema.Housenumber, ForwardingProfile.LayerPostProcesser {
 
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {

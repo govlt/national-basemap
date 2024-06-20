@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 
 import static com.onthegomap.planetiler.util.LanguageUtils.nullIfEmpty;
 
-public class Waterway implements OpenMapTilesSchema.Waterway, ForwardingProfile.FeaturePostProcessor {
+public class Waterway implements OpenMapTilesSchema.Waterway, ForwardingProfile.LayerPostProcesser {
 
     // We have rivers with names S-3, S-8. This regex filters out names ending with - and number
     static final Pattern PATTERN_NAMES_IGNORE = Pattern.compile("-\\d+$");

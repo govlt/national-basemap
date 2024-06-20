@@ -13,7 +13,7 @@ import lt.lrv.basemap.utils.LanguageUtils;
 
 import java.util.List;
 
-public class Boundary implements OpenMapTilesSchema.Boundary, ForwardingProfile.FeaturePostProcessor {
+public class Boundary implements OpenMapTilesSchema.Boundary, ForwardingProfile.LayerPostProcesser {
 
     final PlanetilerConfig config;
 

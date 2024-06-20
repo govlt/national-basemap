@@ -12,7 +12,7 @@ import lt.lrv.basemap.openmaptiles.OpenMapTilesSchema;
 
 import java.util.List;
 
-public class Building implements OpenMapTilesSchema.Building, ForwardingProfile.FeaturePostProcessor {
+public class Building implements OpenMapTilesSchema.Building, ForwardingProfile.LayerPostProcesser {
 
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
