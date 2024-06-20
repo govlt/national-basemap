@@ -1,5 +1,5 @@
 name: "Basemap vector: sync data sources"
-run-name: "Basemap vector: sync data sources ${{ inputs.source }}"
+run-name: "Basemap vector: sync data sources (${{ inputs.source }})"
 
 on:
   workflow_dispatch:
