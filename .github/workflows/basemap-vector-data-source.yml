@@ -25,7 +25,7 @@ jobs:
           sparse-checkout: .github
 
       - name: Install csvkit for CSV manipulation
-        run: pip install csvkit
+        run: apt-get install -y csvkit
 
       - name: Convert address information to GPKG
         run: ogr2ogr -f GPKG addresses.gpkg "https://www.registrucentras.lt/aduomenys/?byla=adr_stat_lr.csv" -nln info
