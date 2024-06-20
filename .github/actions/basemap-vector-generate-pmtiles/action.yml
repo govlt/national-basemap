@@ -17,8 +17,8 @@ runs:
       shell: bash
       run: |
         grpk_etag=$(curl -sI https://cdn.startupgov.lt/tiles/vector/sources/grpk/grpk-espg-4326.shp.zip | grep -i ETag | awk '{print $2}' | tr -d '\r' | tr -d '"')
-        house_numbers_etag=$(curl -sI https://cdn.startupgov.lt/tiles/vector/sources/address-registry/house-numbers-espg-4326.shp.zip | grep -i ETag | awk '{print $2}' | tr -d '\r' | tr -d '"')
-        combined_etag="${grpk_etag}|${house_numbers_etag}"
+        houses_etag=$(curl -sI https://cdn.startupgov.lt/tiles/vector/sources/address-registry/houses-espg-4326.gpkg.zip | grep -i ETag | awk '{print $2}' | tr -d '\r' | tr -d '"')
+        combined_etag="${grpk_etag}|${houses_etag}"
         
         echo "key=vector-basemap-data-sources-${combined_etag}" >> "$GITHUB_OUTPUT"
 
