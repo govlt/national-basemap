@@ -28,7 +28,7 @@ public class Park implements OpenMapTilesSchema.Park, ForwardingProfile.LayerPos
             switch (sf.getSourceLayer() ) {
                 case "nac_parkai" -> addPolygon("national_park",7, sf.getString("pavadinima"), 1, features);
                 case "reg_parkai" -> addPolygon("national_park", 9,sf.getString("pavadinima"), 2, features);
-                case "valstybiniai_draustiniai" -> addPolygon("protected_area", 10,sf.getString("pavadinima"), 3, features);
+                case "valstybiniai_draustiniai" -> addPolygon("protected_area", 11,sf.getString("pavadinima"), 3, features);
                 case "valstybiniai_rezervatai" -> addPolygon("protected_area", 9,sf.getString("pavadinima"), 4, features);
             }
         }
