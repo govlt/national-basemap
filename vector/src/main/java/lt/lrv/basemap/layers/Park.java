@@ -9,6 +9,7 @@ import com.onthegomap.planetiler.reader.SourceFeature;
 import lt.lrv.basemap.constants.Layers;
 import lt.lrv.basemap.constants.Source;
 import lt.lrv.basemap.openmaptiles.OpenMapTilesSchema;
+import lt.lrv.basemap.utils.LanguageUtils;
 
 import java.util.List;
 
@@ -20,12 +21,25 @@ public class Park implements OpenMapTilesSchema.Park, ForwardingProfile.LayerPos
             var code = sf.getString("GKODAS");
 
             if (code.equals("uur14")) {
-                features.polygon(this.name())
-                        .setBufferPixels(BUFFER_SIZE)
-                        .setAttr(Fields.CLASS, "public_park")
-                        .setMinZoom(12);
+                addPolygon("public_park", 9, sf.getString("VARDAS"), 3, features);
             }
         }
+        if (sf.getSource().equals(Source.STVK) && sf.canBePolygon()) {
+            switch (sf.getSourceLayer() ) {
+                case "nac_parkai" -> addPolygon("national_park",8, sf.getString("pavadinima"), 1, features);
+                case "reg_parkai" -> addPolygon("national_park", 9,sf.getString("pavadinima"), 2, features);
+            }
+        }
+    }
+
+    public void addPolygon(String clazz, int minZoom, String name, int sortKey, FeatureCollector features) {
+
+        features.polygon(this.name())
+            .setBufferPixels(BUFFER_SIZE)
+            .setAttr(Fields.CLASS, clazz)
+            .putAttrs(LanguageUtils.getNames(name))
+            .setMinZoom(minZoom)
+            .setSortKeyDescending(sortKey);
     }
 
     @Override
