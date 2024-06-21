@@ -54,6 +54,12 @@ jobs:
           source-path: vector/data/output
           destination-path: /tiles/vector/pmtiles
 
+      - name: Upload PMTiles to GitHub release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: vector/data/output/lithuania.pmtiles
+
   publish-basemap-vector-martin-docker-image:
     name: Martin docker image build and push
     runs-on: ubuntu-latest
@@ -166,6 +172,12 @@ jobs:
           s3-secret-access-key: ${{ secrets.s3-secret-access-key }}
           source-path: tiles.zip
           destination-path: /tiles/vector/mvt
+
+      - name: Upload tiles to GitHub release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: tiles.zip
 
   build-basemap-vector-github-pages:
     name: Build GitHub pages
