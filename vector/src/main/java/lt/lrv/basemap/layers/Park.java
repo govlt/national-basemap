@@ -21,13 +21,15 @@ public class Park implements OpenMapTilesSchema.Park, ForwardingProfile.LayerPos
             var code = sf.getString("GKODAS");
 
             if (code.equals("uur14")) {
-                addPolygon("public_park", 9, sf.getString("VARDAS"), 3, features);
+                addPolygon("public_park", 9, sf.getString("VARDAS"), 5, features);
             }
         }
         if (sf.getSource().equals(Source.STVK) && sf.canBePolygon()) {
             switch (sf.getSourceLayer() ) {
                 case "nac_parkai" -> addPolygon("national_park",8, sf.getString("pavadinima"), 1, features);
                 case "reg_parkai" -> addPolygon("national_park", 9,sf.getString("pavadinima"), 2, features);
+                case "valstybiniai_draustiniai" -> addPolygon("protected_area", 10,sf.getString("pavadinima"), 3, features);
+                case "valstybiniai_rezervatai" -> addPolygon("protected_area", 9,sf.getString("pavadinima"), 4, features);
             }
         }
     }
