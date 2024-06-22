@@ -13,6 +13,8 @@ import lt.lrv.basemap.utils.LanguageUtils;
 
 import java.util.List;
 
+import static lt.lrv.basemap.layers.Park.FieldValues.*;
+
 public class Park implements OpenMapTilesSchema.Park, ForwardingProfile.LayerPostProcesser {
 
     @Override
@@ -21,27 +23,27 @@ public class Park implements OpenMapTilesSchema.Park, ForwardingProfile.LayerPos
             var code = sf.getString("GKODAS");
 
             if (code.equals("uur14")) {
-                addPolygon("public_park", 9, sf.getString("VARDAS"), 5, features);
+                addPolygon(CLASS_PUBLIC_PARK, 9, sf.getString("VARDAS"), 5, features);
             }
-        }
-        if (sf.getSource().equals(Source.STVK) && sf.canBePolygon()) {
-            switch (sf.getSourceLayer() ) {
-                case "nac_parkai" -> addPolygon("national_park",7, sf.getString("pavadinima"), 1, features);
-                case "reg_parkai" -> addPolygon("national_park", 9,sf.getString("pavadinima"), 2, features);
-                case "valstybiniai_draustiniai" -> addPolygon("protected_area", 11,sf.getString("pavadinima"), 3, features);
-                case "valstybiniai_rezervatai" -> addPolygon("protected_area", 9,sf.getString("pavadinima"), 4, features);
+        } else if (sf.getSource().equals(Source.STVK) && sf.canBePolygon()) {
+            var name = sf.getString("pavadinima");
+
+            switch (sf.getSourceLayer()) {
+                case "nac_parkai" -> addPolygon(CLASS_NATIONAL_PARK, 7, name, 1, features);
+                case "reg_parkai" -> addPolygon(CLASS_NATIONAL_PARK, 9, name, 2, features);
+                case "valstybiniai_draustiniai" -> addPolygon(CLASS_PROTECTED_AREA, 11, name, 3, features);
+                case "valstybiniai_rezervatai" -> addPolygon(CLASS_PROTECTED_AREA, 9, name, 4, features);
             }
         }
     }
 
     public void addPolygon(String clazz, int minZoom, String name, int sortKey, FeatureCollector features) {
-
         features.polygon(this.name())
-            .setBufferPixels(BUFFER_SIZE)
-            .setAttr(Fields.CLASS, clazz)
-            .putAttrs(LanguageUtils.getNames(name))
-            .setMinZoom(minZoom)
-            .setSortKeyDescending(sortKey);
+                .setBufferPixels(BUFFER_SIZE)
+                .setAttr(Fields.CLASS, clazz)
+                .putAttrs(LanguageUtils.getNames(name))
+                .setMinZoom(minZoom)
+                .setSortKeyDescending(sortKey);
     }
 
     @Override
@@ -51,5 +53,11 @@ public class Park implements OpenMapTilesSchema.Park, ForwardingProfile.LayerPos
         }
 
         return FeatureMerge.mergeNearbyPolygons(items, 3.125, 3.125, 0.5, 0.5);
+    }
+
+    static class FieldValues {
+        public static final String CLASS_PUBLIC_PARK = "public_park";
+        public static final String CLASS_NATIONAL_PARK = "national_park";
+        public static final String CLASS_PROTECTED_AREA = "protected_area";
     }
 }
