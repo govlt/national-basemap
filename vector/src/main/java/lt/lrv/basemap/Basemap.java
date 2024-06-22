@@ -44,6 +44,11 @@ public class Basemap extends ForwardingProfile {
                         Path.of("data", "sources", "houses-espg-4326.gpkg.zip"),
                         "https://cdn.startupgov.lt/tiles/vector/sources/address-registry/houses-espg-4326.gpkg.zip"
                 )
+                .addShapefileSource(
+                        Source.STVK,
+                        Path.of("data", "sources", "stvk-espg-4326.shp.zip"),
+                        "https://cdn.startupgov.lt/tiles/poc/stvk/stvk.shp.zip"
+                )
                 .overwriteOutput(Path.of("data", "output", "lithuania.pmtiles"))
                 .run();
 
@@ -79,6 +84,12 @@ public class Basemap extends ForwardingProfile {
                         Source.AR,
                         new Layer[]{
                                 new HouseNumber()
+                        }
+                ),
+                new SourceProcessors(
+                        Source.STVK,
+                        new Layer[]{
+                                new Park()
                         }
                 )
         };
