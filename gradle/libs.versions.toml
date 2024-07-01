@@ -1,5 +1,5 @@
 [versions]
-planetiler = "0.8.0"
+planetiler = "0.8.1"
 geotools = "31.2"
 junit = "5.10.1"
 
