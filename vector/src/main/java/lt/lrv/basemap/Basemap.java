@@ -44,10 +44,10 @@ public class Basemap extends ForwardingProfile {
                         Path.of("data", "sources", "houses-espg-4326.gpkg.zip"),
                         "https://cdn.startupgov.lt/tiles/vector/sources/address-registry/houses-espg-4326.gpkg.zip"
                 )
-                .addShapefileSource(
+                .addGeoPackageSource(
                         Source.STVK,
-                        Path.of("data", "sources", "stvk-espg-4326.shp.zip"),
-                        "https://cdn.startupgov.lt/tiles/poc/stvk/stvk.shp.zip"
+                        Path.of("data", "sources", "stvk-4326.gpkg.zip"),
+                        "https://cdn.startupgov.lt/tiles/vector/sources/stvk/stvk-4326.gpkg.zip"
                 )
                 .overwriteOutput(Path.of("data", "output", "lithuania.pmtiles"))
                 .run();

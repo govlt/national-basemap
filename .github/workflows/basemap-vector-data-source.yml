@@ -12,6 +12,7 @@ on:
         options:
           - all
           - grpk
+          - stvk
           - address-registry
 
 permissions: { }
@@ -124,4 +125,52 @@ jobs:
           source-path: output
           destination-path: /tiles/vector/sources/grpk
 
+  basemap-vector-datasource-stvk:
+    name: STVK sync and transform
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    container: ghcr.io/osgeo/gdal:ubuntu-full-3.9.0
+    permissions: { }
+    concurrency: basemap-vector-datasource-stvk
+    if: ${{ inputs.source == 'all' || inputs.source == 'stvk' }}
+    environment:
+      name: basemap-vector-datasource-stvk
+      url: https://cdn.startupgov.lt/tiles/vector/sources/stvk/stvk-4326.gpkg.zip
+    steps:
+      # Needed only for GitHub action for uploading to S3
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github
+
+      - name: Create output directory
+        run: mkdir output
+
+      - name: Generate STVK GPKG in EPSG:4326
+        working-directory: output
+        run: |
+          ogr2ogr -t_srs EPSG:4326 -dsco DATETIME_FORMAT=UTC -nlt CONVERT_TO_LINEAR -dsco VERSION=1.4 stvk-4326.gpkg.zip \
+            WFS:"https://services.stvk.lt/wfs/stvk-services?SERVICE=WFS&REQUEST=GetCapabilities&VERSION=2.0.0" \
+            nac_parkai reg_parkai valstybiniai_rezervatai valstybiniai_draustiniai
+
+      - name: Generate checksum
+        working-directory: output
+        run: md5sum stvk-4326.gpkg.zip >> checksums.txt
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: stvk
+          path: output
+          if-no-files-found: error
+          compression-level: 0
+
+      - name: Upload to S3
+        uses: ./.github/actions/rclone-sync
+        with:
+          s3-endpoint: ${{ vars.S3_ENDPOINT }}
+          s3-access-key-id: ${{ secrets.S3_ACCESS_KEY_ID }}
+          s3-secret-access-key: ${{ secrets.S3_SECRET_ACCESS_KEY }}
+          source-path: output
+          destination-path: /tiles/vector/sources/stvk
 

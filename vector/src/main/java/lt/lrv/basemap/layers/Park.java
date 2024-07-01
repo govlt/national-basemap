@@ -26,7 +26,7 @@ public class Park implements OpenMapTilesSchema.Park, ForwardingProfile.LayerPos
                 addPolygon(CLASS_PUBLIC_PARK, 9, sf.getString("VARDAS"), 5, features);
             }
         } else if (sf.getSource().equals(Source.STVK) && sf.canBePolygon()) {
-            var name = sf.getString("pavadinima");
+            var name = sf.getString("pavadinimas");
 
             switch (sf.getSourceLayer()) {
                 case "nac_parkai" -> addPolygon(CLASS_NATIONAL_PARK, 7, name, 1, features);
