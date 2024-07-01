@@ -17,7 +17,7 @@ Apple Maps, and Mapbox, and is compliant with the OpenMapTiles standard.
 4. **Instant Style Changes**: Customize your maps on the fly with instant style changes. No more waiting for complete
    rebuilds as with raster based maps.
 5. **Precision and Accuracy**: Utilizing data from the Georeferenced Cadastral
-   Register ([GRPK](https://www.geoportal.lt/geoportal/web/georeferencinio-pagrindo-kadastras-grpk))
+   Register ([GRPK](https://www.geoportal.lt/geoportal/web/georeferencinio-pagrindo-kadastras-grpk)), [State Cadastre of Protected Areas](https://stvk.lt)
    and [address registry](https://www.registrucentras.lt/p/1187), vector basemap offers unparalleled accuracy.
 6. **Infrastructure Flexibility**: Seamlessly integrate vector basemap into your existing infrastructure with just one
    style url or self-host it independently. Enjoy the freedom to choose what works best for you.
@@ -167,6 +167,7 @@ The resulting basemap for Vilnius Old Town occupies less than 1 MB!
 flowchart TD
     grpk["GeoPortal.lt\n<a href="https://www.geoportal.lt/geoportal/web/georeferencinio-pagrindo-kadastras-grpk">Georeferenced Cadastral Register (GRPK)</a>"]-->transform-grpk["<a href="https://github.com/govlt/national-basemap/blob/main/.github/workflows/basemap-vector-data-source.yml">Transform</a>"]-->|"<a href="https://cdn.startupgov.lt/tiles/vector/sources/grpk/grpk-espg-4326.shp.zip">grpk-espg-4326.shp.zip</a>"|S3
     ar["State Enterprise Centre of Registers\n<a href="https://www.registrucentras.lt/p/1187">Address Registry</a>"]-->transform-ar["<a href="https://github.com/govlt/national-basemap/blob/main/.github/workflows/basemap-vector-data-source.yml">Transform</a>"]-->|"<a href="https://cdn.startupgov.lt/tiles/vector/sources/address-registry/houses-espg-4326.gpkg.zip">houses-espg-4326.gpkg.zip</a>"|S3
+    stvk["State service for protected areas\n<a href="https://stvk.lt/">State Cadastre of Protected Areas</a>"]-->transform-stvk["<a href="https://github.com/govlt/national-basemap/blob/main/.github/workflows/basemap-vector-data-source.yml">Transform</a>"]-->|"<a href="https://cdn.startupgov.lt/tiles/vector/sources/stvk/stvk-4326.gpkg.zip">stvk-4326.gpkg.zip</a>"|S3
 S3-->Planetiler-->PMTiles["PMTiles archive"]
 
 PMTiles-->s3-pmtiles["S3\n<a href="https://cdn.startupgov.lt/tiles/vector/pmtiles/lithuania.pmtiles">lithuania.pmtiles</a>"]
