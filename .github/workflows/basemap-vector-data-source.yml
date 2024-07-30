@@ -59,6 +59,18 @@ jobs:
         working-directory: output
         run: md5sum houses-espg-4326.gpkg.zip >> checksums.txt
 
+      - name: Download latest data source hashes
+        run: wget -O published-data-source-checksums.txt "https://cdn.biip.lt/tiles/vector/sources/address-registry/data-source-checksums.txt"
+
+      - name: Check that the files are the exact same
+        id: comparison
+        run: |
+          { 
+            echo 'diff<<EOF'
+            (diff -u 'published-data-source-checksums.txt' 'output/data-source-checksums.txt' || :)
+            echo 'EOF'
+          } >> "${GITHUB_OUTPUT}"
+
       - name: Upload to S3
         uses: ./.github/actions/rclone-sync
         with:
@@ -75,18 +87,6 @@ jobs:
           path: output
           if-no-files-found: error
           compression-level: 0
-
-      - name: Download latest data source hashes
-        run: wget -O published-data-source-checksums.txt "https://cdn.biip.lt/tiles/vector/sources/address-registry/data-source-checksums.txt"
-
-      - name: Check that the files are the exact same
-        id: comparison
-        run: |
-          { 
-            echo 'diff<<EOF'
-            (diff -u 'published-data-source-checksums.txt' 'output/data-source-checksums.txt' || :)
-            echo 'EOF'
-          } >> "${GITHUB_OUTPUT}"
 
   basemap-vector-datasource-grpk:
     name: GRPK sync and transform
@@ -128,15 +128,6 @@ jobs:
         working-directory: output
         run: md5sum grpk-espg-4326.shp.zip >> checksums.txt
 
-      - name: Upload to S3
-        uses: ./.github/actions/rclone-sync
-        with:
-          s3-endpoint: ${{ vars.S3_ENDPOINT }}
-          s3-access-key-id: ${{ secrets.S3_ACCESS_KEY_ID }}
-          s3-secret-access-key: ${{ secrets.S3_SECRET_ACCESS_KEY }}
-          source-path: output
-          destination-path: /tiles/vector/sources/grpk
-
       - name: Download latest data source hashes
         run: wget -O published-data-source-checksums.txt "https://cdn.biip.lt/tiles/vector/sources/grpk/data-source-checksums.txt"
 
@@ -148,6 +139,16 @@ jobs:
             (diff -u 'published-data-source-checksums.txt' 'output/data-source-checksums.txt' || :)
             echo 'EOF'
           } >> "${GITHUB_OUTPUT}"
+
+      - name: Upload to S3
+        uses: ./.github/actions/rclone-sync
+        with:
+          s3-endpoint: ${{ vars.S3_ENDPOINT }}
+          s3-access-key-id: ${{ secrets.S3_ACCESS_KEY_ID }}
+          s3-secret-access-key: ${{ secrets.S3_SECRET_ACCESS_KEY }}
+          source-path: output
+          destination-path: /tiles/vector/sources/grpk
+
 
   basemap-vector-datasource-stvk:
     name: STVK sync and transform
