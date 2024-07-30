@@ -43,7 +43,7 @@ jobs:
             scripts
 
       - name: Generate houses GPKG in EPSG:4326
-        run: sh scripts/create-houses-geopackage.sh
+        run: bash scripts/create-houses-geopackage.sh
 
       - name: Create output directory
         run: mkdir output
