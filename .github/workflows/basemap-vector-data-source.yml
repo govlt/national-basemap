@@ -38,27 +38,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          sparse-checkout: .github
+          sparse-checkout: |
+            .github
+            scripts
 
-      - name: Convert address information to GPKG
-        run: ogr2ogr -f GPKG addresses.gpkg "https://www.registrucentras.lt/aduomenys/?byla=adr_stat_lr.csv" -nln info
-
-      # The complete geojson data with all municipalities is updated only once a year. However,
-      # when downloaded per municipality, it is updated every month. To ensure we have the latest data,
-      # this step pulls data for each municipality individually.
-      - name: Convert each municipality's geojson data to GPKG format
-        run: |
-          curl -sf "https://www.registrucentras.lt/aduomenys/?byla=adr_savivaldybes.csv" | csvcut -d "|" -c "SAV_KODAS" | tail -n +2 | while read -r code; do
-            echo "Converting https://www.registrucentras.lt/aduomenys/?byla=adr_gra_$code.json"
-          
-            ogr2ogr -append -f GPKG addresses.gpkg "https://www.registrucentras.lt/aduomenys/?byla=adr_gra_$code.json" -nln points --config GDAL_HTTP_MAX_RETRY 10
-          done
+      - name: Generate houses GPKG in EPSG:4326
+        run: sh scripts/create-houses-geopackage.sh
 
       - name: Create output directory
         run: mkdir output
 
-      - name: Generate houses GPKG in EPSG:4326
-        run: ogr2ogr -f GPKG -t_srs EPSG:4326 -xyRes "0.0000001" -sql "SELECT points.fid, points.geom, points.AOB_KODAS, info.sav_kodas, points.gyv_kodas, points.gat_kodas, info.nr, info.pasto_kodas, info.korpuso_nr FROM points INNER JOIN info USING (AOB_KODAS) ORDER BY AOB_KODAS" output/houses-espg-4326.gpkg.zip addresses.gpkg -nln houses
+      - name: Copy files to output
+        run: |
+          cp houses-espg-4326.gpkg.zip output/houses-espg-4326.gpkg.zip
+          cp data-sources/data-source-checksums.txt output/data-source-checksums.txt
 
       - name: Generate checksum
         working-directory: output
