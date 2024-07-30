@@ -178,6 +178,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: tiles.zip
+          make_latest: true
 
   build-basemap-vector-github-pages:
     name: Build GitHub pages

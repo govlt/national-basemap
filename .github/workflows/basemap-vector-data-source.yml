@@ -30,6 +30,8 @@ jobs:
     environment:
       name: basemap-vector-datasource-address-registry
       url: https://cdn.startupgov.lt/tiles/vector/sources/address-registry/houses-espg-4326.gpkg.zip
+    outputs:
+      diff: ${{ steps.comparison.outputs.diff }}
     steps:
       - name: Install required packages
         run: apt-get update && apt-get install -y git csvkit
@@ -74,6 +76,18 @@ jobs:
           if-no-files-found: error
           compression-level: 0
 
+      - name: Download latest data source hashes
+        run: wget -O published-data-source-checksums.txt "https://cdn.biip.lt/tiles/vector/sources/address-registry/data-source-checksums.txt"
+
+      - name: Check that the files are the exact same
+        id: comparison
+        run: |
+          { 
+            echo 'diff<<EOF'
+            (diff -u 'published-data-source-checksums.txt' 'output/data-source-checksums.txt' || :)
+            echo 'EOF'
+          } >> "${GITHUB_OUTPUT}"
+
   basemap-vector-datasource-grpk:
     name: GRPK sync and transform
     runs-on: ubuntu-latest
@@ -86,6 +100,8 @@ jobs:
     environment:
       name: basemap-vector-datasource-grpk
       url: https://cdn.startupgov.lt/tiles/vector/sources/grpk/grpk-espg-4326.shp.zip
+    outputs:
+      diff: ${{ steps.comparison.outputs.diff }}
     steps:
       # Needed only for GitHub action for uploading to S3
       - name: Checkout repository
@@ -120,6 +136,18 @@ jobs:
           s3-secret-access-key: ${{ secrets.S3_SECRET_ACCESS_KEY }}
           source-path: output
           destination-path: /tiles/vector/sources/grpk
+
+      - name: Download latest data source hashes
+        run: wget -O published-data-source-checksums.txt "https://cdn.biip.lt/tiles/vector/sources/grpk/data-source-checksums.txt"
+
+      - name: Check that the files are the exact same
+        id: comparison
+        run: |
+          { 
+            echo 'diff<<EOF'
+            (diff -u 'published-data-source-checksums.txt' 'output/data-source-checksums.txt' || :)
+            echo 'EOF'
+          } >> "${GITHUB_OUTPUT}"
 
   basemap-vector-datasource-stvk:
     name: STVK sync and transform
@@ -170,3 +198,53 @@ jobs:
           source-path: output
           destination-path: /tiles/vector/sources/stvk
 
+
+  create-release:
+    name: Create release
+    if: ${{ needs.basemap-vector-datasource-address-registry.outputs.diff != '' || needs.basemap-vector-datasource-grpk.outputs.diff != '' }}
+    runs-on: ubuntu-latest
+    concurrency: basemap-vector-datasource-create-release
+    needs:
+      - basemap-vector-datasource-address-registry
+      - basemap-vector-datasource-grpk
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Get Token for creating new Release
+        id: get_workflow_token
+        uses: peter-murray/workflow-application-token-action@v3
+        with:
+          application_id: ${{ secrets.APPLICATION_ID }}
+          application_private_key: ${{ secrets.APPLICATION_PRIVATE_KEY }}
+          permissions: "contents:write"
+          revoke_token: true
+
+      - name: Get next version
+        uses: reecetech/version-increment@2024.4.4
+        id: version
+        with:
+          scheme: semver
+          increment: patch
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          make_latest: false
+          generate_release_notes: false
+          tag_name: ${{ steps.version.outputs.version }}
+          token: ${{ steps.get_workflow_token.outputs.token }}
+          body: |
+            Automated release after data source update
+            
+            ### GRPK
+            ```
+            ${{ needs.basemap-vector-datasource-grpk.outputs.diff }}
+            ```
+            
+            ### Address registry
+            ```
+            ${{ needs.basemap-vector-datasource-address-registry.outputs.diff }}
+            ```
