@@ -3,7 +3,7 @@ run-name: "Basemap vector: sync ${{ inputs.source }} data sources (${{ github.ev
 
 on:
   schedule:
-    - cron: "25 5 * * *"
+    - cron: "35 5 * * *"
   workflow_dispatch:
     inputs:
       source:
