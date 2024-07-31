@@ -1,7 +1,9 @@
 name: "Basemap vector: sync data sources"
-run-name: "Basemap vector: sync data sources (${{ inputs.source }})"
+run-name: "Basemap vector: sync ${{ inputs.source }} data sources (${{ github.event_name }})"
 
 on:
+  schedule:
+    - cron: "25 5 * * *"
   workflow_dispatch:
     inputs:
       source:
@@ -26,7 +28,7 @@ jobs:
     permissions:
       contents: read
     concurrency: basemap-vector-datasource-address-registry
-    if: ${{ inputs.source == 'all' || inputs.source == 'address-registry' }}
+    if: ${{ inputs.source == 'all' || inputs.source == 'address-registry' || github.event_name == 'schedule' }}
     environment:
       name: basemap-vector-datasource-address-registry
       url: https://cdn.startupgov.lt/tiles/vector/sources/address-registry/houses-espg-4326.gpkg.zip
@@ -73,6 +75,7 @@ jobs:
 
       - name: Upload to S3
         uses: ./.github/actions/rclone-sync
+        if: ${{ github.event_name != 'schedule' || steps.comparison.outputs.diff != '' }}
         with:
           s3-endpoint: ${{ vars.S3_ENDPOINT }}
           s3-access-key-id: ${{ secrets.S3_ACCESS_KEY_ID }}
@@ -96,7 +99,7 @@ jobs:
     container: ghcr.io/osgeo/gdal:ubuntu-full-3.9.1
     permissions: { }
     concurrency: basemap-vector-datasource-grpk
-    if: ${{ inputs.source == 'all' || inputs.source == 'grpk' }}
+    if: ${{ inputs.source == 'all' || inputs.source == 'grpk' || github.event_name == 'schedule' }}
     environment:
       name: basemap-vector-datasource-grpk
       url: https://cdn.startupgov.lt/tiles/vector/sources/grpk/grpk-espg-4326.shp.zip
@@ -142,6 +145,7 @@ jobs:
 
       - name: Upload to S3
         uses: ./.github/actions/rclone-sync
+        if: ${{ github.event_name != 'schedule' || steps.comparison.outputs.diff != '' }}
         with:
           s3-endpoint: ${{ vars.S3_ENDPOINT }}
           s3-access-key-id: ${{ secrets.S3_ACCESS_KEY_ID }}
