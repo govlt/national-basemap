@@ -122,7 +122,7 @@ jobs:
         run: md5sum GRPK_Open_SHP.zip >> output/data-source-checksums.txt
 
       - name: Unzip GRPK data source
-        run: unzip GRPK_Open_SHP.zip -x "INFO_/*" -d GRPK_Open_SHP && rm GRPK_Open_SHP.zip
+        run: unzip -j GRPK_Open_SHP.zip -x "*.txt" -d GRPK_Open_SHP && rm GRPK_Open_SHP.zip
 
       - name: Transform to EPSG:4326
         run: ogr2ogr -f "ESRI Shapefile" -lco ENCODING=UTF-8 -t_srs EPSG:4326 output/grpk-espg-4326.shp.zip GRPK_Open_SHP
