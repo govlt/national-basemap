@@ -12,8 +12,6 @@ public class Layers {
     public static final String GRPK_RIBOS = "RIBOS";
     public static final String GRPK_VIETOV_P = "VIETOV_P";
     public static final String GRPK_VIETOV_T = "VIETOV_T";
-    public static final String GRPK_ELEKTR_L = "ELEKTR_L";
-    public static final String GRPK_ELEKTR_T = "ELEKTR_T";
 
     private Layers() {
     }
