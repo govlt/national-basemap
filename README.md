@@ -165,16 +165,16 @@ The resulting basemap for Vilnius Old Town occupies less than 1 MB!
 
 ```mermaid
 flowchart TD
-    grpk["GeoPortal.lt\n<a href="https://www.geoportal.lt/geoportal/web/georeferencinio-pagrindo-kadastras-grpk">Georeferenced Cadastral Register (GRPK)</a>"]-->transform-grpk["<a href="https://github.com/govlt/national-basemap/blob/main/.github/workflows/basemap-vector-data-source.yml">Transform</a>"]-->|"<a href="https://cdn.startupgov.lt/tiles/vector/sources/grpk/grpk-espg-4326.shp.zip">grpk-espg-4326.shp.zip</a>"|S3
-    ar["State Enterprise Centre of Registers\n<a href="https://www.registrucentras.lt/p/1187">Address Registry</a>"]-->transform-ar["<a href="https://github.com/govlt/national-basemap/blob/main/.github/workflows/basemap-vector-data-source.yml">Transform</a>"]-->|"<a href="https://cdn.startupgov.lt/tiles/vector/sources/address-registry/houses-espg-4326.gpkg.zip">houses-espg-4326.gpkg.zip</a>"|S3
-    stvk["State service for protected areas\n<a href="https://stvk.lt/">State Cadastre of Protected Areas</a>"]-->transform-stvk["<a href="https://github.com/govlt/national-basemap/blob/main/.github/workflows/basemap-vector-data-source.yml">Transform</a>"]-->|"<a href="https://cdn.startupgov.lt/tiles/vector/sources/stvk/stvk-4326.gpkg.zip">stvk-4326.gpkg.zip</a>"|S3
+    grpk["GeoPortal.lt<br><a href="https://www.geoportal.lt/geoportal/web/georeferencinio-pagrindo-kadastras-grpk">Georeferenced Cadastral Register (GRPK)</a>"]-->transform-grpk["<a href="https://github.com/govlt/national-basemap/blob/main/.github/workflows/basemap-vector-data-source.yml">Transform</a>"]-->|"<a href="https://cdn.startupgov.lt/tiles/vector/sources/grpk/grpk-espg-4326.shp.zip">grpk-espg-4326.shp.zip</a>"|S3
+    ar["State Enterprise Centre of Registers<br><a href="https://www.registrucentras.lt/p/1187">Address Registry</a>"]-->transform-ar["<a href="https://github.com/govlt/national-basemap/blob/main/.github/workflows/basemap-vector-data-source.yml">Transform</a>"]-->|"<a href="https://cdn.startupgov.lt/tiles/vector/sources/address-registry/houses-espg-4326.gpkg.zip">houses-espg-4326.gpkg.zip</a>"|S3
+    stvk["State service for protected areas<br><a href="https://stvk.lt/">State Cadastre of Protected Areas</a>"]-->transform-stvk["<a href="https://github.com/govlt/national-basemap/blob/main/.github/workflows/basemap-vector-data-source.yml">Transform</a>"]-->|"<a href="https://cdn.startupgov.lt/tiles/vector/sources/stvk/stvk-4326.gpkg.zip">stvk-4326.gpkg.zip</a>"|S3
 S3-->Planetiler-->PMTiles["PMTiles archive"]
 
-PMTiles-->s3-pmtiles["S3\n<a href="https://cdn.startupgov.lt/tiles/vector/pmtiles/lithuania.pmtiles">lithuania.pmtiles</a>"]
+PMTiles-->s3-pmtiles["S3<br><a href="https://cdn.startupgov.lt/tiles/vector/pmtiles/lithuania.pmtiles">lithuania.pmtiles</a>"]
 
 PMTiles-->mvt["Mapbox Vector Tiles"]
-mvt-->tiles["S3\n<a href="https://cdn.startupgov.lt/tiles/vector/mvt/tiles.zip">tiles.zip</a>"]
-mvt-->docker-image["Docker image\n<a href="https://github.com/govlt/national-basemap/pkgs/container/national-basemap-vector">national-basemap-vector</a>"]
+mvt-->tiles["S3<br><a href="https://cdn.startupgov.lt/tiles/vector/mvt/tiles.zip">tiles.zip</a>"]
+mvt-->docker-image["Docker image<br><a href="https://github.com/govlt/national-basemap/pkgs/container/national-basemap-vector">national-basemap-vector</a>"]
 ```
 
 ## Getting Started Development
