@@ -16,8 +16,8 @@ runs:
       id: data-source-cache-key
       shell: bash
       run: |
-        grpk_etag=$(curl -sI https://cdn.startupgov.lt/tiles/vector/sources/grpk/grpk-espg-4326.shp.zip | grep -i ETag | awk '{print $2}' | tr -d '\r' | tr -d '"')
-        houses_etag=$(curl -sI https://cdn.startupgov.lt/tiles/vector/sources/address-registry/houses-espg-4326.gpkg.zip | grep -i ETag | awk '{print $2}' | tr -d '\r' | tr -d '"')
+        grpk_etag=$(curl -sI https://cdn.biip.lt/tiles/vector/sources/grpk/grpk-espg-4326.shp.zip | grep -i ETag | awk '{print $2}' | tr -d '\r' | tr -d '"')
+        houses_etag=$(curl -sI https://cdn.biip.lt/tiles/vector/sources/address-registry/houses-espg-4326.gpkg.zip | grep -i ETag | awk '{print $2}' | tr -d '\r' | tr -d '"')
         combined_etag="${grpk_etag}|${houses_etag}"
         
         echo "key=vector-basemap-data-sources-${combined_etag}" >> "$GITHUB_OUTPUT"
