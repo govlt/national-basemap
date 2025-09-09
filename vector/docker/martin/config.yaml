@@ -12,3 +12,9 @@ sprites:
 
 fonts:
   - /opt/vector/fonts
+
+styles:
+  sources:
+    bright: /opt/vector/styles/bright/style.json
+    openmaptiles: /opt/vector/styles/openmaptiles/style.json
+    positron: /opt/vector/styles/positron/style.json

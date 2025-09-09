@@ -8,6 +8,8 @@ services:
     pull_policy: build
     networks:
       - internal
+    environment:
+      - HOST=http://localhost:3000
     restart: unless-stopped
     ports:
       - 3000:3000
