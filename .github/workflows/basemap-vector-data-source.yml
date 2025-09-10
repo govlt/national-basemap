@@ -31,7 +31,7 @@ jobs:
     if: ${{ inputs.source == 'all' || inputs.source == 'address-registry' || github.event_name == 'schedule' }}
     environment:
       name: basemap-vector-datasource-address-registry
-      url: https://cdn.startupgov.lt/tiles/vector/sources/address-registry/houses-espg-4326.gpkg.zip
+      url: https://cdn.biip.lt/tiles/vector/sources/address-registry/houses-espg-4326.gpkg.zip
     outputs:
       diff: ${{ steps.comparison.outputs.diff }}
     steps:
@@ -102,7 +102,7 @@ jobs:
     if: ${{ inputs.source == 'all' || inputs.source == 'grpk' || github.event_name == 'schedule' }}
     environment:
       name: basemap-vector-datasource-grpk
-      url: https://cdn.startupgov.lt/tiles/vector/sources/grpk/grpk-espg-4326.shp.zip
+      url: https://cdn.biip.lt/tiles/vector/sources/grpk/grpk-espg-4326.shp.zip
     outputs:
       diff: ${{ steps.comparison.outputs.diff }}
     steps:
@@ -164,7 +164,7 @@ jobs:
     if: ${{ inputs.source == 'all' || inputs.source == 'stvk' }}
     environment:
       name: basemap-vector-datasource-stvk
-      url: https://cdn.startupgov.lt/tiles/vector/sources/stvk/stvk-4326.gpkg.zip
+      url: https://cdn.biip.lt/tiles/vector/sources/stvk/stvk-4326.gpkg.zip
     steps:
       # Needed only for GitHub action for uploading to S3
       - name: Checkout repository

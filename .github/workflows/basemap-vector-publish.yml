@@ -26,7 +26,7 @@ jobs:
       stable: true
       style-source-url: https://vector.startupgov.lt/tile.json
       style-base-url: https://basemap.startupgov.lt
-      pmtiles-url: https://cdn.startupgov.lt/tiles/vector/pmtiles/lithuania.pmtiles
+      pmtiles-url: https://cdn.biip.lt/tiles/vector/pmtiles/lithuania.pmtiles
     secrets:
       cloudflare-api-token: ${{ secrets.CLOUDFLARE_PAGES_API_TOKEN }}
       cloudflare-account-id: ${{ secrets.CLOUDFLARE_PAGES_ACCOUNT_ID }}

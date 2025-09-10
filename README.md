@@ -33,8 +33,9 @@ Apple Maps, and Mapbox, and is compliant with the OpenMapTiles standard.
 10. **Completely Open Source and Free**: Join our community of contributors and users in shaping the future of mapping.
     Everything, from the basemap building process to its usage, is open-source and free of restrictions.
 
-[^1]: 20 KB is gzipped average vector tile size is calculated using weighted average based on OSM traffic. It wouldn't
-be fair to take average of all tiles, because tile sizes of sea are less than 1 KB.
+[^1]:
+    20 KB is gzipped average vector tile size is calculated using weighted average based on OSM traffic. It wouldn't
+    be fair to take average of all tiles, because tile sizes of sea are less than 1 KB.
 
 ## Usage
 
@@ -48,16 +49,16 @@ Here's a basic example using OpenLayers and the [ol-mapbox-style](https://github
 library:
 
 ```js
-import Map from 'ol/Map.js';
-import { MapboxVectorLayer } from 'ol-mapbox-style';
+import Map from "ol/Map.js";
+import { MapboxVectorLayer } from "ol-mapbox-style";
 
 const map = new Map({
-	target: 'map',
-	layers: [
-		new MapboxVectorLayer({
-			styleUrl: 'https://basemap.startupgov.lt/vector/styles/bright/style.json'
-		})
-	]
+  target: "map",
+  layers: [
+    new MapboxVectorLayer({
+      styleUrl: "https://basemap.biip.lt/styles/bright/style.json",
+    }),
+  ],
 });
 ```
 
@@ -69,9 +70,9 @@ library you prefer.
 Currently, the following styles are available:
 
 - **Topographic (Light)**: Offers detailed data representation. Style
-  URL: `https://basemap.startupgov.lt/vector/styles/bright/style.json` (based
+  URL: `https://basemap.biip.lt/styles/bright/style.json` (based
   on [OSM Bright](https://openmaptiles.org/styles/#osm-bright)).
-- **Gray**: Provides a subtle basemap. Style URL: `https://basemap.startupgov.lt/vector/styles/positron/style.json` (
+- **Gray**: Provides a subtle basemap. Style URL: `https://basemap.biip.lt/styles/positron/style.json` (
   based on [Positron](https://openmaptiles.org/styles/#positron)).
 
 You can explore these styles and their features using [Maputnik](https://maplibre.org/maputnik/#6/55.59/23.54). These
@@ -87,9 +88,9 @@ If you need to use vector basemap offline or prefer to avoid using a tile server
 archives.
 
 The latest stable basemap PMTiles archive is hosted
-at `https://cdn.startupgov.lt/tiles/vector/pmtiles/lithuania.pmtiles`. You can
+at `https://cdn.biip.lt/tiles/vector/pmtiles/lithuania.pmtiles`. You can
 inspect it using
-the [PMTiles viewer](https://protomaps.github.io/PMTiles/?url=https%3A%2F%2Fcdn.startupgov.lt%2Ftiles%2Fvector%2Fpmtiles%2Flithuania.pmtiles).
+the [PMTiles viewer](https://protomaps.github.io/PMTiles/?url=https%3A%2F%2Fcdn.biip.lt%2Ftiles%2Fvector%2Fpmtiles%2Flithuania.pmtiles).
 
 For instructions on reading PMTiles directly, refer to
 the [PMTiles in the browser](https://docs.protomaps.com/pmtiles/maplibre) documentation.
@@ -114,11 +115,15 @@ services:
     restart: unless-stopped
     environment:
       # Change to your host
-      HOST: https://vector.startupgov.lt
+      HOST: https://vector.biip.lt
     ports:
       - "80:80"
     healthcheck:
-      test: [ "CMD-SHELL", "wget --no-verbose --tries=1 --spider http://127.0.0.1:80/health || exit 1" ]
+      test:
+        [
+          "CMD-SHELL",
+          "wget --no-verbose --tries=1 --spider http://127.0.0.1:80/health || exit 1",
+        ]
       interval: 5s
       timeout: 3s
       start_period: 5s
@@ -127,7 +132,7 @@ services:
 
 ### PMTiles
 
-Periodically download the PMTiles archive from `https://cdn.startupgov.lt/tiles/vector/pmtiles/lithuania.pmtiles` to
+Periodically download the PMTiles archive from `https://cdn.biip.lt/tiles/vector/pmtiles/lithuania.pmtiles` to
 your own S3
 or file storage and utilize it as needed.
 
@@ -139,7 +144,7 @@ MapBox vector tile files for the entire national basemap of Lithuania!
 
 To get started:
 
-1. Download the [tiles archive](https://cdn.startupgov.lt/tiles/vector/mvt/tiles.zip).
+1. Download the [tiles archive](https://cdn.biip.lt/tiles/vector/mvt/tiles.zip).
 2. Upload the extracted files to your preferred file storage, such as AWS S3.
 3. Alternatively, use a reverse proxy server like Caddy, Apache, or Nginx to serving static files.
 
@@ -156,7 +161,7 @@ This tool allows you to specify either a bounding box or a shape for extraction.
 For example, if you want to extract the basemap for Vilnius Old Town, you can use the following command:
 
 ```bash
-pmtiles extract https://cdn.startupgov.lt/tiles/vector/pmtiles/lithuania.pmtiles vilnius-old-town.pmtiles --bbox=25.276352,54.694638,25.302195,54.671628
+pmtiles extract https://cdn.biip.lt/tiles/vector/pmtiles/lithuania.pmtiles vilnius-old-town.pmtiles --bbox=25.276352,54.694638,25.302195,54.671628
 ```
 
 The resulting basemap for Vilnius Old Town occupies less than 1 MB!
@@ -165,15 +170,15 @@ The resulting basemap for Vilnius Old Town occupies less than 1 MB!
 
 ```mermaid
 flowchart TD
-    grpk["GeoPortal.lt<br><a href="https://www.geoportal.lt/geoportal/web/georeferencinio-pagrindo-kadastras-grpk">Georeferenced Cadastral Register (GRPK)</a>"]-->transform-grpk["<a href="https://github.com/govlt/national-basemap/blob/main/.github/workflows/basemap-vector-data-source.yml">Transform</a>"]-->|"<a href="https://cdn.startupgov.lt/tiles/vector/sources/grpk/grpk-espg-4326.shp.zip">grpk-espg-4326.shp.zip</a>"|S3
-    ar["State Enterprise Centre of Registers<br><a href="https://www.registrucentras.lt/p/1187">Address Registry</a>"]-->transform-ar["<a href="https://github.com/govlt/national-basemap/blob/main/.github/workflows/basemap-vector-data-source.yml">Transform</a>"]-->|"<a href="https://cdn.startupgov.lt/tiles/vector/sources/address-registry/houses-espg-4326.gpkg.zip">houses-espg-4326.gpkg.zip</a>"|S3
-    stvk["State service for protected areas<br><a href="https://stvk.lt/">State Cadastre of Protected Areas</a>"]-->transform-stvk["<a href="https://github.com/govlt/national-basemap/blob/main/.github/workflows/basemap-vector-data-source.yml">Transform</a>"]-->|"<a href="https://cdn.startupgov.lt/tiles/vector/sources/stvk/stvk-4326.gpkg.zip">stvk-4326.gpkg.zip</a>"|S3
+    grpk["GeoPortal.lt<br><a href="https://www.geoportal.lt/geoportal/web/georeferencinio-pagrindo-kadastras-grpk">Georeferenced Cadastral Register (GRPK)</a>"]-->transform-grpk["<a href="https://github.com/govlt/national-basemap/blob/main/.github/workflows/basemap-vector-data-source.yml">Transform</a>"]-->|"<a href="https://cdn.biip.lt/tiles/vector/sources/grpk/grpk-espg-4326.shp.zip">grpk-espg-4326.shp.zip</a>"|S3
+    ar["State Enterprise Centre of Registers<br><a href="https://www.registrucentras.lt/p/1187">Address Registry</a>"]-->transform-ar["<a href="https://github.com/govlt/national-basemap/blob/main/.github/workflows/basemap-vector-data-source.yml">Transform</a>"]-->|"<a href="https://cdn.biip.lt/tiles/vector/sources/address-registry/houses-espg-4326.gpkg.zip">houses-espg-4326.gpkg.zip</a>"|S3
+    stvk["State service for protected areas<br><a href="https://stvk.lt/">State Cadastre of Protected Areas</a>"]-->transform-stvk["<a href="https://github.com/govlt/national-basemap/blob/main/.github/workflows/basemap-vector-data-source.yml">Transform</a>"]-->|"<a href="https://cdn.biip.lt/tiles/vector/sources/stvk/stvk-4326.gpkg.zip">stvk-4326.gpkg.zip</a>"|S3
 S3-->Planetiler-->PMTiles["PMTiles archive"]
 
-PMTiles-->s3-pmtiles["S3<br><a href="https://cdn.startupgov.lt/tiles/vector/pmtiles/lithuania.pmtiles">lithuania.pmtiles</a>"]
+PMTiles-->s3-pmtiles["S3<br><a href="https://cdn.biip.lt/tiles/vector/pmtiles/lithuania.pmtiles">lithuania.pmtiles</a>"]
 
 PMTiles-->mvt["Mapbox Vector Tiles"]
-mvt-->tiles["S3<br><a href="https://cdn.startupgov.lt/tiles/vector/mvt/tiles.zip">tiles.zip</a>"]
+mvt-->tiles["S3<br><a href="https://cdn.biip.lt/tiles/vector/mvt/tiles.zip">tiles.zip</a>"]
 mvt-->docker-image["Docker image<br><a href="https://github.com/govlt/national-basemap/pkgs/container/national-basemap-vector">national-basemap-vector</a>"]
 ```
 
