@@ -115,7 +115,7 @@ services:
     restart: unless-stopped
     environment:
       # Change to your host
-      HOST: https://vector.biip.lt
+      HOST: https://vector.yourdomain.com
     ports:
       - "80:80"
     healthcheck:
@@ -129,6 +129,61 @@ services:
       start_period: 5s
       retries: 5
 ```
+
+### Docker Vector Tiles with Martin Tile Server
+
+Utilize the provided Docker image [national-basemap-vector-martin](https://github.com/govlt/national-basemap/pkgs/container/national-basemap-vector-martin), which includes PMTiles archive, style JSONs, fonts, and sprites served by [Martin tile server](https://martin.maplibre.org/). This image provides a complete vector tile solution with built-in styles.
+
+Here's an example of its usage with Docker Compose:
+
+```yaml
+services:
+  national-basemap-vector-martin:
+    image: ghcr.io/govlt/national-basemap-vector-martin:stable
+    pull_policy: always
+    restart: unless-stopped
+    environment:
+      # Change to your host URL
+      HOST: https://basemap.yourdomain.com
+    ports:
+      - "3000:3000"
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "wget --no-verbose --tries=1 --spider http://127.0.0.1:3000/health || exit 1",
+        ]
+      interval: 5s
+      timeout: 3s
+      start_period: 5s
+      retries: 5
+```
+
+#### Available Styles
+
+Once deployed, the following styles will be available:
+
+- **Bright Style**: `https://basemap.yourdomain.com/style/bright` - Topographic (Light) style
+- **Positron Style**: `https://basemap.yourdomain.com/style/positron` - Gray basemap style
+- **OpenMapTiles Style**: `https://basemap.yourdomain.com/style/openmaptiles` - Standard OpenMapTiles style
+
+#### Usage Example
+
+```js
+import Map from "ol/Map.js";
+import { MapboxVectorLayer } from "ol-mapbox-style";
+
+const map = new Map({
+  target: "map",
+  layers: [
+    new MapboxVectorLayer({
+      styleUrl: "https://basemap.yourdomain.com/style/bright",
+    }),
+  ],
+});
+```
+
+**Note**: The `HOST` environment variable automatically updates all style URLs to match your deployment domain, ensuring proper font and sprite
 
 ### PMTiles
 
