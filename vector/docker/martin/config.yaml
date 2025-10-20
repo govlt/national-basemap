@@ -1,5 +1,7 @@
 preferred_encoding: gzip
 
+base_path: /
+
 pmtiles:
   sources:
     vector: /opt/vector/pmtiles/lithuania.pmtiles
