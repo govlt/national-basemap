@@ -1,6 +1,16 @@
 #!/bin/bash
 
-set -e
+set -euo pipefail
+
+CURL_OPTS=(
+    -f -L
+    --max-redirs 5
+    --retry 5
+    --retry-delay 5
+    --retry-all-errors
+    --connect-timeout 20
+    -A "NationalBasemap/1.0 (+https://github.com/govlt/national-basemap)"
+)
 
 # Function to calculate MD5 checksum
 calculate_md5() {
@@ -18,7 +28,7 @@ download_data_source_and_md5() {
   local filename="$1"
   local url="$2"
 
-  if ! curl -f -L --max-redirs 5 --retry 3 -o "data-sources/$filename" "$url"; then
+  if ! curl "${CURL_OPTS[@]}" -o "data-sources/$filename" "$url"; then
     echo "Download failed."
     return 1
   fi
