@@ -36,7 +36,7 @@ jobs:
       diff: ${{ steps.comparison.outputs.diff }}
     steps:
       - name: Install required packages
-        run: apt-get update && apt-get install -y git csvkit
+        run: apt-get update && apt-get install -y git csvkit wget
 
       # Needed only for GitHub action for uploading to S3
       - name: Checkout repository
@@ -113,7 +113,7 @@ jobs:
           sparse-checkout: .github
 
       - name: Install dependencies
-        run: apt-get update && apt-get install -y p7zip-full
+        run: apt-get update && apt-get install -y p7zip-full wget
 
       - name: Create output directory
         run: mkdir output
