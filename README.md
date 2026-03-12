@@ -34,8 +34,8 @@ Apple Maps, and Mapbox, and is compliant with the OpenMapTiles standard.
     Everything, from the basemap building process to its usage, is open-source and free of restrictions.
 
 [^1]:
-    20 KB is gzipped average vector tile size is calculated using weighted average based on OSM traffic. It wouldn't
-    be fair to take average of all tiles, because tile sizes of sea are less than 1 KB.
+20 KB is gzipped average vector tile size is calculated using weighted average based on OSM traffic. It wouldn't
+be fair to take average of all tiles, because tile sizes of sea are less than 1 KB.
 
 ## Usage
 
@@ -97,9 +97,89 @@ the [PMTiles in the browser](https://docs.protomaps.com/pmtiles/maplibre) docume
 
 ## Self-hosting
 
-You have the option to host the vector basemap on your own infrastructure.
+While we provide hosted style URLs for convenience, **we strongly recommend self-hosting the vector basemap on your own
+infrastructure.** Our core vision is to provide a decentralized mapping infrastructure for Lithuania.
 
-### Docker Vector Tiles
+Self-hosting ensures:
+
+* **Reliability:** You are not dependent on external service uptime.
+* **Performance:** Lower latency by serving tiles from your own network.
+* **Independence:** Complete control over data update cycles and style customizations.
+
+The infrastructure is designed to be extremely lightweight, requiring minimal CPU and RAM.
+
+### Docker Vector Tiles with Martin Tile Server (Recommended)
+
+Utilize the provided Docker
+image [national-basemap-vector-martin](https://github.com/govlt/national-basemap/pkgs/container/national-basemap-vector-martin),
+which includes PMTiles archive, style JSONs, fonts, and sprites served
+by [Martin tile server](https://martin.maplibre.org/). This image provides a complete vector tile solution with built-in
+styles.
+
+Here's an example of its usage with Docker Compose:
+
+```yaml
+services:
+  national-basemap-vector-martin:
+    image: ghcr.io/govlt/national-basemap-vector-martin:stable
+    pull_policy: always
+    restart: unless-stopped
+    # FOR LOCAL TESTING: Uncomment command to enable the Martin WebUI,
+    # accessible at http://localhost:3000 for style previews and integration guides.
+    # command: ["martin", "--config", "config.yaml", "--webui", "enable-for-all"]
+    environment:
+      # Change to your host URL
+      # Use http://127.0.0.1:3000 for local testing.
+      HOST: https://basemap.yourdomain.com
+    ports:
+      - "3000:3000"
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "wget --no-verbose --tries=1 --spider http://127.0.0.1:3000/health || exit 1",
+        ]
+      interval: 5s
+      timeout: 3s
+      start_period: 5s
+      retries: 5
+```
+
+You can start the service using the following command (this is highly resource-efficient and is designed to run smoothly
+even on low-spec laptops or entry-level cloud instances):
+
+```shell
+docker compose up --wait
+```
+
+#### Available Styles
+
+Once deployed, the following styles will be available:
+
+- **Bright Style**: `https://basemap.yourdomain.com/style/bright` - Topographic (Light) style
+- **Positron Style**: `https://basemap.yourdomain.com/style/positron` - Gray basemap style
+- **OpenMapTiles Style**: `https://basemap.yourdomain.com/style/openmaptiles` - Standard OpenMapTiles style
+
+#### Usage Example
+
+```js
+import Map from "ol/Map.js";
+import { MapboxVectorLayer } from "ol-mapbox-style";
+
+const map = new Map({
+  target: "map",
+  layers: [
+    new MapboxVectorLayer({
+      styleUrl: "https://basemap.yourdomain.com/style/bright",
+    }),
+  ],
+});
+```
+
+**Note**: The `HOST` environment variable automatically updates all style URLs to match your deployment domain, ensuring
+proper font and sprite
+
+### Docker Vector Tiles with Caddy (Static PBF)
 
 Utilize the provided Docker
 image [national-basemap-vector](https://github.com/govlt/national-basemap/pkgs/container/national-basemap-vector),
@@ -130,71 +210,7 @@ services:
       retries: 5
 ```
 
-### Docker Vector Tiles with Martin Tile Server
-
-Utilize the provided Docker image [national-basemap-vector-martin](https://github.com/govlt/national-basemap/pkgs/container/national-basemap-vector-martin), which includes PMTiles archive, style JSONs, fonts, and sprites served by [Martin tile server](https://martin.maplibre.org/). This image provides a complete vector tile solution with built-in styles.
-
-Here's an example of its usage with Docker Compose:
-
-```yaml
-services:
-  national-basemap-vector-martin:
-    image: ghcr.io/govlt/national-basemap-vector-martin:stable
-    pull_policy: always
-    restart: unless-stopped
-    # FOR LOCAL TESTING: Uncomment command to enable the Martin WebUI, accessible 
-    # at http://localhost:3000 for style previews and integration guides.
-    # command: ["martin", "--config", "config.yaml", "--webui", "enable-for-all"]
-    environment:
-      # Change to your host URL
-      # Use http://127.0.0.1:3000 for local testing.
-      HOST: https://basemap.yourdomain.com
-    ports:
-      - "3000:3000"
-    healthcheck:
-      test:
-        [
-          "CMD-SHELL",
-          "wget --no-verbose --tries=1 --spider http://127.0.0.1:3000/health || exit 1",
-        ]
-      interval: 5s
-      timeout: 3s
-      start_period: 5s
-      retries: 5
-```
-
-You can start the service using:
-```shell
-docker compose up --wait
-```
-
-#### Available Styles
-
-Once deployed, the following styles will be available:
-
-- **Bright Style**: `https://basemap.yourdomain.com/style/bright` - Topographic (Light) style
-- **Positron Style**: `https://basemap.yourdomain.com/style/positron` - Gray basemap style
-- **OpenMapTiles Style**: `https://basemap.yourdomain.com/style/openmaptiles` - Standard OpenMapTiles style
-
-#### Usage Example
-
-```js
-import Map from "ol/Map.js";
-import { MapboxVectorLayer } from "ol-mapbox-style";
-
-const map = new Map({
-  target: "map",
-  layers: [
-    new MapboxVectorLayer({
-      styleUrl: "https://basemap.yourdomain.com/style/bright",
-    }),
-  ],
-});
-```
-
-**Note**: The `HOST` environment variable automatically updates all style URLs to match your deployment domain, ensuring proper font and sprite
-
-### PMTiles
+### Direct PMTiles Access
 
 Periodically download the PMTiles archive from `https://cdn.biip.lt/tiles/vector/pmtiles/lithuania.pmtiles` to
 your own S3
