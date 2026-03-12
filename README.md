@@ -142,8 +142,12 @@ services:
     image: ghcr.io/govlt/national-basemap-vector-martin:stable
     pull_policy: always
     restart: unless-stopped
+    # FOR LOCAL TESTING: Uncomment command to enable the Martin WebUI, accessible 
+    # at http://localhost:3000 for style previews and integration guides.
+    # command: ["martin", "--config", "config.yaml", "--webui", "enable-for-all"]
     environment:
       # Change to your host URL
+      # Use http://127.0.0.1:3000 for local testing.
       HOST: https://basemap.yourdomain.com
     ports:
       - "3000:3000"
@@ -157,6 +161,11 @@ services:
       timeout: 3s
       start_period: 5s
       retries: 5
+```
+
+You can start the service using:
+```shell
+docker compose up --wait
 ```
 
 #### Available Styles
