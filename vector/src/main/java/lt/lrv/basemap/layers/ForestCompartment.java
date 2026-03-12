@@ -12,7 +12,7 @@ import lt.lrv.basemap.openmaptiles.Layer;
 
 import java.util.List;
 
-public class ForestCompartment implements Layer, ForwardingProfile.LayerPostProcesser {
+public class ForestCompartment implements Layer, ForwardingProfile.LayerPostProcessor {
 
     static final double BUFFER_SIZE = 4.0;
 

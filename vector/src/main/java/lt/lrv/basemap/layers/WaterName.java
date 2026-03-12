@@ -19,7 +19,7 @@ import java.util.List;
 import static java.lang.Math.toIntExact;
 
 
-public class WaterName implements OpenMapTilesSchema.WaterName, ForwardingProfile.LayerPostProcesser {
+public class WaterName implements OpenMapTilesSchema.WaterName, ForwardingProfile.LayerPostProcessor {
 
     final PlanetilerConfig config;
 
