@@ -10,13 +10,12 @@ import com.onthegomap.planetiler.reader.SourceFeature;
 import lt.lrv.basemap.openmaptiles.OpenMapTilesSchema;
 import lt.lrv.basemap.utils.LanguageUtils;
 import lt.lrv.basemap.utils.Utils;
-
-import javax.annotation.Nonnull;
+import org.jspecify.annotations.NonNull;
 import java.util.List;
 
 import static com.onthegomap.planetiler.util.LanguageUtils.nullIfEmpty;
 
-public class TransportationName implements OpenMapTilesSchema.TransportationName, ForwardingProfile.LayerPostProcesser {
+public class TransportationName implements OpenMapTilesSchema.TransportationName, ForwardingProfile.LayerPostProcessor {
 
     final PlanetilerConfig config;
 
@@ -65,7 +64,7 @@ public class TransportationName implements OpenMapTilesSchema.TransportationName
         }
     }
 
-    static String getNetwork(@Nonnull String ref) {
+    static String getNetwork(@NonNull String ref) {
         if (ref.startsWith("A")) {
             return NetworkValue.LT_MOTORWAY;
         } else if (ref.length() == 3) {

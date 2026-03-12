@@ -1,4 +1,4 @@
-FROM gradle:8.7-jdk21 AS build
+FROM gradle:9.4-jdk25 AS build
 
 WORKDIR /app
 
@@ -8,7 +8,7 @@ COPY vector ./vector
 
 RUN ./gradlew run
 
-FROM ghcr.io/maplibre/martin:v0.18.1
+FROM ghcr.io/maplibre/martin:1.3.0
 
 # Let's use non root user
 ARG USER=basemap

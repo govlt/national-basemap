@@ -1,4 +1,4 @@
-FROM caddy:2.8
+FROM caddy:2.11
 
 ENV HOST="http://127.0.0.1:80"
 

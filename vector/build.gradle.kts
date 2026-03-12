@@ -34,8 +34,8 @@ application {
     mainClass = "lt.lrv.basemap.Basemap"
 }
 
-task("syncAddressRegistry", JavaExec::class) {
+tasks.register<JavaExec>("syncAddressRegistry") {
     group = "syncAddressRegistry"
-    mainClass.set("lt/lrv/basemap/preparations/AddressRegistryHouseNumbers")
+    mainClass.set("lt.lrv.basemap.preparations.AddressRegistryHouseNumbers")
     classpath = sourceSets["main"].runtimeClasspath
 }

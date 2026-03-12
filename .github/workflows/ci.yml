@@ -45,7 +45,7 @@ jobs:
     name: Validate Caddy file syntax
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    container: caddy:2.8
+    container: caddy:2.11
     steps:
       - uses: actions/checkout@v4
 

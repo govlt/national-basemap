@@ -15,7 +15,7 @@ import java.util.List;
 
 import static lt.lrv.basemap.layers.Park.FieldValues.*;
 
-public class Park implements OpenMapTilesSchema.Park, ForwardingProfile.LayerPostProcesser {
+public class Park implements OpenMapTilesSchema.Park, ForwardingProfile.LayerPostProcessor {
 
     @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {

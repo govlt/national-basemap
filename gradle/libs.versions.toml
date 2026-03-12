@@ -1,7 +1,7 @@
 [versions]
-planetiler = "0.8.2"
-geotools = "31.2"
-junit = "5.10.1"
+planetiler = "0.10.1"
+geotools = "34.2"
+junit = "6.0.3"
 
 [libraries]
 planetiler = { module = "com.onthegomap.planetiler:planetiler-core", version.ref = "planetiler" }

@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.onthegomap.planetiler.util.LanguageUtils.putIfNotEmpty;
-import static com.onthegomap.planetiler.util.LanguageUtils.string;
+import static lt.lrv.basemap.utils.Utils.toStringOrNull;
 
 public class LanguageUtils {
 
@@ -12,7 +12,7 @@ public class LanguageUtils {
     }
 
     public static Map<String, Object> getNames(Map<String, Object> tags) {
-        var name = string(tags.get("VARDAS"));
+        var name = toStringOrNull(tags.get("VARDAS"));
 
         return getNames(name);
     }
@@ -20,7 +20,7 @@ public class LanguageUtils {
     public static Map<String, Object> getNames(String name) {
         var result = new HashMap<String, Object>();
 
-        var nonBlankName = string(name);
+        var nonBlankName = toStringOrNull(name);
 
         putIfNotEmpty(result, "name", nonBlankName);
         putIfNotEmpty(result, "name:latin", nonBlankName);
