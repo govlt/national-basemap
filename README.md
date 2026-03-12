@@ -34,8 +34,8 @@ Apple Maps, and Mapbox, and is compliant with the OpenMapTiles standard.
     Everything, from the basemap building process to its usage, is open-source and free of restrictions.
 
 [^1]:
-20 KB is gzipped average vector tile size is calculated using weighted average based on OSM traffic. It wouldn't
-be fair to take average of all tiles, because tile sizes of sea are less than 1 KB.
+    20 KB is gzipped average vector tile size is calculated using weighted average based on OSM traffic. It wouldn't
+    be fair to take average of all tiles, because tile sizes of sea are less than 1 KB.
 
 ## Usage
 
