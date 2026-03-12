@@ -8,7 +8,7 @@ COPY vector ./vector
 
 RUN ./gradlew run
 
-FROM ghcr.io/maplibre/martin:1.3.0
+FROM ghcr.io/maplibre/martin:1.3.1
 
 # Let's use non root user
 ARG USER=basemap
