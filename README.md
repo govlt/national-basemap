@@ -160,6 +160,15 @@ Once deployed, the following styles will be available:
 - **Positron Style**: `https://basemap.yourdomain.com/style/positron` - Gray basemap style
 - **OpenMapTiles Style**: `https://basemap.yourdomain.com/style/openmaptiles` - Standard OpenMapTiles style
 
+> [!TIP]
+> **CDN & Cache Busting**
+>
+> Vector tile URLs automatically include a version parameter
+> (e.g., `https://basemap.yourdomain.com/{z}/{x}/{y}.pbf?version=1.2.0`).
+> We recommend configuring your CDN to serve these tiles
+> with caching enabled, for example: `Cache-Control: public, max-age=31536000, immutable`. This allows for aggressive
+> caching while ensuring a clean cache-bust whenever the Docker image and its tileset are updated.
+
 #### Usage Example
 
 ```js
