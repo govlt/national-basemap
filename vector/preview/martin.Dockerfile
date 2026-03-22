@@ -1,4 +1,4 @@
-FROM ghcr.io/maplibre/martin:1.3.0
+FROM ghcr.io/maplibre/martin:1.4.0
 
 ENV HOST="http://127.0.0.1:3000"
 
