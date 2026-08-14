@@ -39,10 +39,10 @@ jobs:
       VITE_STYLE_BASE_URL: ${{ inputs.style-base-url }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Setup Node
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: '24'
           cache: npm
@@ -57,7 +57,7 @@ jobs:
         run: npm run build
 
       - name: Upload demo artifact
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: demo-site
           path: demo/build
@@ -70,7 +70,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Minify styles
         run: find vector/styles -name "style.json" -print0 | xargs -0 -I{} sh -c 'jq -c . "{}" > tmp.json && mv tmp.json "{}"'
@@ -125,7 +125,7 @@ jobs:
           output-directory: output/sprite
 
       - name: Upload styles artifact
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: vector-basemap-styles
           path: output
@@ -144,14 +144,14 @@ jobs:
       name: basemap-vector
     steps:
       - name: Download demo site artifact
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: demo-site
           path: .
           merge-multiple: true
 
       - name: Download styles artifact
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: vector-basemap-styles
           path: vector
@@ -169,7 +169,7 @@ jobs:
           command: pages deploy . --project-name=national-basemap --branch=${{ inputs.stable && 'production' ||  (github.head_ref || github.ref_name) }}
 
       - name: Upload page artifact
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: page
           path: .

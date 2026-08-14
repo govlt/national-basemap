@@ -40,7 +40,7 @@ jobs:
 
       # Needed only for GitHub action for uploading to S3
       - name: Checkout repository
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           sparse-checkout: |
             .github
@@ -89,7 +89,7 @@ jobs:
           destination-path: /tiles/vector/sources/address-registry
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: address-registry-house-numbers
           path: output
@@ -113,7 +113,7 @@ jobs:
     steps:
       # Needed only for GitHub action for uploading to S3
       - name: Checkout repository
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           sparse-checkout: .github
 
@@ -176,7 +176,7 @@ jobs:
     steps:
       # Needed only for GitHub action for uploading to S3
       - name: Checkout repository
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           sparse-checkout: .github
 
@@ -195,7 +195,7 @@ jobs:
         run: md5sum stvk-4326.gpkg.zip >> checksums.txt
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: stvk
           path: output
@@ -224,7 +224,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout code
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Get Token for creating new Release
         id: get_workflow_token
