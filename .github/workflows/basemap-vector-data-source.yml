@@ -46,7 +46,12 @@ jobs:
             .github
             scripts
 
+      # Registrų Centras blocks US IPs and GitHub runners are US-hosted, so these
+      # downloads go out through a proxy. curl reads ALL_PROXY natively, so the
+      # download script itself needs no changes.
       - name: Generate houses GPKG in EPSG:4326
+        env:
+          ALL_PROXY: ${{ secrets.DATA_SOURCE_PROXY_URL }}
         run: bash scripts/create-houses-geopackage.sh
 
       - name: Create output directory
