@@ -2,6 +2,12 @@ plugins {
     application
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
+    }
+}
+
 repositories {
     maven {
         url = uri("https://repo.osgeo.org/repository/release/")
