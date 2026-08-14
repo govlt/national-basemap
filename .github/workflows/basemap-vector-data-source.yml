@@ -40,7 +40,7 @@ jobs:
 
       # Needed only for GitHub action for uploading to S3
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           sparse-checkout: |
             .github
@@ -89,7 +89,7 @@ jobs:
           destination-path: /tiles/vector/sources/address-registry
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: address-registry-house-numbers
           path: output
@@ -113,7 +113,7 @@ jobs:
     steps:
       # Needed only for GitHub action for uploading to S3
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           sparse-checkout: .github
 
@@ -176,7 +176,7 @@ jobs:
     steps:
       # Needed only for GitHub action for uploading to S3
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           sparse-checkout: .github
 
@@ -195,7 +195,7 @@ jobs:
         run: md5sum stvk-4326.gpkg.zip >> checksums.txt
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: stvk
           path: output
@@ -224,11 +224,11 @@ jobs:
       contents: read
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Get Token for creating new Release
         id: get_workflow_token
-        uses: peter-murray/workflow-application-token-action@v3
+        uses: peter-murray/workflow-application-token-action@v5
         with:
           application_id: ${{ secrets.APPLICATION_ID }}
           application_private_key: ${{ secrets.APPLICATION_PRIVATE_KEY }}
@@ -236,14 +236,14 @@ jobs:
           revoke_token: true
 
       - name: Get next version
-        uses: reecetech/version-increment@2024.4.4
+        uses: reecetech/version-increment@2026.8.4
         id: version
         with:
           scheme: semver
           increment: patch
 
       - name: Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           make_latest: false
           generate_release_notes: false

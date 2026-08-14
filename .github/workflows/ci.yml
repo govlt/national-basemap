@@ -15,7 +15,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Check workflow files
         run: |
@@ -32,7 +32,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Install maplibre-gl-style-spec
         run: npm install @maplibre/maplibre-gl-style-spec --global
@@ -47,7 +47,7 @@ jobs:
     timeout-minutes: 5
     container: caddy:2.11
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Validate Caddyfile
         run: caddy validate --config vector/docker/static/caddy/Caddyfile --adapter caddyfile
@@ -60,7 +60,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Prepare Java environment
         uses: ./.github/actions/prepare-java-environment
@@ -91,7 +91,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Generate vector basemap PMTiles
         uses: ./.github/actions/basemap-vector-generate-pmtiles
@@ -109,7 +109,7 @@ jobs:
       pull-requests: write
     steps:
       - name: Download logs
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: logs-planetiler-basemap-vector
           merge-multiple: true
@@ -126,10 +126,10 @@ jobs:
           EOF
 
       - name: Comment pull request
-        uses: thollander/actions-comment-pull-request@v2
+        uses: thollander/actions-comment-pull-request@v3
         with:
-          comment_tag: tile-stats
-          filePath: comment-body.txt
+          comment-tag: tile-stats
+          file-path: comment-body.txt
 
       - name: Add summary
         run: cat comment-body.txt >> "$GITHUB_STEP_SUMMARY"

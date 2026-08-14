@@ -39,12 +39,12 @@ jobs:
       VITE_STYLE_BASE_URL: ${{ inputs.style-base-url }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
-          node-version: '20'
+          node-version: '24'
           cache: npm
           cache-dependency-path: demo/package-lock.json
 
@@ -57,7 +57,7 @@ jobs:
         run: npm run build
 
       - name: Upload demo artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: demo-site
           path: demo/build
@@ -70,7 +70,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Minify styles
         run: find vector/styles -name "style.json" -print0 | xargs -0 -I{} sh -c 'jq -c . "{}" > tmp.json && mv tmp.json "{}"'
@@ -125,7 +125,7 @@ jobs:
           output-directory: output/sprite
 
       - name: Upload styles artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: vector-basemap-styles
           path: output
@@ -144,33 +144,32 @@ jobs:
       name: basemap-vector
     steps:
       - name: Download demo site artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: demo-site
           path: .
           merge-multiple: true
 
       - name: Download styles artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: vector-basemap-styles
           path: vector
           merge-multiple: true
 
+      # cloudflare/pages-action is archived; wrangler-action is its replacement
       - name: Publish to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
+        uses: cloudflare/wrangler-action@v4
         id: cloudflare
         with:
           apiToken: ${{ secrets.cloudflare-api-token }}
           accountId: ${{ secrets.cloudflare-account-id }}
-          projectName: national-basemap
-          branch: ${{ inputs.stable && 'production' ||  (github.head_ref || github.ref_name) }}
-          directory: .
           gitHubToken: ${{ github.token }}
-          wranglerVersion: '3'
+          wranglerVersion: '4'
+          command: pages deploy . --project-name=national-basemap --branch=${{ inputs.stable && 'production' ||  (github.head_ref || github.ref_name) }}
 
       - name: Upload page artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: page
           path: .

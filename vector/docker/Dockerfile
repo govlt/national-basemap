@@ -1,4 +1,4 @@
-FROM gradle:9.4-jdk25 AS build
+FROM gradle:9.7-jdk25 AS build
 
 WORKDIR /app
 
@@ -8,16 +8,11 @@ COPY vector ./vector
 
 RUN ./gradlew run
 
-FROM ghcr.io/maplibre/martin:1.4.0
+FROM ghcr.io/maplibre/martin:1.13.0
 
-# Let's use non root user
-ARG USER=basemap
-
-RUN apk add --update sudo
-
-RUN adduser -D $USER \
-        && echo "$USER ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/$USER \
-        && chmod 0440 /etc/sudoers.d/$USER
+# Let's use non root user. Martin images are Ubuntu based since 1.7,
+# so we reuse the uid 1000 "ubuntu" account it already ships with.
+ARG USER=ubuntu
 
 USER $USER
 
