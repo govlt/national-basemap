@@ -33,10 +33,10 @@ jobs:
       contents: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Change version
-        uses: dschanoeh/change-property@v1
+        uses: dschanoeh/change-property@646a5264f5854e0bc95d6e3bfb02562ddaaaa354 # v1.1.1
         with:
           file: vector/config.properties
           property: archive_version
@@ -55,7 +55,7 @@ jobs:
           destination-path: /tiles/vector/pmtiles
 
       - name: Upload PMTiles to GitHub release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@3d0d9888cb7fd7b750713d6e236d1fcb99157228 # v3.0.2
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: vector/data/output/lithuania.pmtiles
@@ -71,17 +71,17 @@ jobs:
       digest: ${{ steps.docker.outputs.digest }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Change version
-        uses: dschanoeh/change-property@v1
+        uses: dschanoeh/change-property@646a5264f5854e0bc95d6e3bfb02562ddaaaa354 # v1.1.1
         with:
           file: vector/config.properties
           property: archive_version
           value: ${{ inputs.archive-version }}
 
       - name: Build & tag docker image
-        uses: AplinkosMinisterija/reusable-workflows/.github/actions/docker-build-tag-push@main
+        uses: AplinkosMinisterija/reusable-workflows/.github/actions/docker-build-tag-push@df671cc140fab5a0f4385653ec36959108bd9a03 # main as of 2026-07-13
         id: docker
         with:
           docker-image: ghcr.io/govlt/national-basemap-vector-martin
@@ -109,9 +109,9 @@ jobs:
           - 3000:3000
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: vector-basemap-pmtiles
           merge-multiple: true
@@ -142,7 +142,7 @@ jobs:
           output-directory: tiles/sprite
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           path: tiles
           name: mvt-tiles
@@ -155,7 +155,13 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/download-artifact@v4
+      # Needed only for the local rclone-sync action
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          sparse-checkout: .github
+
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: mvt-tiles
           path: tiles
@@ -165,7 +171,7 @@ jobs:
         run: zip -r tiles.zip tiles
 
       - name: Upload to S3
-        uses: govlt/national-basemap/.github/actions/rclone-sync@main
+        uses: ./.github/actions/rclone-sync
         with:
           s3-endpoint: ${{ inputs.s3-endpoint }}
           s3-access-key-id: ${{ secrets.s3-access-key-id }}
@@ -174,7 +180,7 @@ jobs:
           destination-path: /tiles/vector/mvt
 
       - name: Upload tiles to GitHub release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@3d0d9888cb7fd7b750713d6e236d1fcb99157228 # v3.0.2
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: tiles.zip
@@ -189,7 +195,7 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: mvt-tiles
           path: tiles
@@ -202,7 +208,7 @@ jobs:
           TILES: https://vector-github.startupgov.lt/{z}/{x}/{y}.pbf
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:
           path: ./tiles
 
@@ -219,7 +225,7 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5.0.0
 
   publish-basemap-vector-docker-image:
     name: Vector docker image build and push
@@ -231,16 +237,16 @@ jobs:
       packages: write
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: mvt-tiles
           path: vector/docker/static/tiles
           merge-multiple: true
 
       - name: Build & tag docker image
-        uses: AplinkosMinisterija/reusable-workflows/.github/actions/docker-build-tag-push@main
+        uses: AplinkosMinisterija/reusable-workflows/.github/actions/docker-build-tag-push@df671cc140fab5a0f4385653ec36959108bd9a03 # main as of 2026-07-13
         with:
           docker-image: ghcr.io/govlt/national-basemap-vector
           docker-context: vector/docker/static

@@ -25,7 +25,7 @@ runs:
   using: composite
   steps:
     - name: Sync to S3
-      uses: docker://docker.io/rclone/rclone:1.67
+      uses: docker://docker.io/rclone/rclone@sha256:b06aed988cf5967de7c25be5925240983981c757f4ed1ac9d2fa659d51d60548 # 1.75.0
       with:
         args: "sync ${{ inputs.source-path }} s3:${{ inputs.destination-path }} --s3-acl=public-read --fast-list --checksum --update --use-server-modtime --metadata --inplace --delete-during"
       env:
