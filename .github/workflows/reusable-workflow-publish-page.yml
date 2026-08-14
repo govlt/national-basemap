@@ -159,7 +159,7 @@ jobs:
 
       # cloudflare/pages-action is archived; wrangler-action is its replacement
       - name: Publish to Cloudflare Pages
-        uses: cloudflare/wrangler-action@v4
+        uses: cloudflare/wrangler-action@ebbaa1584979971c8614a24965b4405ff95890e0 # v4.0.0
         id: cloudflare
         with:
           apiToken: ${{ secrets.cloudflare-api-token }}

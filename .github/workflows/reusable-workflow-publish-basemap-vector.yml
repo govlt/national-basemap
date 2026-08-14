@@ -36,7 +36,7 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Change version
-        uses: dschanoeh/change-property@v1
+        uses: dschanoeh/change-property@646a5264f5854e0bc95d6e3bfb02562ddaaaa354 # v1.1.1
         with:
           file: vector/config.properties
           property: archive_version
@@ -55,7 +55,7 @@ jobs:
           destination-path: /tiles/vector/pmtiles
 
       - name: Upload PMTiles to GitHub release
-        uses: softprops/action-gh-release@v3
+        uses: softprops/action-gh-release@3d0d9888cb7fd7b750713d6e236d1fcb99157228 # v3.0.2
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: vector/data/output/lithuania.pmtiles
@@ -74,14 +74,14 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Change version
-        uses: dschanoeh/change-property@v1
+        uses: dschanoeh/change-property@646a5264f5854e0bc95d6e3bfb02562ddaaaa354 # v1.1.1
         with:
           file: vector/config.properties
           property: archive_version
           value: ${{ inputs.archive-version }}
 
       - name: Build & tag docker image
-        uses: AplinkosMinisterija/reusable-workflows/.github/actions/docker-build-tag-push@main
+        uses: AplinkosMinisterija/reusable-workflows/.github/actions/docker-build-tag-push@df671cc140fab5a0f4385653ec36959108bd9a03 # main as of 2026-07-13
         id: docker
         with:
           docker-image: ghcr.io/govlt/national-basemap-vector-martin
@@ -155,6 +155,12 @@ jobs:
     permissions:
       contents: write
     steps:
+      # Needed only for the local rclone-sync action
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          sparse-checkout: .github
+
       - uses: actions/download-artifact@v8
         with:
           name: mvt-tiles
@@ -165,7 +171,7 @@ jobs:
         run: zip -r tiles.zip tiles
 
       - name: Upload to S3
-        uses: govlt/national-basemap/.github/actions/rclone-sync@main
+        uses: ./.github/actions/rclone-sync
         with:
           s3-endpoint: ${{ inputs.s3-endpoint }}
           s3-access-key-id: ${{ secrets.s3-access-key-id }}
@@ -174,7 +180,7 @@ jobs:
           destination-path: /tiles/vector/mvt
 
       - name: Upload tiles to GitHub release
-        uses: softprops/action-gh-release@v3
+        uses: softprops/action-gh-release@3d0d9888cb7fd7b750713d6e236d1fcb99157228 # v3.0.2
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: tiles.zip
@@ -240,7 +246,7 @@ jobs:
           merge-multiple: true
 
       - name: Build & tag docker image
-        uses: AplinkosMinisterija/reusable-workflows/.github/actions/docker-build-tag-push@main
+        uses: AplinkosMinisterija/reusable-workflows/.github/actions/docker-build-tag-push@df671cc140fab5a0f4385653ec36959108bd9a03 # main as of 2026-07-13
         with:
           docker-image: ghcr.io/govlt/national-basemap-vector
           docker-context: vector/docker/static

@@ -46,6 +46,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     container: caddy:2.11
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v7
 
@@ -126,7 +128,7 @@ jobs:
           EOF
 
       - name: Comment pull request
-        uses: thollander/actions-comment-pull-request@v3
+        uses: thollander/actions-comment-pull-request@24bffb9b452ba05a4f3f77933840a6a841d1b32b # v3.0.1
         with:
           comment-tag: tile-stats
           file-path: comment-body.txt
