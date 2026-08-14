@@ -76,13 +76,13 @@ jobs:
         run: find vector/styles -name "style.json" -print0 | xargs -0 -I{} sh -c 'jq -c . "{}" > tmp.json && mv tmp.json "{}"'
 
       - name: Replace glyphs url for styles
-        run: find vector/styles -type f -name "style.json" -print0 | xargs -0 sed -i -e 's|${{ env.LOCALHOST_URL }}|${{ env.URL }}|g'
+        run: find vector/styles -type f -name "style.json" -print0 | xargs -0 sed -i -e "s|${LOCALHOST_URL}|${URL}|g"
         env:
           LOCALHOST_URL: http://localhost:3000/font/{fontstack}/{range}
           URL: ${{ inputs.style-base-url }}/vector/font/{fontstack}/{range}.pbf
 
       - name: Replace glyphs url for styles
-        run: find vector/styles -type f -name "style.json" -print0 | xargs -0 sed -i -e 's|${{ env.LOCALHOST_URL }}|${{ env.URL }}|g'
+        run: find vector/styles -type f -name "style.json" -print0 | xargs -0 sed -i -e "s|${LOCALHOST_URL}|${URL}|g"
         env:
           LOCALHOST_URL: http://localhost:3000/sprite
           URL: ${{ inputs.style-base-url }}/vector/sprite
@@ -91,13 +91,13 @@ jobs:
         run: find vector/styles -type f -name "style.json" -exec sh -c 'cp "$1" "$(dirname "$1")/style-pmtiles.json"' _ {} \;
 
       - name: Replace style urls for docker
-        run: find vector/styles -type f -name "style.json" -print0 | xargs -0 sed -i -e 's|${{ env.LOCALHOST_URL }}|${{ env.URL }}|g'
+        run: find vector/styles -type f -name "style.json" -print0 | xargs -0 sed -i -e "s|${LOCALHOST_URL}|${URL}|g"
         env:
           LOCALHOST_URL: http://localhost:3000/vector
           URL: ${{ inputs.style-source-url }}
 
       - name: Replace PMTiles style urls with S3 PMTiles source
-        run: find vector/styles -type f -name "style-pmtiles.json" -print0 | xargs -0 sed -i -e 's|${{ env.LOCALHOST_URL }}|${{ env.URL }}|g'
+        run: find vector/styles -type f -name "style-pmtiles.json" -print0 | xargs -0 sed -i -e "s|${LOCALHOST_URL}|${URL}|g"
         env:
           LOCALHOST_URL: http://localhost:3000/vector
           URL: pmtiles://${{ inputs.pmtiles-url }}
