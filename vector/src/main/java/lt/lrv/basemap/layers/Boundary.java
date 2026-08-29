@@ -5,6 +5,7 @@ import com.onthegomap.planetiler.FeatureMerge;
 import com.onthegomap.planetiler.ForwardingProfile;
 import com.onthegomap.planetiler.VectorTile;
 import com.onthegomap.planetiler.config.PlanetilerConfig;
+import com.onthegomap.planetiler.expression.Expression;
 import com.onthegomap.planetiler.reader.SourceFeature;
 import lt.lrv.basemap.constants.Layers;
 import lt.lrv.basemap.constants.Source;
@@ -22,16 +23,23 @@ public class Boundary implements OpenMapTilesSchema.Boundary, ForwardingProfile.
     }
 
     @Override
-    public void processFeature(SourceFeature sf, FeatureCollector features) {
-        if (sf.getSource().equals(Source.GRPK) && sf.getSourceLayer().equals(Layers.GRPK_RIBOS) && sf.canBeLine()) {
-            var code = sf.getString("GKODAS");
+    public Expression filter() {
+        return Expression.and(
+                Expression.matchSource(Source.GRPK),
+                Expression.matchSourceLayer(Layers.GRPK_RIBOS),
+                Expression.matchType(Expression.LINESTRING_TYPE)
+        );
+    }
 
-            switch (code) {
-                case "as1" -> addBoundaryFeature(2, 0, sf, features);
-                case "as2" -> addBoundaryFeature(4, 5, sf, features);
-                case "as3" -> addBoundaryFeature(5, 9, sf, features);
-                case "as51" -> addBoundaryFeature(8, 12, sf, features);
-            }
+    @Override
+    public void processFeature(SourceFeature sf, FeatureCollector features) {
+        var code = sf.getString("GKODAS");
+
+        switch (code) {
+            case "as1" -> addBoundaryFeature(2, 0, sf, features);
+            case "as2" -> addBoundaryFeature(4, 5, sf, features);
+            case "as3" -> addBoundaryFeature(5, 9, sf, features);
+            case "as51" -> addBoundaryFeature(8, 12, sf, features);
         }
     }
 

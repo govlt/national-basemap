@@ -4,6 +4,7 @@ import com.onthegomap.planetiler.FeatureCollector;
 import com.onthegomap.planetiler.FeatureMerge;
 import com.onthegomap.planetiler.ForwardingProfile;
 import com.onthegomap.planetiler.VectorTile;
+import com.onthegomap.planetiler.expression.Expression;
 import com.onthegomap.planetiler.geo.GeometryException;
 import com.onthegomap.planetiler.reader.SourceFeature;
 import lt.lrv.basemap.constants.Layers;
@@ -15,12 +16,19 @@ import java.util.List;
 public class Building implements OpenMapTilesSchema.Building, ForwardingProfile.LayerPostProcessor {
 
     @Override
+    public Expression filter() {
+        return Expression.and(
+                Expression.matchSource(Source.GRPK),
+                Expression.matchSourceLayer(Layers.GRPK_PASTAT),
+                Expression.matchType(Expression.POLYGON_TYPE)
+        );
+    }
+
+    @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
-        if (sf.getSource().equals(Source.GRPK) && sf.getSourceLayer().equals(Layers.GRPK_PASTAT) && sf.canBePolygon()) {
-            features.polygon(this.name())
-                    .setBufferPixels(BUFFER_SIZE)
-                    .setMinZoom(13);
-        }
+        features.polygon(this.name())
+                .setBufferPixels(BUFFER_SIZE)
+                .setMinZoom(13);
     }
 
     @Override

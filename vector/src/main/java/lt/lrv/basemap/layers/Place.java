@@ -1,6 +1,7 @@
 package lt.lrv.basemap.layers;
 
 import com.onthegomap.planetiler.FeatureCollector;
+import com.onthegomap.planetiler.expression.Expression;
 import com.onthegomap.planetiler.reader.SourceFeature;
 import lt.lrv.basemap.constants.Layers;
 import lt.lrv.basemap.constants.Source;
@@ -15,12 +16,17 @@ import static com.google.common.base.Strings.emptyToNull;
 public class Place implements OpenMapTilesSchema.Place {
 
     @Override
+    public Expression filter() {
+        return Expression.and(
+                Expression.matchSource(Source.GRPK),
+                Expression.matchSourceLayer(Layers.GRPK_VIETOV_T),
+                Expression.matchType(Expression.POINT_TYPE)
+        );
+    }
+
+    @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
-        if (sf.getSource().equals(Source.GRPK) &&
-                sf.getSourceLayer().equals(Layers.GRPK_VIETOV_T) &&
-                sf.isPoint() &&
-                emptyToNull(sf.getString("ANTR")) == null
-        ) {
+        if (emptyToNull(sf.getString("ANTR")) == null) {
             var code = sf.getString("GKODAS");
             var adm_type = sf.getString("ADM_TIP");
             var pop = sf.getLong("GYVSK");

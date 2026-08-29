@@ -4,6 +4,7 @@ import com.onthegomap.planetiler.FeatureCollector;
 import com.onthegomap.planetiler.FeatureMerge;
 import com.onthegomap.planetiler.ForwardingProfile;
 import com.onthegomap.planetiler.VectorTile;
+import com.onthegomap.planetiler.expression.Expression;
 import com.onthegomap.planetiler.geo.GeometryException;
 import com.onthegomap.planetiler.reader.SourceFeature;
 import lt.lrv.basemap.constants.Layers;
@@ -18,14 +19,29 @@ import static lt.lrv.basemap.layers.Park.FieldValues.*;
 public class Park implements OpenMapTilesSchema.Park, ForwardingProfile.LayerPostProcessor {
 
     @Override
+    public Expression filter() {
+        return Expression.or(
+                Expression.and(
+                        Expression.matchSource(Source.GRPK),
+                        Expression.matchSourceLayer(Layers.GRPK_VIETOV_P),
+                        Expression.matchType(Expression.POLYGON_TYPE)
+                ),
+                Expression.and(
+                        Expression.matchSource(Source.STVK),
+                        Expression.matchType(Expression.POLYGON_TYPE)
+                )
+        );
+    }
+
+    @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
-        if (sf.getSource().equals(Source.GRPK) && sf.getSourceLayer().equals(Layers.GRPK_VIETOV_P) && sf.canBePolygon()) {
+        if (sf.getSource().equals(Source.GRPK) && sf.getSourceLayer().equals(Layers.GRPK_VIETOV_P)) {
             var code = sf.getString("GKODAS");
 
             if (code.equals("uur14")) {
                 addPolygon(CLASS_PUBLIC_PARK, 9, sf.getString("VARDAS"), 5, features);
             }
-        } else if (sf.getSource().equals(Source.STVK) && sf.canBePolygon()) {
+        } else if (sf.getSource().equals(Source.STVK)) {
             var name = sf.getString("pavadinimas");
 
             switch (sf.getSourceLayer()) {
