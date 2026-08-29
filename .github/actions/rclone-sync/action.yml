@@ -34,3 +34,5 @@ runs:
         RCLONE_CONFIG_S3_ENDPOINT: ${{ inputs.s3-endpoint }}
         RCLONE_CONFIG_S3_ACCESS_KEY_ID: ${{ inputs.s3-access-key-id }}
         RCLONE_CONFIG_S3_SECRET_ACCESS_KEY: ${{ inputs.s3-secret-access-key }}
+        # Cloudflare in front of ECS rewrites Accept-Encoding, which rclone >= 1.68 signs (rclone/rclone#8206)
+        RCLONE_CONFIG_S3_SIGN_ACCEPT_ENCODING: "false"
