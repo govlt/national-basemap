@@ -2,6 +2,7 @@ package lt.lrv.basemap.layers;
 
 
 import com.onthegomap.planetiler.FeatureCollector;
+import com.onthegomap.planetiler.expression.Expression;
 import com.onthegomap.planetiler.reader.SourceFeature;
 import lt.lrv.basemap.constants.Layers;
 import lt.lrv.basemap.constants.Source;
@@ -13,10 +14,25 @@ import static com.google.common.base.Strings.emptyToNull;
 public class Poi implements OpenMapTilesSchema.Poi {
 
     @Override
+    public Expression filter() {
+        return Expression.and(
+                Expression.matchSource(Source.GRPK),
+                Expression.or(
+                        Expression.and(
+                                Expression.matchSourceLayer(Layers.GRPK_VIETOV_P),
+                                Expression.matchType(Expression.POLYGON_TYPE)
+                        ),
+                        Expression.and(
+                                Expression.matchSourceLayer(Layers.GRPK_VIETOV_T),
+                                Expression.matchType(Expression.POINT_TYPE)
+                        )
+                )
+        );
+    }
+
+    @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
-        if (sf.getSource().equals(Source.GRPK) &&
-                sf.getSourceLayer().equals(Layers.GRPK_VIETOV_P) &&
-                sf.canBePolygon() &&
+        if (sf.getSourceLayer().equals(Layers.GRPK_VIETOV_P) &&
                 emptyToNull(sf.getString("VARDAS")) != null
         ) {
             var code = sf.getString("GKODAS");
@@ -26,9 +42,7 @@ public class Poi implements OpenMapTilesSchema.Poi {
                 case "uvu11" -> addFeature(FieldValues.CLASS_HARBOR, 1, sf, features);
                 case "ums0", "uhd6", "uhd10" -> addFeature(null, 15, sf, features);
             }
-        } else if (sf.getSource().equals(Source.GRPK) &&
-                sf.getSourceLayer().equals(Layers.GRPK_VIETOV_T) &&
-                sf.isPoint() &&
+        } else if (sf.getSourceLayer().equals(Layers.GRPK_VIETOV_T) &&
                 emptyToNull(sf.getString("VARDAS")) != null &&
                 emptyToNull(sf.getString("ANTR")) == null
         ) {

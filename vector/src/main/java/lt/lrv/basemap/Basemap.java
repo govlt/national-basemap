@@ -25,7 +25,7 @@ public class Basemap extends ForwardingProfile {
             Layers.GRPK_VIETOV_T,
     };
 
-    public static void main(String[] args) {
+    static void main() {
         var grpkGlobPattern = "{" + String.join(",", GRPK_LAYERS) + "}*.shp";
 
         Planetiler.create(Arguments.fromConfigFile(Path.of("config.properties")))
@@ -91,6 +91,10 @@ public class Basemap extends ForwardingProfile {
                 )
         };
 
+        // registerHandler is what wires up postProcess, but it also registers the layer as a
+        // feature processor with no source constraint. So each layer's filter() has to pin the
+        // source itself; relying on registerSourceHandler alone would hand every layer features
+        // from every source.
         for (var sourceHandlers : handlers) {
             for (var layer : sourceHandlers.layers) {
                 registerSourceHandler(sourceHandlers.source, layer);

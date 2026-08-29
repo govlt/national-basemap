@@ -5,6 +5,7 @@ import com.onthegomap.planetiler.FeatureMerge;
 import com.onthegomap.planetiler.ForwardingProfile;
 import com.onthegomap.planetiler.VectorTile;
 import com.onthegomap.planetiler.config.PlanetilerConfig;
+import com.onthegomap.planetiler.expression.Expression;
 import com.onthegomap.planetiler.reader.SourceFeature;
 import lt.lrv.basemap.constants.Layers;
 import lt.lrv.basemap.constants.Source;
@@ -23,12 +24,17 @@ public class ForestCompartment implements Layer, ForwardingProfile.LayerPostProc
     }
 
     @Override
+    public Expression filter() {
+        return Expression.and(
+                Expression.matchSource(Source.GRPK),
+                Expression.matchSourceLayer(Layers.GRPK_MISKAS_L),
+                Expression.matchType(Expression.LINESTRING_TYPE)
+        );
+    }
+
+    @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
-        if (sf.getSource().equals(Source.GRPK) &&
-                sf.getSourceLayer().equals(Layers.GRPK_MISKAS_L) &&
-                sf.canBeLine() &&
-                "lp3".equals(sf.getTag("GKODAS"))
-        ) {
+        if ("lp3".equals(sf.getTag("GKODAS"))) {
             features.line(this.name())
                     .setBufferPixels(BUFFER_SIZE)
                     .setMinPixelSize(0)

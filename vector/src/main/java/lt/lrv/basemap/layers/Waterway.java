@@ -4,6 +4,7 @@ import com.onthegomap.planetiler.FeatureCollector;
 import com.onthegomap.planetiler.FeatureMerge;
 import com.onthegomap.planetiler.ForwardingProfile;
 import com.onthegomap.planetiler.VectorTile;
+import com.onthegomap.planetiler.expression.Expression;
 import com.onthegomap.planetiler.reader.SourceFeature;
 import com.onthegomap.planetiler.util.ZoomFunction;
 import lt.lrv.basemap.constants.Layers;
@@ -32,12 +33,17 @@ public class Waterway implements OpenMapTilesSchema.Waterway, ForwardingProfile.
             .put(11, 50);
 
     @Override
+    public Expression filter() {
+        return Expression.and(
+                Expression.matchSource(Source.GRPK),
+                Expression.matchSourceLayer(Layers.GRPK_HIDRO_L),
+                Expression.matchType(Expression.LINESTRING_TYPE)
+        );
+    }
+
+    @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
-        if (sf.getSource().equals(Source.GRPK) &&
-                sf.getSourceLayer().equals(Layers.GRPK_HIDRO_L) &&
-                sf.canBeLine() &&
-                !IGNORED_CODES.contains(sf.getString("GKODAS"))
-        ) {
+        if (!IGNORED_CODES.contains(sf.getString("GKODAS"))) {
             var type = (int) sf.getLong("TIPAS");
             var code = sf.getString("GKODAS");
             var gkey = nullIfEmpty(sf.getString("GRAKTAS"));

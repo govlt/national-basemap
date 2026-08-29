@@ -6,6 +6,7 @@ import com.onthegomap.planetiler.FeatureMerge;
 import com.onthegomap.planetiler.ForwardingProfile;
 import com.onthegomap.planetiler.VectorTile;
 import com.onthegomap.planetiler.config.PlanetilerConfig;
+import com.onthegomap.planetiler.expression.Expression;
 import com.onthegomap.planetiler.geo.GeometryException;
 import com.onthegomap.planetiler.reader.SourceFeature;
 import lt.lrv.basemap.constants.Layers;
@@ -28,10 +29,16 @@ public class WaterName implements OpenMapTilesSchema.WaterName, ForwardingProfil
     }
 
     @Override
+    public Expression filter() {
+        return Expression.and(
+                Expression.matchSource(Source.GRPK),
+                Expression.matchType(Expression.POLYGON_TYPE)
+        );
+    }
+
+    @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
-        if (sf.getSource().equals(Source.GRPK) &&
-                sf.getSourceLayer().startsWith(Layers.GRPK_PLOTAI_PREFIX) &&
-                sf.canBePolygon() &&
+        if (sf.getSourceLayer().startsWith(Layers.GRPK_PLOTAI_PREFIX) &&
                 !sf.getString("VARDAS", "").isBlank()) {
             var code = sf.getString("GKODAS");
             var area = sf.getLong("SHAPE_Area");

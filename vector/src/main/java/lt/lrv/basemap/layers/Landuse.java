@@ -4,6 +4,7 @@ import com.onthegomap.planetiler.FeatureCollector;
 import com.onthegomap.planetiler.FeatureMerge;
 import com.onthegomap.planetiler.ForwardingProfile;
 import com.onthegomap.planetiler.VectorTile;
+import com.onthegomap.planetiler.expression.Expression;
 import com.onthegomap.planetiler.geo.GeometryException;
 import com.onthegomap.planetiler.reader.SourceFeature;
 import com.onthegomap.planetiler.util.ZoomFunction;
@@ -23,8 +24,16 @@ public class Landuse implements OpenMapTilesSchema.Landuse, ForwardingProfile.La
     ));
 
     @Override
+    public Expression filter() {
+        return Expression.and(
+                Expression.matchSource(Source.GRPK),
+                Expression.matchType(Expression.POLYGON_TYPE)
+        );
+    }
+
+    @Override
     public void processFeature(SourceFeature sf, FeatureCollector features) {
-        if (sf.getSource().equals(Source.GRPK) && sf.getSourceLayer().startsWith(Layers.GRPK_PLOTAI_PREFIX) && sf.canBePolygon()) {
+        if (sf.getSourceLayer().startsWith(Layers.GRPK_PLOTAI_PREFIX)) {
             var code = sf.getString("GKODAS");
 
             switch (code) {

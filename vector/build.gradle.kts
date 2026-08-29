@@ -38,6 +38,11 @@ tasks.named<Test>("test") {
 
 application {
     mainClass = "lt.lrv.basemap.Basemap"
+    // `run` forks its own JVM, so org.gradle.jvmargs does not apply here. Without this the
+    // build gets the JVM default of 25% of RAM (4 GB on a 16 GB GitHub runner). The rest of
+    // the 16 GB is left to the OS page cache, which Planetiler relies on for its mmap-ed
+    // temp feature files.
+    applicationDefaultJvmArgs = listOf("-Xmx8g")
 }
 
 tasks.register<JavaExec>("syncAddressRegistry") {

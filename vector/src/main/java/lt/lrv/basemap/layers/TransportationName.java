@@ -6,6 +6,7 @@ import com.onthegomap.planetiler.FeatureMerge;
 import com.onthegomap.planetiler.ForwardingProfile;
 import com.onthegomap.planetiler.VectorTile;
 import com.onthegomap.planetiler.config.PlanetilerConfig;
+import com.onthegomap.planetiler.expression.Expression;
 import com.onthegomap.planetiler.reader.SourceFeature;
 import lt.lrv.basemap.openmaptiles.OpenMapTilesSchema;
 import lt.lrv.basemap.utils.LanguageUtils;
@@ -21,6 +22,12 @@ public class TransportationName implements OpenMapTilesSchema.TransportationName
 
     public TransportationName(PlanetilerConfig config) {
         this.config = config;
+    }
+
+    // Features are emitted by Transportation, so skip dispatch entirely.
+    @Override
+    public Expression filter() {
+        return Expression.FALSE;
     }
 
     @Override
@@ -58,7 +65,7 @@ public class TransportationName implements OpenMapTilesSchema.TransportationName
                     .setMinZoom(Math.max(minZoom, transportMinZoom))
                     .setSortKeyDescending(minZoom);
         } else {
-            var minZoom = Math.max(12, Math.min(transportMinZoom + 2, 14));
+            var minZoom = Math.clamp(transportMinZoom + 2, 12, 14);
             feature.putAttrs(LanguageUtils.getNames(sf.tags()))
                     .setMinZoom(minZoom);
         }
